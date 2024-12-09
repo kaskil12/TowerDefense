@@ -8,11 +8,17 @@ TagManager:
   - PlayerOneBase
   - Bullet
   - Pawn
+  - PlayerOne
+  - PlayerTwo
+  - HomeBaseOne
+  - HomeBaseTwo
+  - PawnOne
+  - PawnTwo
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - PawnLayer
   - Water
   - UI
   - 

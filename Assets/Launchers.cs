@@ -23,12 +23,12 @@ public class Launchers : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             Debug.Log("Instantiating Player One...");
-            PhotonNetwork.Instantiate(playerOnePrefab.name, new Vector3(-5f, 0f, 0f), Quaternion.identity);
+            PhotonNetwork.Instantiate(playerOnePrefab.name, new Vector3(0, 0f, 0f), Quaternion.identity);
         }
         else
         {
             Debug.Log("Instantiating Player Two...");
-            PhotonNetwork.Instantiate(playerTwoPrefab.name, new Vector3(5f, 0f, 0f), Quaternion.identity);
+            PhotonNetwork.Instantiate(playerTwoPrefab.name, new Vector3(0, 0f, 0f), Quaternion.identity);
         }
     }
 }

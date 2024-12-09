@@ -2,41 +2,65 @@ using UnityEngine;
 using UnityEngine.AI;
 using Photon.Pun;
 using System.Collections;
+using Unity.VisualScripting;
+
 public class Melee : MonoBehaviourPunCallbacks
 {
     public int Team;
     public NavMeshAgent agent;
 
     public Transform targetBase; // Set this in the inspector or dynamically at runtime
+    public Transform HomeBase;
     public int Health = 100;
     public int Damage = 20;
     public bool canAttack = true;
+    public bool AttackOpponent;
 
     void Update()
     {
-        if (targetBase != null)
-        {
-            agent.SetDestination(targetBase.position);
-        }
-        Collider[] colliders = Physics.OverlapSphere(transform.position, 5f);
+        FindAndAttack();
+        agent.avoidancePriority = Random.Range(0, 100);
+    }
+
+    void FindAndAttack()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, 5f, LayerMask.GetMask("PawnLayer"));
+        bool targetFound = false;
+
         foreach (Collider collider in colliders)
         {
-            if (collider.CompareTag("Pawn") && collider.GetComponent<Melee>().Team != Team)
+            Melee melee = collider.GetComponent<Melee>();
+            if (melee != null && melee.Team != Team)
             {
+                targetFound = true;
                 agent.SetDestination(collider.transform.position);
+
                 PhotonView pv = collider.GetComponent<PhotonView>();
-                if (pv != null && pv.IsMine && canAttack)
+                if (pv != null && canAttack)
                 {
                     pv.RPC("TakeDamage", RpcTarget.AllBuffered, Damage);
                     StartCoroutine(Attack());
                 }
-            }else{
-                agent.SetDestination(targetBase.position);
+                break; // Exit loop after attacking one target
             }
-            
         }
+
+        if (!targetFound && AttackOpponent)
+        {
+            agent.SetDestination(targetBase.position);
+        }
+        else if (!targetFound && !AttackOpponent)
+        {
+            agent.SetDestination(HomeBase.position);
+        }
+
+        // Debug logs
+        Debug.Log($"Agent Destination: {agent.destination}");
+        Debug.Log($"Agent Speed: {agent.speed}");
+        Debug.Log($"Agent Remaining Distance: {agent.remainingDistance}");
     }
 
+    [PunRPC]
     public void SetTeam(int team)
     {
         Team = team;
@@ -45,18 +69,24 @@ public class Melee : MonoBehaviourPunCallbacks
         if (Team == 1)
         {
             targetBase = GameObject.FindWithTag("PlayerTwoBase").transform;
+            HomeBase = GameObject.FindWithTag("HomeBaseOne").transform;
+            agent.SetDestination(targetBase.position);
         }
         else if (Team == 2)
         {
             targetBase = GameObject.FindWithTag("PlayerOneBase").transform;
+            HomeBase = GameObject.FindWithTag("HomeBaseTwo").transform;
+            agent.SetDestination(targetBase.position);
         }
     }
+
     IEnumerator Attack()
     {
         canAttack = false;
         yield return new WaitForSeconds(1);
         canAttack = true;
     }
+
     [PunRPC]
     public void TakeDamage(int damage)
     {
@@ -64,7 +94,7 @@ public class Melee : MonoBehaviourPunCallbacks
         // Destroy the game object across the network
         if (Health <= 0)
         {
-            PhotonNetwork.Destroy(gameObject);
+            Destroy(gameObject);
         }
     }
 }
