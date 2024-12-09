@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 8026934409191624740}
   m_Layer: 0
   m_Name: MeleeOne
-  m_TagString: Untagged
+  m_TagString: Pawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -127,6 +127,9 @@ MonoBehaviour:
   Team: 0
   agent: {fileID: 4207357713282794659}
   targetBase: {fileID: 0}
+  Health: 100
+  Damage: 20
+  canAttack: 1
 --- !u!195 &4207357713282794659
 NavMeshAgent:
   m_ObjectHideFlags: 0

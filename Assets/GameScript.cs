@@ -42,12 +42,14 @@ public class GameScript : MonoBehaviourPunCallbacks
             Debug.Log("Player One spawning unit...");
             GameObject unit = PhotonNetwork.Instantiate("MeleeOne", new Vector3(-4f, 0f, 0f), Quaternion.identity);
             unit.GetComponent<Melee>().SetTeam(1);
+            unit.GetComponent<PhotonView>().RPC("SetTeam", RpcTarget.AllBuffered, 1);
         }
         else if(localPlayerRole == "PlayerTwo")
         {
             Debug.Log("Player Two spawning unit...");
             GameObject unit = PhotonNetwork.Instantiate("MeleeTwo", new Vector3(4f, 0f, 0f), Quaternion.identity);
             unit.GetComponent<Melee>().SetTeam(2);
+            unit.GetComponent<PhotonView>().RPC("SetTeam", RpcTarget.AllBuffered, 2);
         }
     }
 

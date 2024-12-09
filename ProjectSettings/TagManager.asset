@@ -6,6 +6,8 @@ TagManager:
   tags:
   - PlayerTwoBase
   - PlayerOneBase
+  - Bullet
+  - Pawn
   layers:
   - Default
   - TransparentFX
