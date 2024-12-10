@@ -51,6 +51,12 @@ public class RoundManager : MonoBehaviourPunCallbacks
         }
         PlayerOneTowerHealth = 1000;
         PlayerTwoTowerHealth = 1000;
+        GameObject[] playerScript = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject player in playerScript){
+            PlayerScript playerScriptComponent = player.GetComponent<PlayerScript>();
+            playerScriptComponent.Coins = 200;
+        }
+
 
     }
     [PunRPC]

@@ -52,13 +52,15 @@ public class Melee : MonoBehaviourPunCallbacks
             if (Vector3.Distance(transform.position, targetBase.position) < 20f)
             {
                 PhotonView phv = GameObject.Find("RoundManager").GetComponent<PhotonView>();
-                if (Team == 1)
+                if (Team == 1 && canAttack)
                 {
                     phv.RPC("PlayerTwoDamageTower", RpcTarget.AllBuffered, Damage);
+                    StartCoroutine(Attack());
                 }
-                else if (Team == 2)
+                else if (Team == 2 && canAttack)
                 {
                     phv.RPC("PlayerOneDamageTower", RpcTarget.AllBuffered, Damage);
+                    StartCoroutine(Attack());
                 }
             }
         }

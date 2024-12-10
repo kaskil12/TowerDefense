@@ -23,13 +23,26 @@ public class PlayerScript : MonoBehaviourPunCallbacks
     void Start()
     {
         StartCoroutine(GetCoins());
-        if (PhotonNetwork.IsMasterClient){
+
+        // Determine the local player's index in the player list
+        int playerIndex = System.Array.IndexOf(PhotonNetwork.PlayerList, PhotonNetwork.LocalPlayer);
+
+        // Assign roles based on the player's index
+        if (playerIndex == 0)
+        {
             localPlayerRole = "PlayerOne";
             CameraTargetPos = CameraPositions[0].position;
         }
-        else{
+        else if (playerIndex == 1)
+        {
             localPlayerRole = "PlayerTwo";
             CameraTargetPos = CameraPositions[2].position;
+        }
+        else
+        {
+            Debug.LogWarning("More than two players in the room! Ensure this is intended.");
+            localPlayerRole = $"Player{playerIndex + 1}";
+            CameraTargetPos = CameraPositions[1].position; // Adjust if you have more camera positions
         }
 
         Debug.Log($"Local Player Role: {localPlayerRole}");
@@ -44,6 +57,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks
             CameraTransform.gameObject.SetActive(true);
         }
     }
+
 
     void Update()
     {
