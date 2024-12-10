@@ -154,6 +154,7 @@ MonoBehaviour:
   PlayerOneWins: 0
   PlayerTwoWins: 0
   GameOver: 0
+  Started: 0
   PlayerOneTowerHealth: 1000
   PlayerTwoTowerHealth: 1000
   PLayerOneTowerHealthBar: {fileID: 1221700942}
@@ -275,7 +276,7 @@ GameObject:
   m_Component:
   - component: {fileID: 397564453}
   m_Layer: 0
-  m_Name: PlayerOne
+  m_Name: PlayerOneBase
   m_TagString: PlayerOne
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1320,7 +1321,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2068555087}
   m_Layer: 0
-  m_Name: PlayerTwo
+  m_Name: PlayerTwoBase
   m_TagString: PlayerTwo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
