@@ -27,7 +27,6 @@ public class PlayerScript : MonoBehaviourPunCallbacks
 
         // Determine the local player's index in the player list
         
-        AssignPlayerRole();
         if (!photonView.IsMine)
         {
             CameraTransform.gameObject.SetActive(false);
@@ -36,34 +35,46 @@ public class PlayerScript : MonoBehaviourPunCallbacks
         {
             CameraTransform.gameObject.SetActive(true);
         }
+        AssignPlayerRole();
     }
     bool player1Taken = false;
     bool player2Taken = false;
-    public void AssignPlayerRole(){
-        // int playerIndex = System.Array.IndexOf(PhotonNetwork.PlayerList, PhotonNetwork.LocalPlayer);
-        
+    public void AssignPlayerRole()
+    {
+        // Check if roles are already taken
         if(GameObject.Find("One") != null)
         {
             player1Taken = true;
-        }
-        if(GameObject.Find("Two") != null)
+        }else if(GameObject.Find("Two") != null)
         {
             player2Taken = true;
         }
-        // Assign roles based on the player's index
+
+        // Assign roles based on availability
         if (!player1Taken && localPlayerRole == null)
         {
             localPlayerRole = "PlayerOne";
             CameraTargetPos = CameraPositions[0].position;
-            photonView.RPC("SyncRole", RpcTarget.AllBuffered, "One");
+            CurrentPlayer.text = localPlayerRole;
+            Debug.Log("Player One assigned.");
         }
         else if (!player2Taken && localPlayerRole == null)
         {
             localPlayerRole = "PlayerTwo";
             CameraTargetPos = CameraPositions[2].position;
+            CurrentPlayer.text = localPlayerRole;
+            Debug.Log("Player Two assigned.");
+        }
+        //sync roles
+        if (localPlayerRole == "PlayerOne")
+        {
+            photonView.RPC("SyncRole", RpcTarget.AllBuffered, "One");
+        }
+        else if (localPlayerRole == "PlayerTwo")
+        {
             photonView.RPC("SyncRole", RpcTarget.AllBuffered, "Two");
         }
-        else
+        else if (localPlayerRole == null)
         {
             Debug.LogWarning("More than two players in the room or roles already assigned.");
             CameraTargetPos = CameraPositions[1].position; // Adjust as necessary
@@ -76,7 +87,6 @@ public class PlayerScript : MonoBehaviourPunCallbacks
     public void SyncRole(string role)
     {
         gameObject.name = role;
-        CurrentPlayer.text = localPlayerRole;
     }
 
 
