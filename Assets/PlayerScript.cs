@@ -8,7 +8,7 @@ using Photon.Realtime;
 
 public class PlayerScript : MonoBehaviourPunCallbacks
 {
-    private string localPlayerRole;
+    private string localPlayerRole = null;
     public Button spawnButtonOne;
     public GameObject canvas;
     public GameObject WaitingForPlayers;
@@ -22,32 +22,12 @@ public class PlayerScript : MonoBehaviourPunCallbacks
 
     void Start()
     {
+        localPlayerRole = null;
         StartCoroutine(GetCoins());
 
         // Determine the local player's index in the player list
-        int playerIndex = System.Array.IndexOf(PhotonNetwork.PlayerList, PhotonNetwork.LocalPlayer);
-
-        // Assign roles based on the player's index
-        if (playerIndex == 0)
-        {
-            localPlayerRole = "PlayerOne";
-            CameraTargetPos = CameraPositions[0].position;
-        }
-        else if (playerIndex == 1)
-        {
-            localPlayerRole = "PlayerTwo";
-            CameraTargetPos = CameraPositions[2].position;
-        }
-        else
-        {
-            Debug.LogWarning("More than two players in the room! Ensure this is intended.");
-            localPlayerRole = $"Player{playerIndex + 1}";
-            CameraTargetPos = CameraPositions[1].position; // Adjust if you have more camera positions
-        }
-
-        Debug.Log($"Local Player Role: {localPlayerRole}");
-        CurrentPlayer.text = localPlayerRole;
-
+        
+        AssignPlayerRole();
         if (!photonView.IsMine)
         {
             CameraTransform.gameObject.SetActive(false);
@@ -56,6 +36,47 @@ public class PlayerScript : MonoBehaviourPunCallbacks
         {
             CameraTransform.gameObject.SetActive(true);
         }
+    }
+    bool player1Taken = false;
+    bool player2Taken = false;
+    public void AssignPlayerRole(){
+        // int playerIndex = System.Array.IndexOf(PhotonNetwork.PlayerList, PhotonNetwork.LocalPlayer);
+        
+        if(GameObject.Find("One") != null)
+        {
+            player1Taken = true;
+        }
+        if(GameObject.Find("Two") != null)
+        {
+            player2Taken = true;
+        }
+        // Assign roles based on the player's index
+        if (!player1Taken && localPlayerRole == null)
+        {
+            localPlayerRole = "PlayerOne";
+            CameraTargetPos = CameraPositions[0].position;
+            photonView.RPC("SyncRole", RpcTarget.AllBuffered, "One");
+        }
+        else if (!player2Taken && localPlayerRole == null)
+        {
+            localPlayerRole = "PlayerTwo";
+            CameraTargetPos = CameraPositions[2].position;
+            photonView.RPC("SyncRole", RpcTarget.AllBuffered, "Two");
+        }
+        else
+        {
+            Debug.LogWarning("More than two players in the room or roles already assigned.");
+            CameraTargetPos = CameraPositions[1].position; // Adjust as necessary
+        }
+
+        Debug.Log($"Local Player Role: {localPlayerRole}");
+        CurrentPlayer.text = localPlayerRole;
+    }
+    [PunRPC]
+    public void SyncRole(string role)
+    {
+        gameObject.name = role;
+        CurrentPlayer.text = localPlayerRole;
     }
 
 
