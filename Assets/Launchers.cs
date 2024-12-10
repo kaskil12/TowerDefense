@@ -1,5 +1,6 @@
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
 
 public class Launchers : MonoBehaviourPunCallbacks
 {
@@ -14,7 +15,8 @@ public class Launchers : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         Debug.Log("Connected to Master");
-        PhotonNetwork.JoinRandomOrCreateRoom();
+        RoomOptions roomOptions = new RoomOptions { MaxPlayers = 2 };
+        PhotonNetwork.JoinRandomOrCreateRoom(null, 0, MatchmakingMode.FillRoom, null, null, null, roomOptions);
     }
 
     public override void OnJoinedRoom()

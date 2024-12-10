@@ -4,6 +4,7 @@ using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Photon.Realtime;
 
 public class PlayerScript : MonoBehaviourPunCallbacks
 {
@@ -14,9 +15,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks
     public TMP_Text coinText;
     public int Coins = 200;
     public Transform CameraTransform;
-    public Transform CamPosOne;
-    public Transform CamPosTwo;
-    public Transform MiddlePos;
+    public Transform[] CameraPositions;
     public Vector3 CameraTargetPos;
     public bool AttackMode = false;
 
@@ -25,11 +24,11 @@ public class PlayerScript : MonoBehaviourPunCallbacks
         StartCoroutine(GetCoins());
         if (PhotonNetwork.IsMasterClient){
             localPlayerRole = "PlayerOne";
-            CameraTargetPos = CamPosOne.position;
+            CameraTargetPos = CameraPositions[0].position;
         }
         else{
             localPlayerRole = "PlayerTwo";
-            CameraTargetPos = CamPosTwo.position;
+            CameraTargetPos = CameraPositions[2].position;
         }
 
         Debug.Log($"Local Player Role: {localPlayerRole}");
@@ -63,17 +62,31 @@ public class PlayerScript : MonoBehaviourPunCallbacks
         coinText.text = $"Coins: {Coins}";
         CameraTransform.position = Vector3.Lerp(CameraTransform.position, CameraTargetPos, 1f * Time.deltaTime);
     }
-    public void CameraSecondPos()
+    public void NextPos()
     {
-        CameraTargetPos = CamPosTwo.position;
+        //go to the next camera position in the array of 3 CamPositions array
+        for (int i = 0; i < CameraPositions.Length; i++)
+        {
+            if (CameraTargetPos == CameraPositions[i].position)
+            {
+            CameraTargetPos = CameraPositions[(i + 1) % CameraPositions.Length].position;
+            break;
+            }
+        }
+
+
     }
-    public void CameraFirstPos()
+    public void PreviousPos()
     {
-        CameraTargetPos = CamPosOne.position;
-    }
-    public void CameraMiddlePos()
-    {
-        CameraTargetPos = MiddlePos.position;
+        //go to the previous camera position in the array of 3 CamPositions array
+        for (int i = 0; i < CameraPositions.Length; i++)
+        {
+            if (CameraTargetPos == CameraPositions[i].position)
+            {
+            CameraTargetPos = CameraPositions[(i + 2) % CameraPositions.Length].position;
+            break;
+            }
+        }
     }
     IEnumerator GetCoins()
     {
@@ -102,6 +115,41 @@ public class PlayerScript : MonoBehaviourPunCallbacks
             unit.GetComponent<Melee>().SetTeam(2);
             unit.GetComponent<PhotonView>().RPC("SetTeam", RpcTarget.AllBuffered, 2);
             Coins -= 50;
+        }
+        if(localPlayerRole == "PlayerOne")
+        {
+            Debug.Log("Player One toggling attack...");
+            GameObject[] units = GameObject.FindGameObjectsWithTag("PawnOne");
+            foreach (GameObject unit in units)
+            {
+                var melee = unit.GetComponent<Melee>();
+                if (melee != null)
+                {
+                    melee.AttackOpponent = AttackMode;
+                    Debug.Log($"{unit.name}'s AttackOpponent set to {AttackMode}");
+                }
+                else
+                {
+                    Debug.LogWarning($"Melee component not found on {unit.name}");
+                }
+            }
+        }
+        else if(localPlayerRole == "PlayerTwo")
+        {
+            GameObject[] units = GameObject.FindGameObjectsWithTag("PawnTwo");
+            foreach (GameObject unit in units)
+            {
+                var melee = unit.GetComponent<Melee>();
+                if (melee != null)
+                {
+                    melee.AttackOpponent = AttackMode;
+                    Debug.Log($"{unit.name}'s AttackOpponent set to {AttackMode}");
+                }
+                else
+                {
+                    Debug.LogWarning($"Melee component not found on {unit.name}");
+                }
+            }
         }
     }
     public void ToggleAttack()
