@@ -8,13 +8,9 @@ public class Spawner : MonoBehaviour
 
     void Start()
     {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            PhotonNetwork.Instantiate(playerOnePrefab.name, new Vector3(0, 0f, 0f), Quaternion.identity, 0);
-        }
-        else
-        {
-            PhotonNetwork.Instantiate(playerTwoPrefab.name, new Vector3(1, 0f, 0f), Quaternion.identity, 0);
-        }
+       
+        PhotonNetwork.Instantiate(playerOnePrefab.name, new Vector3(0, 0f, 0f), Quaternion.identity, 0);
+        
+        
     }
 }

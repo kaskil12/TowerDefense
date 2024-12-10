@@ -48,6 +48,19 @@ public class Melee : MonoBehaviourPunCallbacks
         if (!targetFound && AttackOpponent)
         {
             agent.SetDestination(targetBase.position);
+            Debug.Log($"Distance to target base: {Vector3.Distance(transform.position, targetBase.position)}");
+            if (Vector3.Distance(transform.position, targetBase.position) < 20f)
+            {
+                PhotonView phv = GameObject.Find("RoundManager").GetComponent<PhotonView>();
+                if (Team == 1)
+                {
+                    phv.RPC("PlayerTwoDamageTower", RpcTarget.AllBuffered, Damage);
+                }
+                else if (Team == 2)
+                {
+                    phv.RPC("PlayerOneDamageTower", RpcTarget.AllBuffered, Damage);
+                }
+            }
         }
         else if (!targetFound && !AttackOpponent)
         {

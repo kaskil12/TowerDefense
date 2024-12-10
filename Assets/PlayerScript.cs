@@ -11,6 +11,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks
     private string localPlayerRole;
     public Button spawnButtonOne;
     public GameObject canvas;
+    public GameObject WaitingForPlayers;
     public TMP_Text CurrentPlayer;
     public TMP_Text coinText;
     public int Coins = 200;
@@ -51,6 +52,15 @@ public class PlayerScript : MonoBehaviourPunCallbacks
         if (canvas != null){
             canvas.SetActive(true);
         }
+        RoundManager roundManager = GameObject.Find("RoundManager").GetComponent<RoundManager>();
+        if(roundManager.Started == false && WaitingForPlayers.activeSelf == false)
+        {
+            WaitingForPlayers.SetActive(true);
+        }
+        else if(WaitingForPlayers.activeSelf == true && roundManager.Started == true)
+        {
+            WaitingForPlayers.SetActive(false);
+        }
         // if (localPlayerRole == "PlayerOne")
         // {
         //     HandlePlayerOneInput();
@@ -90,14 +100,21 @@ public class PlayerScript : MonoBehaviourPunCallbacks
     }
     IEnumerator GetCoins()
     {
+        RoundManager roundManager = GameObject.Find("RoundManager").GetComponent<RoundManager>();
+       
         while (true)
         {
             yield return new WaitForSeconds(1);
-            Coins += 10;
+             if(roundManager.Started == true)
+            {
+                Coins += 10;   
+            }
         }
     }
     public void SpawnButton()
     {
+        RoundManager roundManager = GameObject.Find("RoundManager").GetComponent<RoundManager>();
+        if(roundManager.Started == false) return;
         if(localPlayerRole == "PlayerOne" && Coins >= 50)
         {
             Debug.Log("Player One spawning unit...");
