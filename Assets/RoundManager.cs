@@ -63,6 +63,7 @@ public class RoundManager : MonoBehaviourPunCallbacks
     public void PlayerOneDamageTower(int damage){
         // Reduce PlayerOneTowerHealth by damage
         PlayerOneTowerHealth -= damage;
+        PLayerOneTowerHealthBar.transform.localScale = new Vector3((float)PlayerOneTowerHealth / 1000, 1, 1);
         if (PlayerOneTowerHealth <= 0){
             // Player Two wins the round
             PlayerTwoWinsRound();
@@ -73,6 +74,7 @@ public class RoundManager : MonoBehaviourPunCallbacks
     public void PlayerTwoDamageTower(int damage){
         // Reduce PlayerTwoTowerHealth by damage
         PlayerTwoTowerHealth -= damage;
+        PLayerTwoTowerHealthBar.transform.localScale = new Vector3((float)PlayerTwoTowerHealth / 1000, 1, 1);
         if (PlayerTwoTowerHealth <= 0){
             // Player One wins the round
             PlayerOneWinsRound();

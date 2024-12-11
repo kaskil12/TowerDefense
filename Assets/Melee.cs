@@ -30,7 +30,8 @@ public class Melee : MonoBehaviourPunCallbacks
         foreach (Collider collider in colliders)
         {
             Melee melee = collider.GetComponent<Melee>();
-            if (melee != null && melee.Team != Team)
+            WitchScript witch = collider.GetComponent<WitchScript>();
+            if (melee != null && melee.Team != Team || witch != null && witch.Team != Team)
             {
                 targetFound = true;
                 agent.SetDestination(collider.transform.position);

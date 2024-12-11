@@ -36,6 +36,8 @@ public class PlayerScript : MonoBehaviourPunCallbacks
             CameraTransform.gameObject.SetActive(true);
         }
         AssignPlayerRole();
+        //set fps to 120
+        Application.targetFrameRate = 120;
     }
     bool player1Taken = false;
     bool player2Taken = false;
@@ -181,7 +183,7 @@ public void SyncRole(string role)
             }
         }
     }
-    public void SpawnButton()
+    public void SpawnButtonMelee()
     {
         Debug.Log(localPlayerRole);
         RoundManager roundManager = GameObject.Find("RoundManager").GetComponent<RoundManager>();
@@ -240,14 +242,49 @@ public void SyncRole(string role)
             }
         }
     }
-    public void ToggleAttack()
-    {
-        AttackMode = !AttackMode;
-        Debug.Log($"AttackMode set to {AttackMode}");
+    public void SpawnWitch(){
+        Debug.Log(localPlayerRole);
+        RoundManager roundManager = GameObject.Find("RoundManager").GetComponent<RoundManager>();
+        if(roundManager.Started == false) return;
+        if(localPlayerRole == "PlayerOne" && Coins >= 100)
+        {
+            Debug.Log("Player One spawning unit...");
+            Transform PlayerOneSpawn = GameObject.FindGameObjectWithTag("HomeBaseOne").transform;
+            GameObject unit = PhotonNetwork.Instantiate("WitchOne", PlayerOneSpawn.position, Quaternion.identity);
+            unit.GetComponent<WitchScript>().SetTeam(1);
+            unit.GetComponent<PhotonView>().RPC("SetTeam", RpcTarget.AllBuffered, 1);
+            Coins -= 100;
+        }
+        else if(localPlayerRole == "PlayerTwo" && Coins >= 100)
+        {
+            Debug.Log("Player Two spawning unit...");
+            Transform PlayerTwoSpawn = GameObject.FindGameObjectWithTag("HomeBaseTwo").transform;
+            GameObject unit = PhotonNetwork.Instantiate("WitchTwo", PlayerTwoSpawn.position, Quaternion.identity);
+            unit.GetComponent<WitchScript>().SetTeam(2);
+            unit.GetComponent<PhotonView>().RPC("SetTeam", RpcTarget.AllBuffered, 2);
+            Coins -= 100;
+        }
         if(localPlayerRole == "PlayerOne")
         {
             Debug.Log("Player One toggling attack...");
             GameObject[] units = GameObject.FindGameObjectsWithTag("PawnOne");
+            foreach (GameObject unit in units)
+            {
+                var witch = unit.GetComponent<WitchScript>();
+                if (witch != null)
+                {
+                    witch.AttackOpponent = AttackMode;
+                    Debug.Log($"{unit.name}'s AttackOpponent set to {AttackMode}");
+                }
+                else
+                {
+                    Debug.LogWarning($"witch component not found on {unit.name}");
+                }
+            }
+        }
+        else if(localPlayerRole == "PlayerTwo")
+        {
+            GameObject[] units = GameObject.FindGameObjectsWithTag("PawnTwo");
             foreach (GameObject unit in units)
             {
                 var melee = unit.GetComponent<Melee>();
@@ -262,15 +299,42 @@ public void SyncRole(string role)
                 }
             }
         }
+    }
+    public void ToggleAttack()
+    {
+        AttackMode = !AttackMode;
+        Debug.Log($"AttackMode set to {AttackMode}");
+        if(localPlayerRole == "PlayerOne")
+        {
+            Debug.Log("Player One toggling attack...");
+            GameObject[] units = GameObject.FindGameObjectsWithTag("PawnOne");
+            foreach (GameObject unit in units)
+            {
+                var melee = unit.GetComponent<Melee>();
+                var witch = unit.GetComponent<WitchScript>();
+                if (melee != null || witch != null)
+                {
+                    if(melee)melee.AttackOpponent = AttackMode;
+                    if(witch)witch.AttackOpponent = AttackMode;
+                    Debug.Log($"{unit.name}'s AttackOpponent set to {AttackMode}");
+                }
+                else
+                {
+                    Debug.LogWarning($"Melee component not found on {unit.name}");
+                }
+            }
+        }
         else if(localPlayerRole == "PlayerTwo")
         {
             GameObject[] units = GameObject.FindGameObjectsWithTag("PawnTwo");
             foreach (GameObject unit in units)
             {
                 var melee = unit.GetComponent<Melee>();
-                if (melee != null)
+                var witch = unit.GetComponent<WitchScript>();
+                if (melee != null || witch != null)
                 {
-                    melee.AttackOpponent = AttackMode;
+                    if(melee)melee.AttackOpponent = AttackMode;
+                    if(witch)witch.AttackOpponent = AttackMode;
                     Debug.Log($"{unit.name}'s AttackOpponent set to {AttackMode}");
                 }
                 else
