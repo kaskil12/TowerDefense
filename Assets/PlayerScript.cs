@@ -21,6 +21,17 @@ public class PlayerScript : MonoBehaviourPunCallbacks
     public Vector3 CameraTargetPos;
     public bool AttackMode = false;
 
+    public bool CanBuyMelee = true;
+    public bool CanBuyWitch = true;
+    public int CoinPerTick = 10;
+    public int MeleeCost = 50;
+    public int WitchCost = 100;
+    public float WitchTimer = 0;
+    public float MeleeTimer = 0;
+    public TMP_Text CoinPerTickText;
+    public TMP_Text MeleeButtonText;
+    public TMP_Text WitchButtonText;
+    
     void Start()
     {
         StartCoroutine(GetCoins());
@@ -38,6 +49,10 @@ public class PlayerScript : MonoBehaviourPunCallbacks
         AssignPlayerRole();
         //set fps to 120
         Application.targetFrameRate = 120;
+        //set text for melee and witch buttons and coin per tick
+        CoinPerTickText.text = $"Coin Per Tick: {CoinPerTick} (Cost: {CoinPerTickUpgradeCost})";
+        MeleeButtonText.text = $"Melee: {MeleeCost}";
+        WitchButtonText.text = $"Witch: {WitchCost}";
     }
     bool player1Taken = false;
     bool player2Taken = false;
@@ -143,6 +158,22 @@ public void SyncRole(string role)
         // }
         coinText.text = $"Coins: {Coins}";
         CameraTransform.position = Vector3.Lerp(CameraTransform.position, CameraTargetPos, 1f * Time.deltaTime);
+        if(MeleeTimer > 0){
+            MeleeTimer -= Time.deltaTime;
+            CanBuyMelee = false;
+            MeleeButtonText.text = $"Melee: {MeleeTimer} (On Cooldown)";
+        }else{
+            CanBuyMelee = true;
+            MeleeButtonText.text = $"Melee: {MeleeCost}";
+        }
+        if(WitchTimer > 0){
+            WitchTimer -= Time.deltaTime;
+            CanBuyWitch = false;
+            WitchButtonText.text = $"Witch: {WitchTimer} (On Cooldown)";
+        }else{
+            CanBuyWitch = true;
+            WitchButtonText.text = $"Witch: {WitchCost}";
+        }
     }
     public void NextPos()
     {
@@ -176,19 +207,21 @@ public void SyncRole(string role)
        
         while (true)
         {
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(3);
              if(roundManager.Started == true)
             {
-                Coins += 10;   
+                Coins += CoinPerTick;   
             }
         }
     }
+  
     public void SpawnButtonMelee()
     {
+        
         Debug.Log(localPlayerRole);
         RoundManager roundManager = GameObject.Find("RoundManager").GetComponent<RoundManager>();
         if(roundManager.Started == false) return;
-        if(localPlayerRole == "PlayerOne" && Coins >= 50)
+        if(localPlayerRole == "PlayerOne" && Coins >= MeleeCost && CanBuyMelee)
         {
             Debug.Log("Player One spawning unit...");
             Transform PlayerOneSpawn = GameObject.FindGameObjectWithTag("HomeBaseOne").transform;
@@ -196,8 +229,9 @@ public void SyncRole(string role)
             unit.GetComponent<Melee>().SetTeam(1);
             unit.GetComponent<PhotonView>().RPC("SetTeam", RpcTarget.AllBuffered, 1);
             Coins -= 50;
+            MeleeTimer = 5;
         }
-        else if(localPlayerRole == "PlayerTwo" && Coins >= 50)
+        else if(localPlayerRole == "PlayerTwo" && Coins >= MeleeCost && CanBuyMelee)
         {
             Debug.Log("Player Two spawning unit...");
             Transform PlayerTwoSpawn = GameObject.FindGameObjectWithTag("HomeBaseTwo").transform;
@@ -205,6 +239,7 @@ public void SyncRole(string role)
             unit.GetComponent<Melee>().SetTeam(2);
             unit.GetComponent<PhotonView>().RPC("SetTeam", RpcTarget.AllBuffered, 2);
             Coins -= 50;
+            MeleeTimer = 5;
         }
         if(localPlayerRole == "PlayerOne")
         {
@@ -242,20 +277,22 @@ public void SyncRole(string role)
             }
         }
     }
+    
     public void SpawnWitch(){
         Debug.Log(localPlayerRole);
         RoundManager roundManager = GameObject.Find("RoundManager").GetComponent<RoundManager>();
         if(roundManager.Started == false) return;
-        if(localPlayerRole == "PlayerOne" && Coins >= 100)
-        {
+        if(localPlayerRole == "PlayerOne" && Coins >= WitchCost && CanBuyWitch)
+        {   
             Debug.Log("Player One spawning unit...");
             Transform PlayerOneSpawn = GameObject.FindGameObjectWithTag("HomeBaseOne").transform;
             GameObject unit = PhotonNetwork.Instantiate("WitchOne", PlayerOneSpawn.position, Quaternion.identity);
             unit.GetComponent<WitchScript>().SetTeam(1);
             unit.GetComponent<PhotonView>().RPC("SetTeam", RpcTarget.AllBuffered, 1);
             Coins -= 100;
+            WitchTimer = 5;
         }
-        else if(localPlayerRole == "PlayerTwo" && Coins >= 100)
+        else if(localPlayerRole == "PlayerTwo" && Coins >= WitchCost && CanBuyWitch)
         {
             Debug.Log("Player Two spawning unit...");
             Transform PlayerTwoSpawn = GameObject.FindGameObjectWithTag("HomeBaseTwo").transform;
@@ -263,6 +300,7 @@ public void SyncRole(string role)
             unit.GetComponent<WitchScript>().SetTeam(2);
             unit.GetComponent<PhotonView>().RPC("SetTeam", RpcTarget.AllBuffered, 2);
             Coins -= 100;
+            WitchTimer = 5;
         }
         if(localPlayerRole == "PlayerOne")
         {
@@ -287,10 +325,10 @@ public void SyncRole(string role)
             GameObject[] units = GameObject.FindGameObjectsWithTag("PawnTwo");
             foreach (GameObject unit in units)
             {
-                var melee = unit.GetComponent<Melee>();
-                if (melee != null)
+                var witch = unit.GetComponent<WitchScript>();
+                if (witch != null)
                 {
-                    melee.AttackOpponent = AttackMode;
+                    witch.AttackOpponent = AttackMode;
                     Debug.Log($"{unit.name}'s AttackOpponent set to {AttackMode}");
                 }
                 else
@@ -298,6 +336,17 @@ public void SyncRole(string role)
                     Debug.LogWarning($"Melee component not found on {unit.name}");
                 }
             }
+        }
+    }
+    public int CoinPerTickUpgradeCost = 100;
+    public void CoinUpgrade()
+    {
+        if(Coins >= CoinPerTickUpgradeCost)
+        {
+            CoinPerTick += 5;
+            Coins -= CoinPerTickUpgradeCost;
+            CoinPerTickUpgradeCost += 100;
+            CoinPerTickText.text = $"Coin Per Tick: {CoinPerTick} (Cost: {CoinPerTickUpgradeCost})";
         }
     }
     public void ToggleAttack()

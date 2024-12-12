@@ -20,6 +20,9 @@ public class RoundManager : MonoBehaviourPunCallbacks
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        // Set the initial values of the PlayerOneTowerHealth and PlayerTwoTowerHealth
+        PLayerOneTowerHealthBar.transform.localScale = new Vector3(1, 1, (float)PlayerOneTowerHealth / 100);
+        PLayerTwoTowerHealthBar.transform.localScale = new Vector3(1, 1, (float)PlayerTwoTowerHealth / 100);
     }
 
     // Update is called once per frame
@@ -63,7 +66,7 @@ public class RoundManager : MonoBehaviourPunCallbacks
     public void PlayerOneDamageTower(int damage){
         // Reduce PlayerOneTowerHealth by damage
         PlayerOneTowerHealth -= damage;
-        PLayerOneTowerHealthBar.transform.localScale = new Vector3((float)PlayerOneTowerHealth / 1000, 1, 1);
+        PLayerOneTowerHealthBar.transform.localScale = new Vector3(1, 1, (float)PlayerOneTowerHealth / 100);
         if (PlayerOneTowerHealth <= 0){
             // Player Two wins the round
             PlayerTwoWinsRound();
@@ -74,7 +77,7 @@ public class RoundManager : MonoBehaviourPunCallbacks
     public void PlayerTwoDamageTower(int damage){
         // Reduce PlayerTwoTowerHealth by damage
         PlayerTwoTowerHealth -= damage;
-        PLayerTwoTowerHealthBar.transform.localScale = new Vector3((float)PlayerTwoTowerHealth / 1000, 1, 1);
+        PLayerTwoTowerHealthBar.transform.localScale = new Vector3(1, 1, (float)PlayerTwoTowerHealth / 100);
         if (PlayerTwoTowerHealth <= 0){
             // Player One wins the round
             PlayerOneWinsRound();

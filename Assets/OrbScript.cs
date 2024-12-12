@@ -37,7 +37,7 @@ public class OrbScript : MonoBehaviourPunCallbacks
         Collider[] TowerCollider = Physics.OverlapSphere(transform.position, 1f);
         foreach (Collider collider in TowerCollider)
         {
-            if(collider.gameObject.tag == "TowerOne" || collider.gameObject.tag == "TowerTwo"){
+            if(collider.gameObject.tag == "PlayerOneBase" || collider.gameObject.tag == "PlayerTwoBase"){
                 PhotonView phv = GameObject.Find("RoundManager").GetComponent<PhotonView>();   
                 if (phv != null)
                 {
