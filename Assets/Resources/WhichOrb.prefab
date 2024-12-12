@@ -150,8 +150,7 @@ GameObject:
   - component: {fileID: 907245367081330099}
   - component: {fileID: 5356345990135232252}
   - component: {fileID: 935050949128367500}
-  - component: {fileID: 536384243840016221}
-  - component: {fileID: 5159313247739251585}
+  - component: {fileID: 5333705857101185521}
   m_Layer: 0
   m_Name: WhichOrb
   m_TagString: Untagged
@@ -196,7 +195,6 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 935050949128367500}
-  - {fileID: 5159313247739251585}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -216,34 +214,7 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
---- !u!54 &536384243840016221
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5421590144734858232}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!114 &5159313247739251585
+--- !u!114 &5333705857101185521
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -252,13 +223,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 5421590144734858232}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
+  m_Script: {fileID: 11500000, guid: ef2f6afd1eb639b40b42500997193144, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SynchronizeVelocity: 1
-  m_SynchronizeAngularVelocity: 0
-  m_TeleportEnabled: 0
-  m_TeleportIfDistanceGreaterThan: 3
 --- !u!1 &7568441297695927837
 GameObject:
   m_ObjectHideFlags: 0
@@ -363,7 +330,7 @@ SphereCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}

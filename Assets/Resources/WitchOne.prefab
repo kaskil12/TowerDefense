@@ -37,6 +37,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4346263051582240679}
+  - {fileID: 8538281296739774853}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2964124971025297392
@@ -123,7 +124,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 2.5
   m_Acceleration: 8
   avoidancePriority: 0
   m_AngularSpeed: 300
@@ -190,12 +191,13 @@ MonoBehaviour:
   agent: {fileID: -6269713250337036773}
   targetBase: {fileID: 0}
   HomeBase: {fileID: 0}
-  Health: 100
-  Damage: 10
+  Health: 60
+  Damage: 50
   canAttack: 1
   OrbShoot: 0
   AttackOpponent: 0
-  Orb: {fileID: 5421590144734858232, guid: 88b4e33d9d4bf044d84829bcd49c7e06, type: 3}
+  OrbPrefab: {fileID: 5421590144734858232, guid: 88b4e33d9d4bf044d84829bcd49c7e06, type: 3}
+  OrbSpawnPoint: {fileID: 8538281296739774853}
 --- !u!1 &8854760753895811266
 GameObject:
   m_ObjectHideFlags: 0
@@ -220,12 +222,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8854760753895811266}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.23, z: 0.551}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.73, z: 0.551}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4346263051582240679}
+  m_Father: {fileID: 5058550940986654219}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9072475433742299512
 GameObject:
@@ -257,7 +259,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1572261686698256608}
-  - {fileID: 8538281296739774853}
   m_Father: {fileID: 5058550940986654219}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1322777161817804555

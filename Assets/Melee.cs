@@ -99,7 +99,7 @@ public class Melee : MonoBehaviourPunCallbacks
     IEnumerator Attack()
     {
         canAttack = false;
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2.5f);
         canAttack = true;
     }
 
