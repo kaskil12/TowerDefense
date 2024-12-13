@@ -20,6 +20,11 @@ public class CreateAndJoin : MonoBehaviourPunCallbacks
         }
     }
 
+    public void JoinRandomOrCreateRoom()
+    {
+        PhotonNetwork.JoinRandomOrCreateRoom();
+    }
+
     public void JoinRoom()
     {
         PhotonNetwork.JoinRoom(input_Join.text);

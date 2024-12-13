@@ -31,6 +31,18 @@ public class PlayerScript : MonoBehaviourPunCallbacks
     public TMP_Text CoinPerTickText;
     public TMP_Text MeleeButtonText;
     public TMP_Text WitchButtonText;
+    public Transform minTransform; // Minimum boundary
+    public Transform maxTransform; // Maximum boundary
+    public float sensitivity = 0.01f; // Swipe sensitivity
+    public float momentumDamp = 0.9f; // Damping for momentum
+    public float momentumThreshold = 0.1f; // Stop momentum below this value
+    public float swipeSmoothness = 10f; // Smoothness for swipe
+    public float momentumSmoothness = 10f; // Smoothness for momentum
+
+    private Vector2 touchStartPosition;
+    private Vector3 cameraStartPosition;
+    private bool isSwiping = false;
+    private float momentum = 0f; // Store swipe momentum
     
     void Start()
     {
@@ -50,9 +62,9 @@ public class PlayerScript : MonoBehaviourPunCallbacks
         //set fps to 120
         Application.targetFrameRate = 120;
         //set text for melee and witch buttons and coin per tick
-        CoinPerTickText.text = $"Coin Per Tick: {CoinPerTick} (Cost: {CoinPerTickUpgradeCost})";
-        MeleeButtonText.text = $"Melee: {MeleeCost}";
-        WitchButtonText.text = $"Witch: {WitchCost}";
+        CoinPerTickText.text = $"{CoinPerTickUpgradeCost}";
+        MeleeButtonText.text = $"{MeleeCost}";
+        WitchButtonText.text = $"{WitchCost}";
     }
     bool player1Taken = false;
     bool player2Taken = false;
@@ -157,50 +169,52 @@ public void SyncRole(string role)
         //     HandlePlayerTwoInput();
         // }
         coinText.text = $"Coins: {Coins}";
-        CameraTransform.position = Vector3.Lerp(CameraTransform.position, CameraTargetPos, 1f * Time.deltaTime);
+        // CameraTransform.position = Vector3.Lerp(CameraTransform.position, CameraTargetPos, 1f * Time.deltaTime);
         if(MeleeTimer > 0){
             MeleeTimer -= Time.deltaTime;
             CanBuyMelee = false;
-            MeleeButtonText.text = $"Melee: {MeleeTimer} (On Cooldown)";
+            //Shorten the float text to 1 decimal places
+            MeleeButtonText.text = $"{MeleeTimer:F1}";
         }else{
             CanBuyMelee = true;
-            MeleeButtonText.text = $"Melee: {MeleeCost}";
+            MeleeButtonText.text = $"{MeleeCost:F1}";
         }
         if(WitchTimer > 0){
             WitchTimer -= Time.deltaTime;
             CanBuyWitch = false;
-            WitchButtonText.text = $"Witch: {WitchTimer} (On Cooldown)";
+            WitchButtonText.text = $"{WitchTimer:F1}";
         }else{
             CanBuyWitch = true;
-            WitchButtonText.text = $"Witch: {WitchCost}";
+            WitchButtonText.text = $"{WitchCost:F1}";
         }
+        Swipes();
     }
-    public void NextPos()
-    {
-        //go to the next camera position in the array of 3 CamPositions array
-        for (int i = 0; i < CameraPositions.Length; i++)
-        {
-            if (CameraTargetPos == CameraPositions[i].position)
-            {
-            CameraTargetPos = CameraPositions[(i + 1) % CameraPositions.Length].position;
-            break;
-            }
-        }
+    // public void NextPos()
+    // {
+    //     //go to the next camera position in the array of 3 CamPositions array
+    //     for (int i = 0; i < CameraPositions.Length; i++)
+    //     {
+    //         if (CameraTargetPos == CameraPositions[i].position)
+    //         {
+    //         CameraTargetPos = CameraPositions[(i + 1) % CameraPositions.Length].position;
+    //         break;
+    //         }
+    //     }
 
 
-    }
-    public void PreviousPos()
-    {
-        //go to the previous camera position in the array of 3 CamPositions array
-        for (int i = 0; i < CameraPositions.Length; i++)
-        {
-            if (CameraTargetPos == CameraPositions[i].position)
-            {
-            CameraTargetPos = CameraPositions[(i + 2) % CameraPositions.Length].position;
-            break;
-            }
-        }
-    }
+    // }
+    // public void PreviousPos()
+    // {
+    //     //go to the previous camera position in the array of 3 CamPositions array
+    //     for (int i = 0; i < CameraPositions.Length; i++)
+    //     {
+    //         if (CameraTargetPos == CameraPositions[i].position)
+    //         {
+    //         CameraTargetPos = CameraPositions[(i + 2) % CameraPositions.Length].position;
+    //         break;
+    //         }
+    //     }
+    // }
     IEnumerator GetCoins()
     {
         RoundManager roundManager = GameObject.Find("RoundManager").GetComponent<RoundManager>();
@@ -346,7 +360,7 @@ public void SyncRole(string role)
             CoinPerTick += 5;
             Coins -= CoinPerTickUpgradeCost;
             CoinPerTickUpgradeCost += 100;
-            CoinPerTickText.text = $"Coin Per Tick: {CoinPerTick} (Cost: {CoinPerTickUpgradeCost})";
+            CoinPerTickText.text = $"{CoinPerTickUpgradeCost}";
         }
     }
     public void ToggleAttack()
@@ -423,4 +437,75 @@ public void SyncRole(string role)
     //         GameObject.FindWithTag("PlayerTwo").GetComponent<PlayerTwo>().ToggleAttack();
     //     }
     // }
+
+public void Swipes()
+{
+    if (Input.touchCount > 0)
+    {
+        Touch touch = Input.GetTouch(0);
+
+        switch (touch.phase)
+        {
+            case TouchPhase.Began:
+                // Store initial touch and camera position
+                touchStartPosition = touch.position;
+                cameraStartPosition = CameraTransform.position;
+                isSwiping = true;
+                momentum = 0f; // Reset momentum
+                break;
+
+            case TouchPhase.Moved:
+                if (isSwiping)
+                {
+                    // Calculate swipe delta (reversed)
+                    Vector2 swipeDelta = touch.position - touchStartPosition;
+
+                    // Update camera position based on reversed swipe
+                    float newX = cameraStartPosition.x - swipeDelta.x * sensitivity;
+                    CameraTransform.position = Vector3.Lerp(CameraTransform.position, new Vector3(newX, CameraTransform.position.y, CameraTransform.position.z), Time.deltaTime * swipeSmoothness);
+
+                    // Update momentum based on reversed swipe velocity
+                    momentum = -touch.deltaPosition.x * sensitivity;
+                }
+                break;
+
+            case TouchPhase.Ended:
+            case TouchPhase.Canceled:
+                isSwiping = false;
+                break;
+        }
+    }
+
+    // Apply momentum when swipe ends
+    if (!isSwiping && Mathf.Abs(momentum) > momentumThreshold)
+    {
+        ApplyMomentum();
+    }
+
+    // Clamp the parent object's position to boundaries
+    ClampCameraPosition();
+}
+
+private void ApplyMomentum()
+{
+    // Add reversed momentum to the camera's parent position
+    float newX = CameraTransform.position.x + momentum;
+    CameraTransform.position = Vector3.Lerp(CameraTransform.position, new Vector3(newX, CameraTransform.position.y, CameraTransform.position.z), Time.deltaTime * momentumSmoothness);
+
+    // Gradually reduce momentum
+    momentum *= momentumDamp;
+
+    // Stop momentum if it's too small
+    if (Mathf.Abs(momentum) <= momentumThreshold)
+    {
+        momentum = 0f;
+    }
+}
+
+private void ClampCameraPosition()
+{
+    // Restrict the parent object's position within boundaries
+    float clampedX = Mathf.Clamp(CameraTransform.position.x, minTransform.position.x, maxTransform.position.x);
+    CameraTransform.position = new Vector3(clampedX, CameraTransform.position.y, CameraTransform.position.z);
+}
 }
