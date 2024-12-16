@@ -23,14 +23,18 @@ public class PlayerScript : MonoBehaviourPunCallbacks
 
     public bool CanBuyMelee = true;
     public bool CanBuyWitch = true;
+    public bool CanBuyBear = true;
     public int CoinPerTick = 10;
     public int MeleeCost = 50;
     public int WitchCost = 100;
+    public int BearCost = 100;
     public float WitchTimer = 0;
     public float MeleeTimer = 0;
+    public float BearTimer = 0;
     public TMP_Text CoinPerTickText;
     public TMP_Text MeleeButtonText;
     public TMP_Text WitchButtonText;
+    public TMP_Text BearButtonText;
     public Transform minTransform; // Minimum boundary
     public Transform maxTransform; // Maximum boundary
     public float sensitivity = 0.01f; // Swipe sensitivity
@@ -186,6 +190,14 @@ public void SyncRole(string role)
         }else{
             CanBuyWitch = true;
             WitchButtonText.text = $"{WitchCost:F1}";
+        }
+        if(BearTimer > 0){
+            BearTimer -= Time.deltaTime;
+            CanBuyBear = false;
+            BearButtonText.text = $"{BearTimer:F1}";
+        }else{
+            CanBuyBear = true;
+            BearButtonText.text = $"{BearCost:F1}";
         }
         Swipes();
     }
@@ -352,6 +364,69 @@ public void SyncRole(string role)
             }
         }
     }
+
+    #region Bear
+    public void SpawnBear(){
+        Debug.Log(localPlayerRole);
+        RoundManager roundManager = GameObject.Find("RoundManager").GetComponent<RoundManager>();
+        if(roundManager.Started == false) return;
+        if(localPlayerRole == "PlayerOne" && Coins >= WitchCost && CanBuyWitch)
+        {   
+            Debug.Log("Player One spawning unit...");
+            Transform PlayerOneSpawn = GameObject.FindGameObjectWithTag("HomeBaseOne").transform;
+            GameObject unit = PhotonNetwork.Instantiate("BearOne", PlayerOneSpawn.position, Quaternion.identity);
+            unit.GetComponent<WitchScript>().SetTeam(1);
+            unit.GetComponent<PhotonView>().RPC("SetTeam", RpcTarget.AllBuffered, 1);
+            Coins -= 100;
+            WitchTimer = 5;
+        }
+        else if(localPlayerRole == "PlayerTwo" && Coins >= WitchCost && CanBuyWitch)
+        {
+            Debug.Log("Player Two spawning unit...");
+            Transform PlayerTwoSpawn = GameObject.FindGameObjectWithTag("HomeBaseTwo").transform;
+            GameObject unit = PhotonNetwork.Instantiate("BearTwo", PlayerTwoSpawn.position, Quaternion.identity);
+            unit.GetComponent<melee>().SetTeam(2);
+            unit.GetComponent<PhotonView>().RPC("SetTeam", RpcTarget.AllBuffered, 2);
+            Coins -= 100;
+            WitchTimer = 5;
+        }
+        if(localPlayerRole == "PlayerOne")
+        {
+            Debug.Log("Player One toggling attack...");
+            GameObject[] units = GameObject.FindGameObjectsWithTag("PawnOne");
+            foreach (GameObject unit in units)
+            {
+                var witch = unit.GetComponent<WitchScript>();
+                if (witch != null)
+                {
+                    witch.AttackOpponent = AttackMode;
+                    Debug.Log($"{unit.name}'s AttackOpponent set to {AttackMode}");
+                }
+                else
+                {
+                    Debug.LogWarning($"witch component not found on {unit.name}");
+                }
+            }
+        }
+        else if(localPlayerRole == "PlayerTwo")
+        {
+            GameObject[] units = GameObject.FindGameObjectsWithTag("PawnTwo");
+            foreach (GameObject unit in units)
+            {
+                var witch = unit.GetComponent<WitchScript>();
+                if (witch != null)
+                {
+                    witch.AttackOpponent = AttackMode;
+                    Debug.Log($"{unit.name}'s AttackOpponent set to {AttackMode}");
+                }
+                else
+                {
+                    Debug.LogWarning($"Melee component not found on {unit.name}");
+                }
+            }
+        }
+    }
+    #endregion
     public int CoinPerTickUpgradeCost = 100;
     public void CoinUpgrade()
     {

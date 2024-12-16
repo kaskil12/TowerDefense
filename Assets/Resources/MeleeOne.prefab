@@ -163,6 +163,7 @@ MonoBehaviour:
   HomeBase: {fileID: 0}
   Health: 100
   Damage: 20
+  AttackSpeed: 2.5
   canAttack: 1
   AttackOpponent: 0
 --- !u!195 &4207357713282794659

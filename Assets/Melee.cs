@@ -11,8 +11,9 @@ public class Melee : MonoBehaviourPunCallbacks
 
     public Transform targetBase; // Set this in the inspector or dynamically at runtime
     public Transform HomeBase;
-    public int Health = 100;
-    public int Damage = 20;
+    public int Health;
+    public int Damage;
+    public float AttackSpeed;
     public bool canAttack = true;
     public bool AttackOpponent;
 
@@ -99,7 +100,7 @@ public class Melee : MonoBehaviourPunCallbacks
     IEnumerator Attack()
     {
         canAttack = false;
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(AttackSpeed);
         canAttack = true;
     }
 
