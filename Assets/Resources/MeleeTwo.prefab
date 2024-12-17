@@ -134,6 +134,8 @@ MonoBehaviour:
   AttackSpeed: 2.5
   canAttack: 1
   AttackOpponent: 0
+  DetectRange: 10
+  AttackRange: 2
 --- !u!195 &-6269713250337036773
 NavMeshAgent:
   m_ObjectHideFlags: 0

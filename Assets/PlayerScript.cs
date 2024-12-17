@@ -370,25 +370,25 @@ public void SyncRole(string role)
         Debug.Log(localPlayerRole);
         RoundManager roundManager = GameObject.Find("RoundManager").GetComponent<RoundManager>();
         if(roundManager.Started == false) return;
-        if(localPlayerRole == "PlayerOne" && Coins >= WitchCost && CanBuyWitch)
+        if(localPlayerRole == "PlayerOne" && Coins >= BearCost && CanBuyBear)
         {   
             Debug.Log("Player One spawning unit...");
             Transform PlayerOneSpawn = GameObject.FindGameObjectWithTag("HomeBaseOne").transform;
             GameObject unit = PhotonNetwork.Instantiate("BearOne", PlayerOneSpawn.position, Quaternion.identity);
-            unit.GetComponent<WitchScript>().SetTeam(1);
+            unit.GetComponent<Melee>().SetTeam(1);
             unit.GetComponent<PhotonView>().RPC("SetTeam", RpcTarget.AllBuffered, 1);
             Coins -= 100;
-            WitchTimer = 5;
+            BearTimer = 5;
         }
-        else if(localPlayerRole == "PlayerTwo" && Coins >= WitchCost && CanBuyWitch)
+        else if(localPlayerRole == "PlayerTwo" && Coins >= BearCost && CanBuyBear)
         {
             Debug.Log("Player Two spawning unit...");
             Transform PlayerTwoSpawn = GameObject.FindGameObjectWithTag("HomeBaseTwo").transform;
             GameObject unit = PhotonNetwork.Instantiate("BearTwo", PlayerTwoSpawn.position, Quaternion.identity);
-            unit.GetComponent<melee>().SetTeam(2);
+            unit.GetComponent<Melee>().SetTeam(2);
             unit.GetComponent<PhotonView>().RPC("SetTeam", RpcTarget.AllBuffered, 2);
             Coins -= 100;
-            WitchTimer = 5;
+            BearTimer = 5;
         }
         if(localPlayerRole == "PlayerOne")
         {
@@ -396,10 +396,10 @@ public void SyncRole(string role)
             GameObject[] units = GameObject.FindGameObjectsWithTag("PawnOne");
             foreach (GameObject unit in units)
             {
-                var witch = unit.GetComponent<WitchScript>();
-                if (witch != null)
+                var melee = unit.GetComponent<Melee>();
+                if (melee != null)
                 {
-                    witch.AttackOpponent = AttackMode;
+                    melee.AttackOpponent = AttackMode;
                     Debug.Log($"{unit.name}'s AttackOpponent set to {AttackMode}");
                 }
                 else
@@ -413,10 +413,10 @@ public void SyncRole(string role)
             GameObject[] units = GameObject.FindGameObjectsWithTag("PawnTwo");
             foreach (GameObject unit in units)
             {
-                var witch = unit.GetComponent<WitchScript>();
-                if (witch != null)
+                var melee = unit.GetComponent<Melee>();
+                if (melee != null)
                 {
-                    witch.AttackOpponent = AttackMode;
+                    melee.AttackOpponent = AttackMode;
                     Debug.Log($"{unit.name}'s AttackOpponent set to {AttackMode}");
                 }
                 else
@@ -426,7 +426,7 @@ public void SyncRole(string role)
             }
         }
     }
-    #endregion
+    #endregion Bear
     public int CoinPerTickUpgradeCost = 100;
     public void CoinUpgrade()
     {

@@ -103,7 +103,7 @@ GameObject:
   - component: {fileID: 1092083013577052572}
   - component: {fileID: 1849290769868229410}
   m_Layer: 3
-  m_Name: GuardTwo
+  m_Name: BearTwo
   m_TagString: PawnTwo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -220,6 +220,8 @@ MonoBehaviour:
   AttackSpeed: 4
   canAttack: 1
   AttackOpponent: 0
+  DetectRange: 10
+  AttackRange: 2
 --- !u!195 &2407239560580895923
 NavMeshAgent:
   m_ObjectHideFlags: 0

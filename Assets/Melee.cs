@@ -16,6 +16,8 @@ public class Melee : MonoBehaviourPunCallbacks
     public float AttackSpeed;
     public bool canAttack = true;
     public bool AttackOpponent;
+    public float DetectRange = 10f;
+    public float AttackRange = 2f;
 
     void Update()
     {
@@ -25,7 +27,7 @@ public class Melee : MonoBehaviourPunCallbacks
 
     void FindAndAttack()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, 5f, LayerMask.GetMask("PawnLayer"));
+        Collider[] colliders = Physics.OverlapSphere(transform.position, DetectRange, LayerMask.GetMask("PawnLayer"));
         bool targetFound = false;
 
         foreach (Collider collider in colliders)
@@ -38,7 +40,7 @@ public class Melee : MonoBehaviourPunCallbacks
                 agent.SetDestination(collider.transform.position);
 
                 PhotonView pv = collider.GetComponent<PhotonView>();
-                if (pv != null && canAttack)
+                if (pv != null && canAttack && Vector3.Distance(transform.position, collider.transform.position) < AttackRange)
                 {
                     pv.RPC("TakeDamage", RpcTarget.AllBuffered, Damage);
                     StartCoroutine(Attack());
@@ -54,12 +56,12 @@ public class Melee : MonoBehaviourPunCallbacks
             if (Vector3.Distance(transform.position, targetBase.position) < 20f)
             {
                 PhotonView phv = GameObject.Find("RoundManager").GetComponent<PhotonView>();
-                if (Team == 1 && canAttack)
+                if (Team == 1 && canAttack && Vector3.Distance(transform.position, targetBase.position) < AttackRange + 3f)
                 {
                     phv.RPC("PlayerTwoDamageTower", RpcTarget.AllBuffered, Damage);
                     StartCoroutine(Attack());
                 }
-                else if (Team == 2 && canAttack)
+                else if (Team == 2 && canAttack && Vector3.Distance(transform.position, targetBase.position) < AttackRange + 3f)
                 {
                     phv.RPC("PlayerOneDamageTower", RpcTarget.AllBuffered, Damage);
                     StartCoroutine(Attack());
@@ -113,5 +115,13 @@ public class Melee : MonoBehaviourPunCallbacks
         {
             Destroy(gameObject);
         }
+    }
+    //draw gizmos for the melee
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, DetectRange);
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, AttackRange);
     }
 }
