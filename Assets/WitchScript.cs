@@ -18,6 +18,7 @@ public class WitchScript : MonoBehaviourPunCallbacks
     public GameObject OrbPrefab;
     public Transform OrbSpawnPoint;
     public Slider HealthBar;
+    public GameObject HealthCanvas;
 
 
     void Start()
@@ -26,6 +27,7 @@ public class WitchScript : MonoBehaviourPunCallbacks
         canAttack = true;
         //disable the health bar at start
         HealthBar = GetComponentInChildren<Slider>();
+        HealthCanvas = GetComponentInChildren<Canvas>().gameObject;
         HealthBar.gameObject.SetActive(false);
         HealthBar.maxValue = Health;
         HealthBar.value = Health;
@@ -39,8 +41,7 @@ public class WitchScript : MonoBehaviourPunCallbacks
         {
             if(!HealthBar.gameObject.activeSelf)HealthBar.gameObject.SetActive(true);
             HealthBar.value = Health;
-            HealthBar.transform.rotation = Quaternion.LookRotation(Vector3.back);
-            HealthBar.transform.localScale = new Vector3(0.0114125f, 0.03107641f, 0.03107641f); // Reset the scale to prevent stretching
+            HealthCanvas.transform.rotation = Quaternion.LookRotation(Vector3.back);
         }else if(Health >= MaxHealth)
         {
             if(HealthBar.gameObject.activeSelf)HealthBar.gameObject.SetActive(false);

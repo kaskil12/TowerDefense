@@ -436,6 +436,7 @@ MonoBehaviour:
   AttackRange: 2
   HealthBar: {fileID: 5626748757001684747}
   MaxHealth: 400
+  HealthCanvas: {fileID: 0}
 --- !u!195 &6068678550448302874
 NavMeshAgent:
   m_ObjectHideFlags: 0

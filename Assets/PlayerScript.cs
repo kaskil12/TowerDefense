@@ -377,7 +377,7 @@ public void SyncRole(string role)
             GameObject unit = PhotonNetwork.Instantiate("BearOne", PlayerOneSpawn.position, Quaternion.identity);
             unit.GetComponent<Melee>().SetTeam(1);
             unit.GetComponent<PhotonView>().RPC("SetTeam", RpcTarget.AllBuffered, 1);
-            Coins -= 100;
+            Coins -= BearCost;
             BearTimer = 5;
         }
         else if(localPlayerRole == "PlayerTwo" && Coins >= BearCost && CanBuyBear)

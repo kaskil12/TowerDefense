@@ -21,9 +21,11 @@ public class Melee : MonoBehaviourPunCallbacks
     public float AttackRange = 2f;
     public Slider HealthBar;
     public int MaxHealth;
+    public GameObject HealthCanvas;
     void Start(){
         canAttack = true;
         HealthBar = GetComponentInChildren<Slider>();
+        HealthCanvas = GetComponentInChildren<Canvas>().gameObject;
         HealthBar.gameObject.SetActive(false);
         HealthBar.maxValue = Health;
         HealthBar.value = Health;
@@ -36,8 +38,8 @@ public class Melee : MonoBehaviourPunCallbacks
         {
             if(!HealthBar.gameObject.activeSelf)HealthBar.gameObject.SetActive(true);
             //set healthbar to always face the -z direction of the world
-            HealthBar.transform.rotation = Quaternion.LookRotation(Vector3.back);
-            HealthBar.transform.localScale = new Vector3(0.0114125f, 0.03107641f, 0.03107641f); // Reset the scale to prevent stretching            HealthBar.value = Health;
+            HealthCanvas.transform.rotation = Quaternion.LookRotation(Vector3.back);
+            HealthBar.value = Health;
         }else if(Health >= MaxHealth)
         {
             if(HealthBar.gameObject.activeSelf)HealthBar.gameObject.SetActive(false);
