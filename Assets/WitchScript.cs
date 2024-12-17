@@ -2,31 +2,47 @@ using UnityEngine;
 using UnityEngine.AI;
 using Photon.Pun;
 using System.Collections;
-
+using UnityEngine.UI;
 public class WitchScript : MonoBehaviourPunCallbacks
 {
     public int Team;
     public NavMeshAgent agent;
     public Transform targetBase;
     public Transform HomeBase;
-    public int Health = 100;
+    public int Health;
+    public int MaxHealth;
     public int Damage;
     public bool canAttack = true;
     public bool OrbShoot = true;
     public bool AttackOpponent;
     public GameObject OrbPrefab;
     public Transform OrbSpawnPoint;
+    public Slider HealthBar;
+
 
     void Start()
     {
         OrbShoot = true;
         canAttack = true;
+        //disable the health bar at start
+        HealthBar.gameObject.SetActive(false);
+        HealthBar.maxValue = Health;
+        HealthBar.value = Health;
     }
 
     void Update()
     {
         FindAndAttack();
         agent.avoidancePriority = Random.Range(0, 100);
+        if(Health < MaxHealth)
+        {
+            if(!HealthBar.gameObject.activeSelf)HealthBar.gameObject.SetActive(true);
+            HealthBar.value = Health;
+            HealthBar.transform.rotation = Quaternion.LookRotation(Vector3.back);
+        }else if(Health >= MaxHealth)
+        {
+            if(HealthBar.gameObject.activeSelf)HealthBar.gameObject.SetActive(false);
+        }
     }
 
     void FindAndAttack()

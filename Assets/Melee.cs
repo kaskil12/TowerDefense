@@ -3,6 +3,7 @@ using UnityEngine.AI;
 using Photon.Pun;
 using System.Collections;
 using Unity.VisualScripting;
+using UnityEngine.UI;
 
 public class Melee : MonoBehaviourPunCallbacks
 {
@@ -18,11 +19,29 @@ public class Melee : MonoBehaviourPunCallbacks
     public bool AttackOpponent;
     public float DetectRange = 10f;
     public float AttackRange = 2f;
-
+    public Slider HealthBar;
+    public int MaxHealth;
+    void Start(){
+        canAttack = true;
+        HealthBar.gameObject.SetActive(false);
+        HealthBar.maxValue = Health;
+        HealthBar.value = Health;
+    }
     void Update()
     {
         FindAndAttack();
         agent.avoidancePriority = Random.Range(0, 100);
+        if(Health < MaxHealth)
+        {
+            if(!HealthBar.gameObject.activeSelf)HealthBar.gameObject.SetActive(true);
+            //set healthbar to always face the -z direction of the world
+            HealthBar.transform.rotation = Quaternion.LookRotation(Vector3.back);
+            HealthBar.value = Health;
+        }else if(Health >= MaxHealth)
+        {
+            if(HealthBar.gameObject.activeSelf)HealthBar.gameObject.SetActive(false);
+        }
+
     }
 
     void FindAndAttack()
