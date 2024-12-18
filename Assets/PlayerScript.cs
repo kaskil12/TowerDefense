@@ -31,6 +31,9 @@ public class PlayerScript : MonoBehaviourPunCallbacks
     public float WitchTimer = 0;
     public float MeleeTimer = 0;
     public float BearTimer = 0;
+    public float MeleeCooldown;
+    public float WitchCooldown;
+    public float BearCooldown;
     public TMP_Text CoinPerTickText;
     public TMP_Text MeleeButtonText;
     public TMP_Text WitchButtonText;
@@ -255,7 +258,7 @@ public void SyncRole(string role)
             unit.GetComponent<Melee>().SetTeam(1);
             unit.GetComponent<PhotonView>().RPC("SetTeam", RpcTarget.AllBuffered, 1);
             Coins -= 50;
-            MeleeTimer = 5;
+            MeleeTimer = MeleeCooldown;
         }
         else if(localPlayerRole == "PlayerTwo" && Coins >= MeleeCost && CanBuyMelee)
         {
@@ -265,7 +268,7 @@ public void SyncRole(string role)
             unit.GetComponent<Melee>().SetTeam(2);
             unit.GetComponent<PhotonView>().RPC("SetTeam", RpcTarget.AllBuffered, 2);
             Coins -= 50;
-            MeleeTimer = 5;
+            MeleeTimer = MeleeCooldown;
         }
         if(localPlayerRole == "PlayerOne")
         {
@@ -316,7 +319,7 @@ public void SyncRole(string role)
             unit.GetComponent<WitchScript>().SetTeam(1);
             unit.GetComponent<PhotonView>().RPC("SetTeam", RpcTarget.AllBuffered, 1);
             Coins -= 100;
-            WitchTimer = 5;
+            WitchTimer = WitchCooldown;
         }
         else if(localPlayerRole == "PlayerTwo" && Coins >= WitchCost && CanBuyWitch)
         {
@@ -326,7 +329,7 @@ public void SyncRole(string role)
             unit.GetComponent<WitchScript>().SetTeam(2);
             unit.GetComponent<PhotonView>().RPC("SetTeam", RpcTarget.AllBuffered, 2);
             Coins -= 100;
-            WitchTimer = 5;
+            WitchTimer = WitchCooldown;
         }
         if(localPlayerRole == "PlayerOne")
         {
@@ -378,7 +381,7 @@ public void SyncRole(string role)
             unit.GetComponent<Melee>().SetTeam(1);
             unit.GetComponent<PhotonView>().RPC("SetTeam", RpcTarget.AllBuffered, 1);
             Coins -= BearCost;
-            BearTimer = 5;
+            BearTimer = BearCooldown;
         }
         else if(localPlayerRole == "PlayerTwo" && Coins >= BearCost && CanBuyBear)
         {
@@ -387,8 +390,8 @@ public void SyncRole(string role)
             GameObject unit = PhotonNetwork.Instantiate("BearTwo", PlayerTwoSpawn.position, Quaternion.identity);
             unit.GetComponent<Melee>().SetTeam(2);
             unit.GetComponent<PhotonView>().RPC("SetTeam", RpcTarget.AllBuffered, 2);
-            Coins -= 100;
-            BearTimer = 5;
+            Coins -= BearCost;
+            BearTimer = BearCooldown;
         }
         if(localPlayerRole == "PlayerOne")
         {

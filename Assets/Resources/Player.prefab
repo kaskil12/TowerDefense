@@ -2678,6 +2678,9 @@ MonoBehaviour:
   WitchTimer: 0
   MeleeTimer: 0
   BearTimer: 0
+  MeleeCooldown: 2.5
+  WitchCooldown: 5
+  BearCooldown: 10
   CoinPerTickText: {fileID: 5661373114102147464}
   MeleeButtonText: {fileID: 3145347561819277699}
   WitchButtonText: {fileID: 8473957059306457448}

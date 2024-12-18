@@ -450,7 +450,7 @@ MonoBehaviour:
   canAttack: 1
   AttackOpponent: 0
   DetectRange: 10
-  AttackRange: 2
+  AttackRange: 4
   HealthBar: {fileID: 3110594955967002524}
   MaxHealth: 400
   HealthCanvas: {fileID: 0}
@@ -464,7 +464,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 1
+  m_Speed: 1.5
   m_Acceleration: 8
   avoidancePriority: 0
   m_AngularSpeed: 300

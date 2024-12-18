@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
+using TMPro;
 public class RoundManager : MonoBehaviourPunCallbacks
 {
     public int RoundNumber = 1;
@@ -16,7 +17,12 @@ public class RoundManager : MonoBehaviourPunCallbacks
     public int PlayerTwoTowerHealth = 1000;
     public GameObject PLayerOneTowerHealthBar;
     public GameObject PLayerTwoTowerHealthBar;
+    public TMP_Text PlayerOneWinsText;
+    public TMP_Text PlayerTwoWinsText;
+    public TMP_Text CountdownText;
+
     public int Players = 0;
+    public float Countdown = 5;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -29,6 +35,15 @@ public class RoundManager : MonoBehaviourPunCallbacks
     void Update()
     {
         PlayerAmountCheck();
+        if (Countdown <= 0){
+            Countdown = 5;
+            GameOver = false;
+            CountdownText.text = "";
+        }
+        if (GameOver == true){
+            Countdown -= Time.deltaTime;
+            CountdownText.text = "Resetting the game in " + Countdown.ToString("0");
+        }
     }
     public void PlayerAmountCheck(){
         // Check the number of players in the room. If the number of players is 2, start the game. If the number of players is 1, wait for another player to join.
@@ -42,7 +57,15 @@ public class RoundManager : MonoBehaviourPunCallbacks
     }
     [PunRPC]
     public void Reset(){
-        Debug.Log("Resetting the game...");
+        if(PlayerTwoWins == 3 || PlayerOneWins == 3){
+            //Kick all players from the room
+            PhotonNetwork.CurrentRoom.IsVisible = false;
+            PhotonNetwork.CurrentRoom.IsOpen = false;
+            PhotonNetwork.LeaveRoom();
+            SceneManager.LoadScene("Loading");
+        }
+        GameOver = true;
+
         // Reset the game by using photonView.RPC
         GameObject[] unitsone = GameObject.FindGameObjectsWithTag("PawnOne");
         GameObject[] unitstwo = GameObject.FindGameObjectsWithTag("PawnTwo");
@@ -58,6 +81,8 @@ public class RoundManager : MonoBehaviourPunCallbacks
         foreach (GameObject player in playerScript){
             PlayerScript playerScriptComponent = player.GetComponent<PlayerScript>();
             playerScriptComponent.Coins = 200;
+            playerScriptComponent.CoinPerTickUpgradeCost = 100;
+            playerScriptComponent.CoinPerTick = 10;
         }
 
 
@@ -88,15 +113,29 @@ public class RoundManager : MonoBehaviourPunCallbacks
     public void PlayerOneWinsRound(){
         // Increase PlayerOneWins by 1
         PlayerOneWins += 1;
+        PlayerOneWinsText.text = PlayerOneWins.ToString();
         Reset();
     }
     [PunRPC]
     public void PlayerTwoWinsRound(){
         // Increase PlayerTwoWins by 1
         PlayerTwoWins += 1;
+        PlayerTwoWinsText.text = PlayerTwoWins.ToString();
         Reset();
-
     }
+    // [PunRPC]
+    // IEnumerator WaitBeforeReset(){
+    //     GameOver = true;
+    //     yield return new WaitForSeconds(5);
+    //     if(PlayerTwoWins == 3 || PlayerOneWins == 3){
+    //         //Kick all players from the room
+    //         PhotonNetwork.CurrentRoom.IsVisible = false;
+    //         PhotonNetwork.CurrentRoom.IsOpen = false;
+    //         PhotonNetwork.LeaveRoom();
+    //         GameOver = true;
+    //     }
+    //     Reset();
+    // }
     [PunRPC]
     public void StartGame(){
         // Start the game by using photonView.RPC
