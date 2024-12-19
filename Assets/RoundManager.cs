@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
+using UnityEngine.SceneManagement;
 public class RoundManager : MonoBehaviourPunCallbacks
 {
     public int RoundNumber = 1;
@@ -42,7 +43,7 @@ public class RoundManager : MonoBehaviourPunCallbacks
         }
         if (GameOver == true){
             Countdown -= Time.deltaTime;
-            CountdownText.text = "Resetting the game in " + Countdown.ToString("0");
+            CountdownText.text = Countdown.ToString("0");
         }
     }
     public void PlayerAmountCheck(){
@@ -64,6 +65,7 @@ public class RoundManager : MonoBehaviourPunCallbacks
             PhotonNetwork.LeaveRoom();
             SceneManager.LoadScene("Loading");
         }
+
         GameOver = true;
 
         // Reset the game by using photonView.RPC
@@ -84,6 +86,8 @@ public class RoundManager : MonoBehaviourPunCallbacks
             playerScriptComponent.CoinPerTickUpgradeCost = 100;
             playerScriptComponent.CoinPerTick = 10;
         }
+        PLayerOneTowerHealthBar.transform.localScale = new Vector3(1, 1, (float)PlayerOneTowerHealth / 100);
+        PLayerTwoTowerHealthBar.transform.localScale = new Vector3(1, 1, (float)PlayerTwoTowerHealth / 100);
 
 
     }

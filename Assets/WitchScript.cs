@@ -62,6 +62,7 @@ public class WitchScript : MonoBehaviourPunCallbacks
             {
                 targetFound = true;
                 agent.SetDestination(collider.transform.position);
+                agent.stoppingDistance = 15;
                 OrbSpawnPoint.LookAt(collider.transform);
 
                 if (OrbShoot)
@@ -76,6 +77,7 @@ public class WitchScript : MonoBehaviourPunCallbacks
         if (!targetFound && AttackOpponent)
         {
             agent.SetDestination(targetBase.position);
+            agent.stoppingDistance = 15;
             if (Vector3.Distance(transform.position, targetBase.position) < 20f && OrbShoot)
             {
                 OrbShoot = false;
@@ -86,6 +88,7 @@ public class WitchScript : MonoBehaviourPunCallbacks
         else if (!targetFound && !AttackOpponent)
         {
             agent.SetDestination(HomeBase.position);
+            agent.stoppingDistance = 0;
         }
     }
 

@@ -589,7 +589,7 @@ MonoBehaviour:
   canAttack: 1
   AttackOpponent: 0
   DetectRange: 10
-  AttackRange: 2
+  AttackRange: 4
   HealthBar: {fileID: 2146259382644430477}
   MaxHealth: 100
   HealthCanvas: {fileID: 190455229525824569}
