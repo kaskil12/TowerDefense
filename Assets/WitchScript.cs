@@ -5,27 +5,58 @@ using System.Collections;
 using UnityEngine.UI;
 public class WitchScript : MonoBehaviourPunCallbacks
 {
+    [Header("Team Settings")]
+    [Tooltip("The team this unit belongs to.")]
     public int Team;
+
+    [Header("Navigation")]
+    [Tooltip("NavMeshAgent for controlling the unit's movement.")]
     public NavMeshAgent agent;
+
+    [Tooltip("Target base to attack.")]
     public Transform targetBase;
+
+    [Tooltip("Home base for the unit.")]
     public Transform HomeBase;
+
+    [Header("Health Settings")]
+    [Tooltip("Current health of the unit.")]
     public int Health;
+
+    [Tooltip("Maximum health of the unit.")]
     public int MaxHealth;
-    public int Damage;
-    public bool canAttack = true;
-    public bool OrbShoot = true;
-    public bool AttackOpponent;
-    public GameObject OrbPrefab;
-    public Transform OrbSpawnPoint;
+
+    [Tooltip("Slider UI for displaying the unit's health.")]
     public Slider HealthBar;
+
+    [Tooltip("Canvas containing the health bar.")]
     public GameObject HealthCanvas;
+
+    [Header("Attack Settings")]
+    [Tooltip("Damage dealt by the unit.")]
+    public int Damage;
+
+    [Tooltip("Indicates if the unit can attack.")]
+    public bool canAttack = true;
+
+    [Tooltip("Indicates if the unit can shoot orbs.")]
+    public bool OrbShoot = true;
+
+    [Tooltip("Indicates if the unit is attacking an opponent.")]
+    public bool AttackOpponent;
+
+    [Header("Orb Settings")]
+    [Tooltip("Prefab for the orb projectile.")]
+    public GameObject OrbPrefab;
+
+    [Tooltip("Spawn point for the orb projectile.")]
+    public Transform OrbSpawnPoint;
 
 
     void Start()
     {
         OrbShoot = true;
         canAttack = true;
-        //disable the health bar at start
         HealthBar = GetComponentInChildren<Slider>();
         HealthCanvas = GetComponentInChildren<Canvas>().gameObject;
         HealthBar.gameObject.SetActive(false);
@@ -63,12 +94,12 @@ public class WitchScript : MonoBehaviourPunCallbacks
                 targetFound = true;
                 agent.SetDestination(collider.transform.position);
                 agent.stoppingDistance = 15;
-                Vector3 targetCenter = collider.bounds.center; // Ensures you aim at the center of the target
+                Vector3 targetCenter = collider.bounds.center;
                 OrbSpawnPoint.LookAt(targetCenter);
 
                 if (OrbShoot)
                 {
-                    OrbShoot = false; // Prevent multiple orbs from being fired
+                    OrbShoot = false;
                     StartCoroutine(OrbAttack());
                     SpawnOrb();
                 }

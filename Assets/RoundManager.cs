@@ -8,31 +8,61 @@ using TMPro;
 using UnityEngine.SceneManagement;
 public class RoundManager : MonoBehaviourPunCallbacks
 {
-    public int RoundNumber = 1;
-    public int MaxRounds = 3;
-    public int PlayerOneWins = 0;
-    public int PlayerTwoWins = 0;
+ [Header("Game State")]
+    [Tooltip("Indicates if the game is over.")]
     public bool GameOver = false;
-    public bool Started = false;
-    public int PlayerOneTowerHealth = 1000;
-    public int PlayerTwoTowerHealth = 1000;
-    public GameObject PLayerOneTowerHealthBar;
-    public GameObject PLayerTwoTowerHealthBar;
-    public TMP_Text PlayerOneWinsText;
-    public TMP_Text PlayerTwoWinsText;
-    public TMP_Text CountdownText;
 
-    public int Players = 0;
+    [Tooltip("Indicates if the game has started.")]
+    public bool Started = false;
+
+    [Header("Countdown Timer")]
+    [Tooltip("Time left for the countdown.")]
     public float Countdown = 5;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    [Header("Round Settings")]
+    [Tooltip("Maximum number of rounds.")]
+    public int MaxRounds = 3;
+
+    [Tooltip("Current round number.")]
+    public int RoundNumber = 1;
+
+    [Header("Player Stats")]
+    [Tooltip("Health of Player One's tower.")]
+    public int PlayerOneTowerHealth = 1000;
+
+    [Tooltip("Health of Player Two's tower.")]
+    public int PlayerTwoTowerHealth = 1000;
+
+    [Tooltip("Wins by Player One.")]
+    public int PlayerOneWins = 0;
+
+    [Tooltip("Wins by Player Two.")]
+    public int PlayerTwoWins = 0;
+
+    [Tooltip("Number of players in the game.")]
+    public int Players = 0;
+
+    [Header("UI Elements")]
+    [Tooltip("Health bar for Player One's tower.")]
+    public GameObject PLayerOneTowerHealthBar;
+
+    [Tooltip("Health bar for Player Two's tower.")]
+    public GameObject PLayerTwoTowerHealthBar;
+
+    [Tooltip("Text element displaying Player One's wins.")]
+    public TMP_Text PlayerOneWinsText;
+
+    [Tooltip("Text element displaying Player Two's wins.")]
+    public TMP_Text PlayerTwoWinsText;
+
+    [Tooltip("Text element displaying the countdown timer.")]
+    public TMP_Text CountdownText;
     void Start()
     {
-        // Set the initial values of the PlayerOneTowerHealth and PlayerTwoTowerHealth
         PLayerOneTowerHealthBar.transform.localScale = new Vector3(1, 1, (float)PlayerOneTowerHealth / 100);
         PLayerTwoTowerHealthBar.transform.localScale = new Vector3(1, 1, (float)PlayerTwoTowerHealth / 100);
     }
 
-    // Update is called once per frame
     void Update()
     {
         PlayerAmountCheck();
@@ -47,19 +77,15 @@ public class RoundManager : MonoBehaviourPunCallbacks
         }
     }
     public void PlayerAmountCheck(){
-        // Check the number of players in the room. If the number of players is 2, start the game. If the number of players is 1, wait for another player to join.
         GameObject[] playerScript = GameObject.FindGameObjectsWithTag("Player");
         Players = playerScript.Length;
         if (Players == 2 && Started == false){
-            // Start the game
             photonView.RPC("StartGame", RpcTarget.All);
-            // StartGame();
         }
     }
     [PunRPC]
     public void Reset(){
         if(PlayerTwoWins == 3 || PlayerOneWins == 3){
-            //Kick all players from the room
             PhotonNetwork.CurrentRoom.IsVisible = false;
             PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.LeaveRoom();
@@ -68,7 +94,6 @@ public class RoundManager : MonoBehaviourPunCallbacks
 
         GameOver = true;
 
-        // Reset the game by using photonView.RPC
         GameObject[] unitsone = GameObject.FindGameObjectsWithTag("PawnOne");
         GameObject[] unitstwo = GameObject.FindGameObjectsWithTag("PawnTwo");
         foreach (GameObject unit in unitsone){
@@ -93,36 +118,30 @@ public class RoundManager : MonoBehaviourPunCallbacks
     }
     [PunRPC]
     public void PlayerOneDamageTower(int damage){
-        // Reduce PlayerOneTowerHealth by damage
         PlayerOneTowerHealth -= damage;
         PLayerOneTowerHealthBar.transform.localScale = new Vector3(1, 1, (float)PlayerOneTowerHealth / 100);
         if (PlayerOneTowerHealth <= 0){
-            // Player Two wins the round
             PlayerTwoWinsRound();
         }
 
     }
     [PunRPC]
     public void PlayerTwoDamageTower(int damage){
-        // Reduce PlayerTwoTowerHealth by damage
         PlayerTwoTowerHealth -= damage;
         PLayerTwoTowerHealthBar.transform.localScale = new Vector3(1, 1, (float)PlayerTwoTowerHealth / 100);
         if (PlayerTwoTowerHealth <= 0){
-            // Player One wins the round
             PlayerOneWinsRound();
         }
 
     }
     [PunRPC]
     public void PlayerOneWinsRound(){
-        // Increase PlayerOneWins by 1
         PlayerOneWins += 1;
         PlayerOneWinsText.text = PlayerOneWins.ToString();
         Reset();
     }
     [PunRPC]
     public void PlayerTwoWinsRound(){
-        // Increase PlayerTwoWins by 1
         PlayerTwoWins += 1;
         PlayerTwoWinsText.text = PlayerTwoWins.ToString();
         Reset();
@@ -142,7 +161,6 @@ public class RoundManager : MonoBehaviourPunCallbacks
     // }
     [PunRPC]
     public void StartGame(){
-        // Start the game by using photonView.RPC
         Started = true;
 
     }

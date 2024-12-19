@@ -7,21 +7,52 @@ using UnityEngine.UI;
 
 public class Melee : MonoBehaviourPunCallbacks
 {
+    [Header("Team Settings")]
+    [Tooltip("The team this unit belongs to.")]
     public int Team;
+
+    [Header("Navigation")]
+    [Tooltip("NavMeshAgent for controlling the unit's movement.")]
     public NavMeshAgent agent;
 
-    public Transform targetBase; // Set this in the inspector or dynamically at runtime
+    [Tooltip("The target base the unit is attacking.")]
+    public Transform targetBase;
+
+    [Tooltip("The home base of the unit.")]
     public Transform HomeBase;
+
+    [Header("Health Settings")]
+    [Tooltip("Current health of the unit.")]
     public int Health;
-    public int Damage;
-    public float AttackSpeed;
-    public bool canAttack = true;
-    public bool AttackOpponent;
-    public float DetectRange = 10f;
-    public float AttackRange = 2f;
-    public Slider HealthBar;
+
+    [Tooltip("Maximum health of the unit.")]
     public int MaxHealth;
+
+    [Tooltip("Slider UI for displaying the unit's health.")]
+    public Slider HealthBar;
+
+    [Tooltip("Canvas object containing the health UI.")]
     public GameObject HealthCanvas;
+
+    [Header("Attack Settings")]
+    [Tooltip("Damage dealt by the unit.")]
+    public int Damage;
+
+    [Tooltip("Attack speed of the unit.")]
+    public float AttackSpeed;
+
+    [Tooltip("Indicates if the unit can attack.")]
+    public bool canAttack = true;
+
+    [Tooltip("Indicates if the unit is attacking an opponent.")]
+    public bool AttackOpponent;
+
+    [Header("Detection and Attack Ranges")]
+    [Tooltip("Range at which the unit detects enemies.")]
+    public float DetectRange = 10f;
+
+    [Tooltip("Range at which the unit can attack enemies.")]
+    public float AttackRange = 2f;
     void Start(){
         canAttack = true;
         HealthBar = GetComponentInChildren<Slider>();
@@ -37,7 +68,6 @@ public class Melee : MonoBehaviourPunCallbacks
         if(Health < MaxHealth)
         {
             if(!HealthBar.gameObject.activeSelf)HealthBar.gameObject.SetActive(true);
-            //set healthbar to always face the -z direction of the world
             HealthCanvas.transform.rotation = Quaternion.LookRotation(Vector3.back);
             HealthBar.value = Health;
         }else if(Health >= MaxHealth)
@@ -68,7 +98,7 @@ public class Melee : MonoBehaviourPunCallbacks
                     pv.RPC("TakeDamage", RpcTarget.AllBuffered, Damage);
                     StartCoroutine(Attack());
                 }
-                break; // Exit loop after attacking one target
+                break; 
             }
         }
 
@@ -98,7 +128,6 @@ public class Melee : MonoBehaviourPunCallbacks
             agent.stoppingDistance = 5;
         }
 
-        // Debug logs
         Debug.Log($"Agent Destination: {agent.destination}");
         Debug.Log($"Agent Speed: {agent.speed}");
         Debug.Log($"Agent Remaining Distance: {agent.remainingDistance}");
@@ -109,7 +138,6 @@ public class Melee : MonoBehaviourPunCallbacks
     {
         Team = team;
 
-        // Assign target base based on team
         if (Team == 1)
         {
             targetBase = GameObject.FindWithTag("PlayerTwoBase").transform;
@@ -135,13 +163,11 @@ public class Melee : MonoBehaviourPunCallbacks
     public void TakeDamage(int damage)
     {
         Health -= damage;
-        // Destroy the game object across the network
         if (Health <= 0)
         {
             Destroy(gameObject);
         }
     }
-    //draw gizmos for the melee
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;

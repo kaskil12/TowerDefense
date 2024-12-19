@@ -9,53 +9,135 @@ using System.Linq;
 
 public class PlayerScript : MonoBehaviourPunCallbacks
 {
+    [Header("Player Settings")]
+    [Tooltip("The role of the local player.")]
     private string localPlayerRole = null;
+
+    [Tooltip("Button for spawning Player One.")]
     public Button spawnButtonOne;
+
+    [Tooltip("Canvas object for the UI.")]
     public GameObject canvas;
+
+    [Tooltip("UI element for displaying 'Waiting for Players' message.")]
     public GameObject WaitingForPlayers;
+
+    [Tooltip("Text element for the current player's name.")]
     public TMP_Text CurrentPlayer;
+
+    [Header("Coin System")]
+    [Tooltip("Text element for displaying the coin count.")]
     public TMP_Text coinText;
+
+    [Tooltip("Total coins the player currently has.")]
     public int Coins = 200;
+
+    [Tooltip("Coins gained per tick.")]
+    public int CoinPerTick = 10;
+
+    [Tooltip("Text element for displaying coins gained per tick.")]
+    public TMP_Text CoinPerTickText;
+
+    [Header("Camera Settings")]
+    [Tooltip("Transform of the camera.")]
     public Transform CameraTransform;
+
+    [Tooltip("Array of camera positions.")]
     public Transform[] CameraPositions;
+
+    [Tooltip("Target position for the camera.")]
     public Vector3 CameraTargetPos;
+
+    [Tooltip("Minimum transform for camera movement boundaries.")]
+    public Transform minTransform;
+
+    [Tooltip("Maximum transform for camera movement boundaries.")]
+    public Transform maxTransform;
+
+    [Tooltip("Camera sensitivity for movement.")]
+    public float sensitivity = 0.01f;
+
+    [Tooltip("Damping factor for camera momentum.")]
+    public float momentumDamp = 0.9f;
+
+    [Tooltip("Threshold for camera momentum to stop.")]
+    public float momentumThreshold = 0.1f;
+
+    [Tooltip("Smoothness of camera swiping.")]
+    public float swipeSmoothness = 10f;
+
+    [Tooltip("Smoothness of camera momentum.")]
+    public float momentumSmoothness = 10f;
+
+    [Header("Attack Mode")]
+    [Tooltip("Indicates if the player is in attack mode.")]
     public bool AttackMode = false;
 
+    [Header("Purchase Settings")]
+    [Tooltip("Indicates if the player can buy melee units.")]
     public bool CanBuyMelee = true;
-    public bool CanBuyWitch = true;
-    public bool CanBuyBear = true;
-    public int CoinPerTick = 10;
-    public int MeleeCost = 50;
-    public int WitchCost = 100;
-    public int BearCost = 100;
-    public float WitchTimer = 0;
-    public float MeleeTimer = 0;
-    public float BearTimer = 0;
-    public float MeleeCooldown;
-    public float WitchCooldown;
-    public float BearCooldown;
-    public TMP_Text CoinPerTickText;
-    public TMP_Text MeleeButtonText;
-    public TMP_Text WitchButtonText;
-    public TMP_Text BearButtonText;
-    public Transform minTransform; // Minimum boundary
-    public Transform maxTransform; // Maximum boundary
-    public float sensitivity = 0.01f; // Swipe sensitivity
-    public float momentumDamp = 0.9f; // Damping for momentum
-    public float momentumThreshold = 0.1f; // Stop momentum below this value
-    public float swipeSmoothness = 10f; // Smoothness for swipe
-    public float momentumSmoothness = 10f; // Smoothness for momentum
 
+    [Tooltip("Indicates if the player can buy witch units.")]
+    public bool CanBuyWitch = true;
+
+    [Tooltip("Indicates if the player can buy bear units.")]
+    public bool CanBuyBear = true;
+
+    [Tooltip("Cost of melee units.")]
+    public int MeleeCost = 50;
+
+    [Tooltip("Cost of witch units.")]
+    public int WitchCost = 100;
+
+    [Tooltip("Cost of bear units.")]
+    public int BearCost = 100;
+
+    [Header("Cooldowns and Timers")]
+    [Tooltip("Cooldown for melee units.")]
+    public float MeleeCooldown;
+
+    [Tooltip("Cooldown for witch units.")]
+    public float WitchCooldown;
+
+    [Tooltip("Cooldown for bear units.")]
+    public float BearCooldown;
+
+    [Tooltip("Timer for melee unit cooldown.")]
+    public float MeleeTimer = 0;
+
+    [Tooltip("Timer for witch unit cooldown.")]
+    public float WitchTimer = 0;
+
+    [Tooltip("Timer for bear unit cooldown.")]
+    public float BearTimer = 0;
+
+    [Header("Unit Buttons")]
+    [Tooltip("Text for the melee unit button.")]
+    public TMP_Text MeleeButtonText;
+
+    [Tooltip("Text for the witch unit button.")]
+    public TMP_Text WitchButtonText;
+
+    [Tooltip("Text for the bear unit button.")]
+    public TMP_Text BearButtonText;
+
+    [Header("Touch Controls")]
+    [Tooltip("Start position of the touch input.")]
     private Vector2 touchStartPosition;
+
+    [Tooltip("Start position of the camera.")]
     private Vector3 cameraStartPosition;
+
+    [Tooltip("Indicates if the player is swiping.")]
     private bool isSwiping = false;
-    private float momentum = 0f; // Store swipe momentum
+
+    [Tooltip("Momentum of the camera during movement.")]
+    private float momentum = 0f;
     
     void Start()
     {
         StartCoroutine(GetCoins());
 
-        // Determine the local player's index in the player list
         
         if (!photonView.IsMine)
         {
@@ -66,9 +148,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks
             CameraTransform.gameObject.SetActive(true);
         }
         AssignPlayerRole();
-        //set fps to 120
         Application.targetFrameRate = 120;
-        //set text for melee and witch buttons and coin per tick
         CoinPerTickText.text = $"{CoinPerTickUpgradeCost}";
         MeleeButtonText.text = $"{MeleeCost}";
         WitchButtonText.text = $"{WitchCost}";
@@ -81,74 +161,68 @@ public class PlayerScript : MonoBehaviourPunCallbacks
         
     }
     public override void OnPlayerLeftRoom(Player otherPlayer)
-{
-    Debug.Log($"Player {otherPlayer.NickName} left the room");
-
-    ExitGames.Client.Photon.Hashtable roomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
-
-    if (roomProperties.ContainsKey("PlayerOne") && (int)roomProperties["PlayerOne"] == otherPlayer.ActorNumber)
     {
-        roomProperties.Remove("PlayerOne");
-        Debug.Log("PlayerOne role cleared.");
-    }
-    else if (roomProperties.ContainsKey("PlayerTwo") && (int)roomProperties["PlayerTwo"] == otherPlayer.ActorNumber)
-    {
-        roomProperties.Remove("PlayerTwo");
-        Debug.Log("PlayerTwo role cleared.");
-    }
+        Debug.Log($"Player {otherPlayer.NickName} left the room");
 
-    PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
-}
+        ExitGames.Client.Photon.Hashtable roomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
+
+        if (roomProperties.ContainsKey("PlayerOne") && (int)roomProperties["PlayerOne"] == otherPlayer.ActorNumber)
+        {
+            roomProperties.Remove("PlayerOne");
+            Debug.Log("PlayerOne role cleared.");
+        }
+        else if (roomProperties.ContainsKey("PlayerTwo") && (int)roomProperties["PlayerTwo"] == otherPlayer.ActorNumber)
+        {
+            roomProperties.Remove("PlayerTwo");
+            Debug.Log("PlayerTwo role cleared.");
+        }
+
+        PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
+    }
     public void AssignPlayerRole()
-{
-    ExitGames.Client.Photon.Hashtable roomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
-
-    // Check which roles are already taken
-    bool isPlayerOneTaken = roomProperties.ContainsKey("PlayerOne");
-    bool isPlayerTwoTaken = roomProperties.ContainsKey("PlayerTwo");
-
-    // Check if the roles are already assigned to any player
-    bool isPlayerOneAssigned = isPlayerOneTaken && PhotonNetwork.CurrentRoom.Players.Values.Any(p => p.ActorNumber == (int)roomProperties["PlayerOne"]);
-    bool isPlayerTwoAssigned = isPlayerTwoTaken && PhotonNetwork.CurrentRoom.Players.Values.Any(p => p.ActorNumber == (int)roomProperties["PlayerTwo"]);
-
-    // Assign roles based on availability
-    if (!isPlayerOneAssigned && localPlayerRole == null)
     {
-        localPlayerRole = "PlayerOne";
-        roomProperties["PlayerOne"] = PhotonNetwork.LocalPlayer.ActorNumber;
+        ExitGames.Client.Photon.Hashtable roomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
+
+        bool isPlayerOneTaken = roomProperties.ContainsKey("PlayerOne");
+        bool isPlayerTwoTaken = roomProperties.ContainsKey("PlayerTwo");
+
+        bool isPlayerOneAssigned = isPlayerOneTaken && PhotonNetwork.CurrentRoom.Players.Values.Any(p => p.ActorNumber == (int)roomProperties["PlayerOne"]);
+        bool isPlayerTwoAssigned = isPlayerTwoTaken && PhotonNetwork.CurrentRoom.Players.Values.Any(p => p.ActorNumber == (int)roomProperties["PlayerTwo"]);
+
+        if (!isPlayerOneAssigned && localPlayerRole == null)
+        {
+            localPlayerRole = "PlayerOne";
+            roomProperties["PlayerOne"] = PhotonNetwork.LocalPlayer.ActorNumber;
+        }
+        else if (!isPlayerTwoAssigned && localPlayerRole == null)
+        {
+            localPlayerRole = "PlayerTwo";
+            roomProperties["PlayerTwo"] = PhotonNetwork.LocalPlayer.ActorNumber;
+        }
+        else
+        {
+            Debug.LogWarning("No available roles. Room might be full.");
+            CameraTargetPos = CameraPositions[1].position; 
+            return;
+        }
+
+        PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
+
+        photonView.RPC("SyncRole", RpcTarget.AllBuffered, localPlayerRole);
+
+        CameraTargetPos = localPlayerRole == "PlayerOne" ? CameraPositions[0].position : CameraPositions[2].position;
+        CurrentPlayer.text = localPlayerRole;
+        Debug.Log($"Local Player Role: {localPlayerRole}");
     }
-    else if (!isPlayerTwoAssigned && localPlayerRole == null)
+
+
+    [PunRPC]
+    public void SyncRole(string role)
     {
-        localPlayerRole = "PlayerTwo";
-        roomProperties["PlayerTwo"] = PhotonNetwork.LocalPlayer.ActorNumber;
+        gameObject.name = role;
+        localPlayerRole = role;
+        Debug.Log($"Role synced: {role}");
     }
-    else
-    {
-        Debug.LogWarning("No available roles. Room might be full.");
-        CameraTargetPos = CameraPositions[1].position; // Spectator view or default position
-        return;
-    }
-
-    // Update Room Properties
-    PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
-
-    // Sync role to all clients
-    photonView.RPC("SyncRole", RpcTarget.AllBuffered, localPlayerRole);
-
-    // Update UI and log
-    CameraTargetPos = localPlayerRole == "PlayerOne" ? CameraPositions[0].position : CameraPositions[2].position;
-    CurrentPlayer.text = localPlayerRole;
-    Debug.Log($"Local Player Role: {localPlayerRole}");
-}
-
-
-[PunRPC]
-public void SyncRole(string role)
-{
-    gameObject.name = role;
-    localPlayerRole = role;
-    Debug.Log($"Role synced: {role}");
-}
 
 
     void Update()
@@ -180,7 +254,6 @@ public void SyncRole(string role)
         if(MeleeTimer > 0){
             MeleeTimer -= Time.deltaTime;
             CanBuyMelee = false;
-            //Shorten the float text to 1 decimal places
             MeleeButtonText.text = $"{MeleeTimer:F1}";
         }else{
             CanBuyMelee = true;
@@ -516,74 +589,64 @@ public void SyncRole(string role)
     //     }
     // }
 
-public void Swipes()
-{
-    if (Input.touchCount > 0)
+    public void Swipes()
     {
-        Touch touch = Input.GetTouch(0);
-
-        switch (touch.phase)
+        if (Input.touchCount > 0)
         {
-            case TouchPhase.Began:
-                // Store initial touch and camera position
-                touchStartPosition = touch.position;
-                cameraStartPosition = CameraTransform.position;
-                isSwiping = true;
-                momentum = 0f; // Reset momentum
-                break;
+            Touch touch = Input.GetTouch(0);
 
-            case TouchPhase.Moved:
-                if (isSwiping)
-                {
-                    // Calculate swipe delta (reversed)
-                    Vector2 swipeDelta = touch.position - touchStartPosition;
+            switch (touch.phase)
+            {
+                case TouchPhase.Began:
+                    touchStartPosition = touch.position;
+                    cameraStartPosition = CameraTransform.position;
+                    isSwiping = true;
+                    momentum = 0f; 
+                    break;
 
-                    // Update camera position based on reversed swipe
-                    float newX = cameraStartPosition.x - swipeDelta.x * sensitivity;
-                    CameraTransform.position = Vector3.Lerp(CameraTransform.position, new Vector3(newX, CameraTransform.position.y, CameraTransform.position.z), Time.deltaTime * swipeSmoothness);
+                case TouchPhase.Moved:
+                    if (isSwiping)
+                    {
+                        Vector2 swipeDelta = touch.position - touchStartPosition;
 
-                    // Update momentum based on reversed swipe velocity
-                    momentum = -touch.deltaPosition.x * sensitivity;
-                }
-                break;
+                        float newX = cameraStartPosition.x - swipeDelta.x * sensitivity;
+                        CameraTransform.position = Vector3.Lerp(CameraTransform.position, new Vector3(newX, CameraTransform.position.y, CameraTransform.position.z), Time.deltaTime * swipeSmoothness);
 
-            case TouchPhase.Ended:
-            case TouchPhase.Canceled:
-                isSwiping = false;
-                break;
+                        momentum = -touch.deltaPosition.x * sensitivity;
+                    }
+                    break;
+
+                case TouchPhase.Ended:
+                case TouchPhase.Canceled:
+                    isSwiping = false;
+                    break;
+            }
+        }
+
+        if (!isSwiping && Mathf.Abs(momentum) > momentumThreshold)
+        {
+            ApplyMomentum();
+        }
+
+        ClampCameraPosition();
+    }
+
+    private void ApplyMomentum()
+    {
+        float newX = CameraTransform.position.x + momentum;
+        CameraTransform.position = Vector3.Lerp(CameraTransform.position, new Vector3(newX, CameraTransform.position.y, CameraTransform.position.z), Time.deltaTime * momentumSmoothness);
+
+        momentum *= momentumDamp;
+
+        if (Mathf.Abs(momentum) <= momentumThreshold)
+        {
+            momentum = 0f;
         }
     }
 
-    // Apply momentum when swipe ends
-    if (!isSwiping && Mathf.Abs(momentum) > momentumThreshold)
+    private void ClampCameraPosition()
     {
-        ApplyMomentum();
+        float clampedX = Mathf.Clamp(CameraTransform.position.x, minTransform.position.x, maxTransform.position.x);
+        CameraTransform.position = new Vector3(clampedX, CameraTransform.position.y, CameraTransform.position.z);
     }
-
-    // Clamp the parent object's position to boundaries
-    ClampCameraPosition();
-}
-
-private void ApplyMomentum()
-{
-    // Add reversed momentum to the camera's parent position
-    float newX = CameraTransform.position.x + momentum;
-    CameraTransform.position = Vector3.Lerp(CameraTransform.position, new Vector3(newX, CameraTransform.position.y, CameraTransform.position.z), Time.deltaTime * momentumSmoothness);
-
-    // Gradually reduce momentum
-    momentum *= momentumDamp;
-
-    // Stop momentum if it's too small
-    if (Mathf.Abs(momentum) <= momentumThreshold)
-    {
-        momentum = 0f;
-    }
-}
-
-private void ClampCameraPosition()
-{
-    // Restrict the parent object's position within boundaries
-    float clampedX = Mathf.Clamp(CameraTransform.position.x, minTransform.position.x, maxTransform.position.x);
-    CameraTransform.position = new Vector3(clampedX, CameraTransform.position.y, CameraTransform.position.z);
-}
 }

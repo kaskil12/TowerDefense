@@ -9,12 +9,10 @@ public class OrbScript : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        // Orb lifespan can be managed here, if necessary
-        Destroy(gameObject, 5f); // Destroy after 5 seconds as a fallback
+        Destroy(gameObject, 5f); 
     }
     public void Update()
     {
-        // Move the orb forward
         transform.position += transform.forward * Time.deltaTime * 10f;
         Collider[] colliders = Physics.OverlapSphere(transform.position, 1f, LayerMask.GetMask("PawnLayer"));
         foreach (Collider collider in colliders)
@@ -29,7 +27,7 @@ public class OrbScript : MonoBehaviourPunCallbacks
                     if ((melee != null && melee.Team != Team) || (witch != null && witch.Team != Team))
                     {
                         targetPv.RPC("TakeDamage", RpcTarget.AllBuffered, Damage);
-                        Destroy(gameObject); // Destroy the orb after hitting a target
+                        Destroy(gameObject); 
                     }
                 }
             }
@@ -44,12 +42,12 @@ public class OrbScript : MonoBehaviourPunCallbacks
                     if (Team == 1)
                     {
                         phv.RPC("PlayerTwoDamageTower", RpcTarget.AllBuffered, Damage);
-                        Destroy(gameObject); // Destroy the orb after hitting a target
+                        Destroy(gameObject);
                     }
                     else if (Team == 2)
                     {
                         phv.RPC("PlayerOneDamageTower", RpcTarget.AllBuffered, Damage);
-                        Destroy(gameObject); // Destroy the orb after hitting a target
+                        Destroy(gameObject);
                     }
                 }
             }
