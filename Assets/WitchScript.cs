@@ -63,7 +63,8 @@ public class WitchScript : MonoBehaviourPunCallbacks
                 targetFound = true;
                 agent.SetDestination(collider.transform.position);
                 agent.stoppingDistance = 15;
-                OrbSpawnPoint.LookAt(collider.transform);
+                Vector3 targetCenter = collider.bounds.center; // Ensures you aim at the center of the target
+                OrbSpawnPoint.LookAt(targetCenter);
 
                 if (OrbShoot)
                 {
@@ -82,6 +83,8 @@ public class WitchScript : MonoBehaviourPunCallbacks
             {
                 OrbShoot = false;
                 StartCoroutine(OrbAttack());
+                Vector3 targetCenter = targetBase.gameObject.transform.position;
+                OrbSpawnPoint.LookAt(targetCenter);
                 SpawnOrb();
             }
         }
@@ -94,7 +97,6 @@ public class WitchScript : MonoBehaviourPunCallbacks
 
     void SpawnOrb()
     {
-        OrbSpawnPoint.LookAt(targetBase);
         GameObject orbInstance = PhotonNetwork.Instantiate(OrbPrefab.name, OrbSpawnPoint.transform.position, OrbSpawnPoint.transform.rotation);
 
         OrbScript orbScript = orbInstance.GetComponent<OrbScript>();
