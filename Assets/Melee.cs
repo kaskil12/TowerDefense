@@ -90,6 +90,12 @@ public class Melee : MonoBehaviourPunCallbacks
             {
                 targetFound = true;
                 agent.SetDestination(collider.transform.position);
+                if (agent.velocity.magnitude < 0.1f && !agent.pathPending && agent.remainingDistance > 0.1f)
+                {
+                    Debug.Log("Agent stuck! Recalculating path.");
+                    agent.ResetPath();
+                    agent.SetDestination(collider.transform.position);
+                }
                 agent.stoppingDistance = 0;
 
                 PhotonView pv = collider.GetComponent<PhotonView>();
@@ -105,6 +111,12 @@ public class Melee : MonoBehaviourPunCallbacks
         if (!targetFound && AttackOpponent)
         {
             agent.SetDestination(targetBase.position);
+            if (agent.velocity.magnitude < 0.1f && !agent.pathPending && agent.remainingDistance > 0.1f)
+            {
+                Debug.Log("Agent stuck! Recalculating path.");
+                agent.ResetPath();
+                agent.SetDestination(targetBase.position);
+            }
             agent.stoppingDistance = 0;
             Debug.Log($"Distance to target base: {Vector3.Distance(transform.position, targetBase.position)}");
             if (Vector3.Distance(transform.position, targetBase.position) < 20f)
@@ -125,6 +137,12 @@ public class Melee : MonoBehaviourPunCallbacks
         else if (!targetFound && !AttackOpponent)
         {
             agent.SetDestination(HomeBase.position);
+            if (agent.velocity.magnitude < 0.1f && !agent.pathPending && agent.remainingDistance > 0.1f)
+            {
+                Debug.Log("Agent stuck! Recalculating path.");
+                agent.ResetPath();
+                agent.SetDestination(HomeBase.position);
+            }
             agent.stoppingDistance = 5;
         }
 
