@@ -51,6 +51,7 @@ public class WitchScript : MonoBehaviourPunCallbacks
 
     [Tooltip("Spawn point for the orb projectile.")]
     public Transform OrbSpawnPoint;
+    public float stopDistance;
 
 
     void Start()
@@ -140,7 +141,7 @@ public class WitchScript : MonoBehaviourPunCallbacks
                 agent.ResetPath();
                 agent.SetDestination(HomeBase.position);
             }
-            agent.stoppingDistance = 0;
+            agent.stoppingDistance = stopDistance;
         }
     }
 

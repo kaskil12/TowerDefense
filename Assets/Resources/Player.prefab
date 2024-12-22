@@ -2661,30 +2661,14 @@ MonoBehaviour:
   CurrentPlayer: {fileID: 6921657299180580286}
   coinText: {fileID: 2546422273952485177}
   Coins: 200
+  CoinPerTick: 10
+  CoinPerTickText: {fileID: 5661373114102147464}
   CameraTransform: {fileID: 4109791837003670195}
   CameraPositions:
   - {fileID: 4864810629176422705}
   - {fileID: 2892663647139303327}
   - {fileID: 5632370055562737240}
   CameraTargetPos: {x: 0, y: 0, z: 0}
-  AttackMode: 0
-  CanBuyMelee: 1
-  CanBuyWitch: 1
-  CanBuyBear: 1
-  CoinPerTick: 10
-  MeleeCost: 50
-  WitchCost: 100
-  BearCost: 500
-  WitchTimer: 0
-  MeleeTimer: 0
-  BearTimer: 0
-  MeleeCooldown: 2.5
-  WitchCooldown: 5
-  BearCooldown: 10
-  CoinPerTickText: {fileID: 5661373114102147464}
-  MeleeButtonText: {fileID: 3145347561819277699}
-  WitchButtonText: {fileID: 8473957059306457448}
-  BearButtonText: {fileID: 8544884635790065611}
   minTransform: {fileID: 4864810629176422705}
   maxTransform: {fileID: 5632370055562737240}
   sensitivity: 0.1
@@ -2692,6 +2676,22 @@ MonoBehaviour:
   momentumThreshold: 0.1
   swipeSmoothness: 10
   momentumSmoothness: 10
+  AttackMode: 0
+  CanBuyMelee: 1
+  CanBuyWitch: 1
+  CanBuyBear: 1
+  MeleeCost: 50
+  WitchCost: 100
+  BearCost: 500
+  MeleeCooldown: 2.5
+  WitchCooldown: 5
+  BearCooldown: 10
+  MeleeTimer: 0
+  WitchTimer: 0
+  BearTimer: 0
+  MeleeButtonText: {fileID: 3145347561819277699}
+  WitchButtonText: {fileID: 8473957059306457448}
+  BearButtonText: {fileID: 8544884635790065611}
   CoinPerTickUpgradeCost: 100
 --- !u!65 &8349256152117142087
 BoxCollider:

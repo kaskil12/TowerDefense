@@ -616,15 +616,16 @@ MonoBehaviour:
   targetBase: {fileID: 0}
   HomeBase: {fileID: 0}
   Health: 100
+  MaxHealth: 100
+  HealthBar: {fileID: 1847454485634490802}
+  HealthCanvas: {fileID: 490562081451172614}
   Damage: 20
   AttackSpeed: 2.5
   canAttack: 1
   AttackOpponent: 0
   DetectRange: 10
   AttackRange: 4
-  HealthBar: {fileID: 1847454485634490802}
-  MaxHealth: 100
-  HealthCanvas: {fileID: 490562081451172614}
+  stopDistance: 5
 --- !u!195 &4207357713282794659
 NavMeshAgent:
   m_ObjectHideFlags: 0

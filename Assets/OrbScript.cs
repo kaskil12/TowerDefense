@@ -9,7 +9,7 @@ public class OrbScript : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        Destroy(gameObject, 5f); 
+        Destroy(gameObject, 2f); 
     }
     public void Update()
     {

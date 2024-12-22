@@ -53,6 +53,8 @@ public class Melee : MonoBehaviourPunCallbacks
 
     [Tooltip("Range at which the unit can attack enemies.")]
     public float AttackRange = 2f;
+    [Tooltip("Range at which the unit stops moving towards the target.")]
+    public float stopDistance;
     void Start(){
         canAttack = true;
         HealthBar = GetComponentInChildren<Slider>();
@@ -143,7 +145,7 @@ public class Melee : MonoBehaviourPunCallbacks
                 agent.ResetPath();
                 agent.SetDestination(HomeBase.position);
             }
-            agent.stoppingDistance = 5;
+            agent.stoppingDistance = stopDistance;
         }
 
         Debug.Log($"Agent Destination: {agent.destination}");
