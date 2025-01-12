@@ -55,6 +55,8 @@ public class Melee : MonoBehaviourPunCallbacks
     public float AttackRange = 2f;
     [Tooltip("Range at which the unit stops moving towards the target.")]
     public float stopDistance;
+
+    public float DistanceToHomeBase;
     void Start(){
         canAttack = true;
         HealthBar = GetComponentInChildren<Slider>();
@@ -76,6 +78,7 @@ public class Melee : MonoBehaviourPunCallbacks
         {
             if(HealthBar.gameObject.activeSelf)HealthBar.gameObject.SetActive(false);
         }
+        DistanceToHomeBase = Vector3.Distance(transform.position, HomeBase.position);
 
     }
 

@@ -3,6 +3,7 @@ using UnityEngine.AI;
 using Photon.Pun;
 using System.Collections;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 public class WitchScript : MonoBehaviourPunCallbacks
 {
     [Header("Team Settings")]
@@ -53,6 +54,8 @@ public class WitchScript : MonoBehaviourPunCallbacks
     public Transform OrbSpawnPoint;
     public float stopDistance;
 
+    public float DistanceToHomeBase;
+
 
     void Start()
     {
@@ -78,6 +81,7 @@ public class WitchScript : MonoBehaviourPunCallbacks
         {
             if(HealthBar.gameObject.activeSelf)HealthBar.gameObject.SetActive(false);
         }
+        DistanceToHomeBase = Vector3.Distance(transform.position, HomeBase.position);
     }
 
     void FindAndAttack()
@@ -115,6 +119,33 @@ public class WitchScript : MonoBehaviourPunCallbacks
 
         if (!targetFound && AttackOpponent)
         {
+            //Find the nearest friendly melee to the witch and go behind it
+            GameObject[] meleeUnits = GameObject.FindGameObjectsWithTag("Melee");
+            GameObject nearestUnit = null;
+            float minDistance = Mathf.Infinity;
+            foreach (GameObject unit in meleeUnits)
+            {
+                float distance = Vector3.Distance(unit.transform.position, transform.position);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    nearestUnit = unit;
+                }
+            }
+            if (nearestUnit != null)
+            {
+                Vector3 targetPosition = nearestUnit.transform.position - nearestUnit.transform.forward * 5;
+                agent.SetDestination(targetPosition);
+                if (agent.velocity.magnitude < 0.1f && !agent.pathPending && agent.remainingDistance > 0.1f)
+                {
+                    Debug.Log("Agent stuck! Recalculating path.");
+                    agent.ResetPath();
+                    agent.SetDestination(targetPosition);
+                }
+                agent.stoppingDistance = 15;
+            } 
+            
+            
             agent.SetDestination(targetBase.position);
             if (agent.velocity.magnitude < 0.1f && !agent.pathPending && agent.remainingDistance > 0.1f)
             {
