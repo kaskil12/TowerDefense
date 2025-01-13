@@ -431,6 +431,7 @@ MonoBehaviour:
   OrbPrefab: {fileID: 5421590144734858232, guid: 88b4e33d9d4bf044d84829bcd49c7e06, type: 3}
   OrbSpawnPoint: {fileID: 8538281296739774853}
   stopDistance: 0
+  DistanceToHomeBase: 0
 --- !u!1 &7799665252696531052
 GameObject:
   m_ObjectHideFlags: 0

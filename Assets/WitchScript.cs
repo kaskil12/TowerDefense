@@ -88,6 +88,8 @@ public class WitchScript : MonoBehaviourPunCallbacks
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, 16f, LayerMask.GetMask("PawnLayer"));
         bool targetFound = false;
+        Melee nearestUnit = null;
+        float nearestDistance = float.MaxValue;
 
         foreach (Collider collider in colliders)
         {
@@ -115,23 +117,19 @@ public class WitchScript : MonoBehaviourPunCallbacks
                     SpawnOrb();
                 }
             }
+            else if (melee != null && melee.Team == Team)
+            {
+                float distance = Vector3.Distance(transform.position, melee.transform.position);
+                if (distance < nearestDistance)
+                {
+                    nearestDistance = distance;
+                    nearestUnit = melee;
+                }
+            }
         }
 
         if (!targetFound && AttackOpponent)
         {
-            //Find the nearest friendly melee to the witch and go behind it
-            GameObject[] meleeUnits = GameObject.FindGameObjectsWithTag("Melee");
-            GameObject nearestUnit = null;
-            float minDistance = Mathf.Infinity;
-            foreach (GameObject unit in meleeUnits)
-            {
-                float distance = Vector3.Distance(unit.transform.position, transform.position);
-                if (distance < minDistance)
-                {
-                    minDistance = distance;
-                    nearestUnit = unit;
-                }
-            }
             if (nearestUnit != null)
             {
                 Vector3 targetPosition = nearestUnit.transform.position - nearestUnit.transform.forward * 5;
@@ -142,25 +140,32 @@ public class WitchScript : MonoBehaviourPunCallbacks
                     agent.ResetPath();
                     agent.SetDestination(targetPosition);
                 }
-                agent.stoppingDistance = 15;
-            } 
-            
-            
-            agent.SetDestination(targetBase.position);
-            if (agent.velocity.magnitude < 0.1f && !agent.pathPending && agent.remainingDistance > 0.1f)
-            {
-                Debug.Log("Agent stuck! Recalculating path.");
-                agent.ResetPath();
-                agent.SetDestination(targetBase.position);
+                agent.stoppingDistance = 0;
+
+                // Continuously update the destination to follow the melee unit
+                if (Vector3.Distance(transform.position, targetPosition) > agent.stoppingDistance)
+                {
+                    agent.SetDestination(targetPosition);
+                }
             }
-            agent.stoppingDistance = 15;
-            if (Vector3.Distance(transform.position, targetBase.position) < 20f && OrbShoot)
+            else
             {
-                OrbShoot = false;
-                StartCoroutine(OrbAttack());
-                Vector3 targetCenter = targetBase.gameObject.transform.position;
-                OrbSpawnPoint.LookAt(targetCenter);
-                SpawnOrb();
+                agent.SetDestination(targetBase.position);
+                if (agent.velocity.magnitude < 0.1f && !agent.pathPending && agent.remainingDistance > 0.1f)
+                {
+                    Debug.Log("Agent stuck! Recalculating path.");
+                    agent.ResetPath();
+                    agent.SetDestination(targetBase.position);
+                }
+                agent.stoppingDistance = 15;
+                if (Vector3.Distance(transform.position, targetBase.position) < 20f && OrbShoot)
+                {
+                    OrbShoot = false;
+                    StartCoroutine(OrbAttack());
+                    Vector3 targetCenter = targetBase.gameObject.transform.position;
+                    OrbSpawnPoint.LookAt(targetCenter);
+                    SpawnOrb();
+                }
             }
         }
         else if (!targetFound && !AttackOpponent)

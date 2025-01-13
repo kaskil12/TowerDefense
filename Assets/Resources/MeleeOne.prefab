@@ -626,6 +626,7 @@ MonoBehaviour:
   DetectRange: 10
   AttackRange: 4
   stopDistance: 5
+  DistanceToHomeBase: 0
 --- !u!195 &4207357713282794659
 NavMeshAgent:
   m_ObjectHideFlags: 0
