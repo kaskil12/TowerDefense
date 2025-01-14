@@ -66,6 +66,10 @@ public class WitchScript : MonoBehaviourPunCallbacks
         HealthBar.gameObject.SetActive(false);
         HealthBar.maxValue = Health;
         HealthBar.value = Health;
+        agent = GetComponent<NavMeshAgent>();
+        //disable auto rotation
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;
     }
 
     void Update()
@@ -86,12 +90,12 @@ public class WitchScript : MonoBehaviourPunCallbacks
 
     void FindAndAttack()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, 16f, LayerMask.GetMask("PawnLayer"));
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 16f, LayerMask.GetMask("PawnLayer"));
         bool targetFound = false;
         Melee nearestUnit = null;
         float nearestDistance = float.MaxValue;
 
-        foreach (Collider collider in colliders)
+        foreach (Collider2D collider in colliders)
         {
             Melee melee = collider.GetComponent<Melee>();
             WitchScript witch = collider.GetComponent<WitchScript>();

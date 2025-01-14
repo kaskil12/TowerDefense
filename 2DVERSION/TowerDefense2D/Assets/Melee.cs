@@ -64,6 +64,10 @@ public class Melee : MonoBehaviourPunCallbacks
         HealthBar.gameObject.SetActive(false);
         HealthBar.maxValue = Health;
         HealthBar.value = Health;
+        agent = GetComponent<NavMeshAgent>();
+        //disable auto rotation
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;
     }
     void Update()
     {
@@ -84,10 +88,10 @@ public class Melee : MonoBehaviourPunCallbacks
 
     void FindAndAttack()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, DetectRange, LayerMask.GetMask("PawnLayer"));
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, DetectRange, LayerMask.GetMask("PawnLayer"));
         bool targetFound = false;
 
-        foreach (Collider collider in colliders)
+        foreach (Collider2D collider in colliders)
         {
             Melee melee = collider.GetComponent<Melee>();
             WitchScript witch = collider.GetComponent<WitchScript>();

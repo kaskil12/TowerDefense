@@ -14,8 +14,8 @@ public class OrbScript : MonoBehaviourPunCallbacks
     public void Update()
     {
         transform.position += transform.forward * Time.deltaTime * 10f;
-        Collider[] colliders = Physics.OverlapSphere(transform.position, 1f, LayerMask.GetMask("PawnLayer"));
-        foreach (Collider collider in colliders)
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 1f, LayerMask.GetMask("PawnLayer"));
+        foreach (Collider2D collider in colliders)
         {
             if(collider.gameObject.tag == "PawnOne" || collider.gameObject.tag == "PawnTwo"){
                 PhotonView targetPv = collider.GetComponent<PhotonView>();
@@ -32,8 +32,8 @@ public class OrbScript : MonoBehaviourPunCallbacks
                 }
             }
         }
-        Collider[] TowerCollider = Physics.OverlapSphere(transform.position, 1f);
-        foreach (Collider collider in TowerCollider)
+        Collider2D[] TowerCollider = Physics2D.OverlapCircleAll(transform.position, 1f);
+        foreach (Collider2D collider in TowerCollider)
         {
             if(collider.gameObject.tag == "PlayerOneBase" || collider.gameObject.tag == "PlayerTwoBase"){
                 PhotonView phv = GameObject.Find("RoundManager").GetComponent<PhotonView>();   

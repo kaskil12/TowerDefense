@@ -1942,7 +1942,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 5311550413995886062}
         m_TargetAssemblyTypeName: PlayerScript, Assembly-CSharp
         m_MethodName: ToggleAttack
         m_Mode: 1

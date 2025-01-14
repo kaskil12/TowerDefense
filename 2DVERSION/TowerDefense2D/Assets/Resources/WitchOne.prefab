@@ -218,7 +218,7 @@ Transform:
   m_GameObject: {fileID: 5193595236083020071}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.0000000018626}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.080763, y: 0.080763, z: 0.080763}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -331,7 +331,6 @@ GameObject:
   - component: {fileID: 6792207861876652253}
   - component: {fileID: 5194487138512462405}
   - component: {fileID: 4579505508847285057}
-  - component: {fileID: -8039431186702628737}
   m_Layer: 3
   m_Name: WitchOne
   m_TagString: PawnOne
@@ -462,7 +461,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Team: 0
-  agent: {fileID: 0}
+  agent: {fileID: 4579505508847285057}
   targetBase: {fileID: 0}
   HomeBase: {fileID: 0}
   Health: 100
@@ -545,18 +544,6 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &-8039431186702628737
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6912931638620996338}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e39f6090724e4a4a8aadeb042afa2bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7799665252696531052
 GameObject:
   m_ObjectHideFlags: 0
