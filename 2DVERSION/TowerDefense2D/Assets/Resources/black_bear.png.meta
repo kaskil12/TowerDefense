@@ -435,7 +435,19 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      black_bear_0: -222649688322301402
+      black_bear_1: -6238844036407702795
+      black_bear_10: -632623910773405212
+      black_bear_11: 5212968485976694352
+      black_bear_2: 5076916088767262413
+      black_bear_3: 3226887455980606690
+      black_bear_4: 3294710206757098563
+      black_bear_5: -3776816070814693696
+      black_bear_6: -6688525948763604489
+      black_bear_7: 8414187870519691614
+      black_bear_8: 7775205701696393919
+      black_bear_9: -4777198919644355584
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
