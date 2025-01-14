@@ -456,6 +456,7 @@ MonoBehaviour:
   AttackRange: 2
   stopDistance: 0
   DistanceToHomeBase: 0
+  WitchSprite: {fileID: 8190942659118538283}
 --- !u!1 &7635222367555471993
 GameObject:
   m_ObjectHideFlags: 0

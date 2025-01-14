@@ -112,13 +112,14 @@ public class WitchScript : MonoBehaviourPunCallbacks
         bool targetFound = false;
         Melee nearestUnit = null;
         float nearestDistance = float.MaxValue;
+        DistanceToHomeBase = Vector3.Distance(transform.position, HomeBase.position);
 
         foreach (Collider2D collider in colliders)
         {
             Melee melee = collider.GetComponent<Melee>();
             WitchScript witch = collider.GetComponent<WitchScript>();
 
-            if ((melee != null && melee.Team != Team) || (witch != null && witch.Team != Team))
+            if (melee != null && melee.Team != Team && DistanceToHomeBase < 10 || witch != null && witch.Team != Team && DistanceToHomeBase < 10 || melee != null && melee.Team != Team && AttackOpponent || witch != null && witch.Team != Team && AttackOpponent)
             {
                 targetFound = true;
                 agent.SetDestination(collider.transform.position);

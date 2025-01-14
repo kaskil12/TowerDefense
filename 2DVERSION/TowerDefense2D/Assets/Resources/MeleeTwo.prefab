@@ -574,6 +574,7 @@ MonoBehaviour:
   AttackRange: 2
   stopDistance: 0
   DistanceToHomeBase: 0
+  WitchSprite: {fileID: 8672265947023767144}
 --- !u!195 &-6269713250337036773
 NavMeshAgent:
   m_ObjectHideFlags: 0

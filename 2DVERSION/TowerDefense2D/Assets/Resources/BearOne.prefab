@@ -479,6 +479,7 @@ MonoBehaviour:
   AttackRange: 2
   stopDistance: 0
   DistanceToHomeBase: 0
+  WitchSprite: {fileID: 6603601043353424359}
 --- !u!61 &6131917330259833595
 BoxCollider2D:
   m_ObjectHideFlags: 0
