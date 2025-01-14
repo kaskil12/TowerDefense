@@ -27,7 +27,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.080759995, y: 0.080759995, z: 0.080759995}
+  m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4346263051582240679}
@@ -723,6 +723,7 @@ MonoBehaviour:
   OrbSpawnPoint: {fileID: 8538281296739774853}
   stopDistance: 0
   DistanceToHomeBase: 0
+  WitchSprite: {fileID: 33817642655132559}
 --- !u!61 &1063142565479508275
 BoxCollider2D:
   m_ObjectHideFlags: 0

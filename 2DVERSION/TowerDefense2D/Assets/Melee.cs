@@ -57,6 +57,8 @@ public class Melee : MonoBehaviourPunCallbacks
     public float stopDistance;
 
     public float DistanceToHomeBase;
+    public GameObject WitchSprite;
+
     void Start(){
         canAttack = true;
         HealthBar = GetComponentInChildren<Slider>();
@@ -83,6 +85,22 @@ public class Melee : MonoBehaviourPunCallbacks
             if(HealthBar.gameObject.activeSelf)HealthBar.gameObject.SetActive(false);
         }
         DistanceToHomeBase = Vector3.Distance(transform.position, HomeBase.position);
+        //make the unit face the direction it is moving towards by rotating the sprite on the Y axis only
+        Vector3 movementDirection = agent.velocity.normalized;
+        
+        if (movementDirection.sqrMagnitude > 0.01f) // Check if the unit is moving
+        {
+            // Flip sprite if moving in the opposite direction
+            if (movementDirection.x > 0)
+            {
+                WitchSprite.transform.rotation = Quaternion.Euler(0, 0, 0); // Facing right
+            }
+            else
+            {
+                WitchSprite.transform.rotation = Quaternion.Euler(0, 180, 0); // Facing left
+            }
+        }
+        
 
     }
 
