@@ -2567,7 +2567,7 @@ MonoBehaviour:
   CanBuyBear: 1
   MeleeCost: 50
   WitchCost: 100
-  BearCost: 100
+  BearCost: 500
   MeleeCooldown: 2
   WitchCooldown: 5
   BearCooldown: 10

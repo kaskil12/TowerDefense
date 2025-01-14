@@ -90,7 +90,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks
     public int WitchCost = 100;
 
     [Tooltip("Cost of bear units.")]
-    public int BearCost = 100;
+    public int BearCost = 500;
 
     [Header("Cooldowns and Timers")]
     [Tooltip("Cooldown for melee units.")]
