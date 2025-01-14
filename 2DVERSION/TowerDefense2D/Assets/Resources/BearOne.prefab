@@ -308,11 +308,11 @@ GameObject:
   - component: {fileID: 4761918585772019621}
   - component: {fileID: 3653434246705882313}
   - component: {fileID: 6485493146331356645}
-  - component: {fileID: 183170219094191148}
-  - component: {fileID: 5806479103383359161}
   - component: {fileID: 6068678550448302874}
   - component: {fileID: 8173304383301939354}
   - component: {fileID: 4702702709459623995}
+  - component: {fileID: 205377744216002062}
+  - component: {fileID: 6131917330259833595}
   m_Layer: 3
   m_Name: BearOne
   m_TagString: PawnOne
@@ -390,54 +390,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &183170219094191148
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4779824965850215203}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 2.0868678, z: 1}
-  m_Center: {x: 0, y: 0.5434339, z: 0}
---- !u!114 &5806479103383359161
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4779824965850215203}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2421b35d0e935df43816b5c46ec34409, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Team: 0
-  agent: {fileID: 6068678550448302874}
-  targetBase: {fileID: 0}
-  HomeBase: {fileID: 0}
-  Health: 400
-  MaxHealth: 400
-  HealthBar: {fileID: 5626748757001684747}
-  HealthCanvas: {fileID: 0}
-  Damage: 30
-  AttackSpeed: 4
-  canAttack: 1
-  AttackOpponent: 0
-  DetectRange: 10
-  AttackRange: 5
-  stopDistance: 7
 --- !u!195 &6068678550448302874
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -499,6 +451,80 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &205377744216002062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4779824965850215203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a2eaa68e30348948a6c85c4d8dbc645, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Team: 0
+  agent: {fileID: 6068678550448302874}
+  targetBase: {fileID: 0}
+  HomeBase: {fileID: 0}
+  Health: 500
+  MaxHealth: 500
+  HealthBar: {fileID: 5626748757001684747}
+  HealthCanvas: {fileID: 5871448867138602431}
+  Damage: 0
+  AttackSpeed: 0
+  canAttack: 1
+  AttackOpponent: 0
+  DetectRange: 10
+  AttackRange: 2
+  stopDistance: 0
+  DistanceToHomeBase: 0
+--- !u!61 &6131917330259833595
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4779824965850215203}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &5871448867138602431
 GameObject:
   m_ObjectHideFlags: 0

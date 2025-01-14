@@ -59,8 +59,10 @@ public class RoundManager : MonoBehaviourPunCallbacks
     public TMP_Text CountdownText;
     void Start()
     {
-        PLayerOneTowerHealthBar.transform.localScale = new Vector3(1, 1, (float)PlayerOneTowerHealth / 100);
-        PLayerTwoTowerHealthBar.transform.localScale = new Vector3(1, 1, (float)PlayerTwoTowerHealth / 100);
+        PLayerOneTowerHealthBar.maxValue = PlayerOneTowerHealth;
+        PLayerTwoTowerHealthBar.maxValue = PlayerTwoTowerHealth;
+        PLayerOneTowerHealthBar.value = PlayerOneTowerHealth;
+        PLayerTwoTowerHealthBar.value = PlayerTwoTowerHealth;
     }
 
     void Update()
