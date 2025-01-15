@@ -151,6 +151,7 @@ public class WitchScript : MonoBehaviourPunCallbacks
             }
         }
 
+        if(Vector3.Distance(transform.position, targetBase.position) < 20f)nearestUnit = null;
         if (!targetFound && AttackOpponent)
         {
             if (nearestUnit != null)
