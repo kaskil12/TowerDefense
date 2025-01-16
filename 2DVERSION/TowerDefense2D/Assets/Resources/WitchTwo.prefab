@@ -694,6 +694,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: -369589219743779498}
+  - {fileID: 565820052470336047}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -742,9 +743,10 @@ MonoBehaviour:
   stopDistance: 0
   DistanceToHomeBasePositionLocal: 0
   WitchSprite: {fileID: 33817642655132559}
-  obstacle: {fileID: -8281469786833707156, guid: 697a48a624a49fa4ab551ff7f1581eef, type: 3}
+  obstacle: {fileID: 8012883761131844039}
   HomeBasePositionLocalOffset: 2
   HomeBasePositionLocal: {x: 0, y: 0, z: 0}
+  DetectionRange: 10
 --- !u!61 &1063142565479508275
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -61,6 +61,7 @@ public class Melee : MonoBehaviourPunCallbacks
     public NavMeshObstacle obstacle;
     public float HomeBasePositionLocalOffset = 5;
     public Vector3 HomeBasePositionLocal;
+    public bool isInvincible = false;
 
     void Start(){
         canAttack = true;
@@ -204,12 +205,12 @@ public class Melee : MonoBehaviourPunCallbacks
     public void SetTeam(int team)
     {
         Team = team;
-
+        StartCoroutine(Invincible());
         if (Team == 1)
         {
             targetBase = GameObject.FindWithTag("PlayerTwoBase").transform;
             HomeBasePosition = GameObject.FindWithTag("HomeBaseOne").transform;
-            HomeBasePositionLocal = new Vector3(HomeBasePosition.position.x + HomeBasePositionLocalOffset, HomeBasePosition.position.y, HomeBasePosition.position.z);
+            HomeBasePositionLocal = new Vector3(HomeBasePosition.position.x - HomeBasePositionLocalOffset, HomeBasePosition.position.y, HomeBasePosition.position.z);
             if(agent.enabled)agent.SetDestination(targetBase.position);
         }
         else if (Team == 2)
@@ -232,11 +233,17 @@ public class Melee : MonoBehaviourPunCallbacks
     [PunRPC]
     public void TakeDamage(int damage)
     {
-        Health -= damage;
+        if(!isInvincible)Health -= damage;
         if (Health <= 0)
         {
             Destroy(gameObject);
         }
+    }
+    IEnumerator Invincible()
+    {
+        isInvincible = true;
+        yield return new WaitForSeconds(3f);
+        isInvincible = false;
     }
     private void OnDrawGizmos()
     {

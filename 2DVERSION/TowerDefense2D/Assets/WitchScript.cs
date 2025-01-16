@@ -60,6 +60,7 @@ public class WitchScript : MonoBehaviourPunCallbacks
     public float HomeBasePositionLocalOffset = 2;
     public Vector3 HomeBasePositionLocal;
     public float DetectionRange = 10f;
+    public bool isInvincible;
 
 
 
@@ -240,11 +241,12 @@ public class WitchScript : MonoBehaviourPunCallbacks
     public void SetTeam(int team)
     {
         Team = team;
+        StartCoroutine(Invincible());
         if (Team == 1)
         {
             targetBase = GameObject.FindWithTag("PlayerTwoBase").transform;
             HomeBasePosition = GameObject.FindWithTag("HomeBaseOne").transform;
-            HomeBasePositionLocal = new Vector3(HomeBasePosition.position.x + HomeBasePositionLocalOffset, HomeBasePosition.position.y, HomeBasePosition.position.z);
+            HomeBasePositionLocal = new Vector3(HomeBasePosition.position.x - HomeBasePositionLocalOffset, HomeBasePosition.position.y, HomeBasePosition.position.z);
         }
         else if (Team == 2)
         {
@@ -258,7 +260,7 @@ public class WitchScript : MonoBehaviourPunCallbacks
     [PunRPC]
     public void TakeDamage(int damage)
     {
-        Health -= damage;
+        if(!isInvincible)Health -= damage;
         if (Health <= 0)
         {
             Destroy(gameObject);
@@ -277,5 +279,11 @@ public class WitchScript : MonoBehaviourPunCallbacks
         OrbShoot = false;
         yield return new WaitForSeconds(3);
         OrbShoot = true;
+    }
+    IEnumerator Invincible()
+    {
+        isInvincible = true;
+        yield return new WaitForSeconds(1.5f);
+        isInvincible = false;
     }
 }
