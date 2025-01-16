@@ -747,6 +747,7 @@ MonoBehaviour:
   HomeBasePositionLocalOffset: 2
   HomeBasePositionLocal: {x: 0, y: 0, z: 0}
   DetectionRange: 10
+  isInvincible: 0
 --- !u!61 &1063142565479508275
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -763,7 +764,7 @@ BoxCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2

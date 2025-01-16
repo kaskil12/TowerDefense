@@ -110,6 +110,7 @@ public class RoundManager : MonoBehaviourPunCallbacks
         foreach (GameObject player in playerScript){
             PlayerScript playerScriptComponent = player.GetComponent<PlayerScript>();
             playerScriptComponent.Coins = 200;
+            playerScriptComponent.CoinPerTickText.text = playerScriptComponent.CoinPerTick.ToString();
             playerScriptComponent.CoinPerTickUpgradeCost = 100;
             playerScriptComponent.CoinPerTick = 10;
         }

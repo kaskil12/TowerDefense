@@ -246,13 +246,13 @@ public class WitchScript : MonoBehaviourPunCallbacks
         {
             targetBase = GameObject.FindWithTag("PlayerTwoBase").transform;
             HomeBasePosition = GameObject.FindWithTag("HomeBaseOne").transform;
-            HomeBasePositionLocal = new Vector3(HomeBasePosition.position.x - HomeBasePositionLocalOffset, HomeBasePosition.position.y, HomeBasePosition.position.z);
+            HomeBasePositionLocal = new Vector3(HomeBasePosition.position.x + HomeBasePositionLocalOffset, HomeBasePosition.position.y, HomeBasePosition.position.z);
         }
         else if (Team == 2)
         {
             targetBase = GameObject.FindWithTag("PlayerOneBase").transform;
             HomeBasePosition = GameObject.FindWithTag("HomeBaseTwo").transform;
-            HomeBasePositionLocal = new Vector3(HomeBasePosition.position.x + HomeBasePositionLocalOffset, HomeBasePosition.position.y, HomeBasePosition.position.z);
+            HomeBasePositionLocal = new Vector3(HomeBasePosition.position.x - HomeBasePositionLocalOffset, HomeBasePosition.position.y, HomeBasePosition.position.z);
         }
         if(agent.enabled)agent.SetDestination(targetBase.position);
     }

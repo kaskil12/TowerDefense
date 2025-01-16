@@ -447,6 +447,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: -369589219743779498}
+  - {fileID: 2079943206867322328}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -499,6 +500,7 @@ MonoBehaviour:
   HomeBasePositionLocalOffset: 2
   HomeBasePositionLocal: {x: 0, y: 0, z: 0}
   DetectionRange: 10
+  isInvincible: 0
 --- !u!61 &5194487138512462405
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -515,7 +517,7 @@ BoxCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2

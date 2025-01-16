@@ -579,6 +579,7 @@ MonoBehaviour:
   obstacle: {fileID: 2894088941098541032}
   HomeBasePositionLocalOffset: 5
   HomeBasePositionLocal: {x: 0, y: 0, z: 0}
+  isInvincible: 0
 --- !u!195 &-6269713250337036773
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -621,6 +622,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: -369589219743779498}
+  - {fileID: 5018557962881141490}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -656,7 +658,7 @@ BoxCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2

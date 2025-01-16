@@ -210,14 +210,14 @@ public class Melee : MonoBehaviourPunCallbacks
         {
             targetBase = GameObject.FindWithTag("PlayerTwoBase").transform;
             HomeBasePosition = GameObject.FindWithTag("HomeBaseOne").transform;
-            HomeBasePositionLocal = new Vector3(HomeBasePosition.position.x - HomeBasePositionLocalOffset, HomeBasePosition.position.y, HomeBasePosition.position.z);
+            HomeBasePositionLocal = new Vector3(HomeBasePosition.position.x + HomeBasePositionLocalOffset, HomeBasePosition.position.y, HomeBasePosition.position.z);
             if(agent.enabled)agent.SetDestination(targetBase.position);
         }
         else if (Team == 2)
         {
             targetBase = GameObject.FindWithTag("PlayerOneBase").transform;
             HomeBasePosition = GameObject.FindWithTag("HomeBaseTwo").transform;
-            HomeBasePositionLocal = new Vector3(HomeBasePosition.position.x + HomeBasePositionLocalOffset, HomeBasePosition.position.y, HomeBasePosition.position.z);
+            HomeBasePositionLocal = new Vector3(HomeBasePosition.position.x - HomeBasePositionLocalOffset, HomeBasePosition.position.y, HomeBasePosition.position.z);
             if(agent.enabled)agent.SetDestination(targetBase.position);
         }
     }
@@ -244,12 +244,5 @@ public class Melee : MonoBehaviourPunCallbacks
         isInvincible = true;
         yield return new WaitForSeconds(3f);
         isInvincible = false;
-    }
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, DetectRange);
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, AttackRange);
     }
 }
