@@ -501,6 +501,7 @@ GameObject:
   - component: {fileID: -7641694066714104310}
   - component: {fileID: 8026934409191624740}
   - component: {fileID: 106547173473600474}
+  - component: {fileID: 7441328332030744414}
   m_Layer: 3
   m_Name: MeleeOne
   m_TagString: PawnOne
@@ -593,7 +594,7 @@ MonoBehaviour:
   Team: 0
   agent: {fileID: 4207357713282794659}
   targetBase: {fileID: 0}
-  HomeBase: {fileID: 0}
+  HomeBasePosition: {fileID: 0}
   Health: 100
   MaxHealth: 100
   HealthBar: {fileID: 1847454485634490802}
@@ -605,8 +606,11 @@ MonoBehaviour:
   DetectRange: 10
   AttackRange: 2
   stopDistance: 0
-  DistanceToHomeBase: 0
+  DistanceToHomeBasePositionLocal: 0
   WitchSprite: {fileID: 8439691728730207002}
+  obstacle: {fileID: 7441328332030744414}
+  HomeBasePositionLocalOffset: 5
+  HomeBasePositionLocal: {x: 0, y: 0, z: 0}
 --- !u!195 &4207357713282794659
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -714,6 +718,22 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.1587143, y: 1.4761409}
   m_EdgeRadius: 0
+--- !u!208 &7441328332030744414
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6912931638620996338}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.00001, y: 0.00001, z: 0.00001}
+  m_MoveThreshold: 0.2
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.1
 --- !u!1 &8439691728730207002
 GameObject:
   m_ObjectHideFlags: 0
@@ -724,6 +744,7 @@ GameObject:
   m_Component:
   - component: {fileID: 472502666226029157}
   - component: {fileID: 7831795970344845983}
+  - component: {fileID: 3996247487650051858}
   m_Layer: 0
   m_Name: Knight_02__WALK_007_0
   m_TagString: Untagged
@@ -801,6 +822,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &3996247487650051858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8439691728730207002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 0
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &9078423048719007509
 GameObject:
   m_ObjectHideFlags: 0

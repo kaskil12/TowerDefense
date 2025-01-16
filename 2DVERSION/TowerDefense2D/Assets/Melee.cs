@@ -19,7 +19,7 @@ public class Melee : MonoBehaviourPunCallbacks
     public Transform targetBase;
 
     [Tooltip("The home base of the unit.")]
-    public Transform HomeBase;
+    public Transform HomeBasePosition;
 
     [Header("Health Settings")]
     [Tooltip("Current health of the unit.")]
@@ -56,8 +56,11 @@ public class Melee : MonoBehaviourPunCallbacks
     [Tooltip("Range at which the unit stops moving towards the target.")]
     public float stopDistance;
 
-    public float DistanceToHomeBase;
+    public float DistanceToHomeBasePositionLocal;
     public GameObject WitchSprite;
+    public NavMeshObstacle obstacle;
+    public float HomeBasePositionLocalOffset = 5;
+    public Vector3 HomeBasePositionLocal;
 
     void Start(){
         canAttack = true;
@@ -70,11 +73,12 @@ public class Melee : MonoBehaviourPunCallbacks
         //disable auto rotation
         agent.updateRotation = false;
         agent.updateUpAxis = false;
+        obstacle.enabled = false;
     }
     void Update()
     {
         FindAndAttack();
-        agent.avoidancePriority = Random.Range(0, 100);
+        if(agent.enabled)agent.avoidancePriority = Random.Range(0, 100);
         if(Health < MaxHealth)
         {
             if(!HealthBar.gameObject.activeSelf)HealthBar.gameObject.SetActive(true);
@@ -84,20 +88,21 @@ public class Melee : MonoBehaviourPunCallbacks
         {
             if(HealthBar.gameObject.activeSelf)HealthBar.gameObject.SetActive(false);
         }
-        DistanceToHomeBase = Vector3.Distance(transform.position, HomeBase.position);
+        DistanceToHomeBasePositionLocal = Vector3.Distance(transform.position, HomeBasePositionLocal);
         //make the unit face the direction it is moving towards by rotating the sprite on the Y axis only
-        Vector3 movementDirection = agent.velocity.normalized;
-        
-        if (movementDirection.sqrMagnitude > 0.01f) // Check if the unit is moving
-        {
-            // Flip sprite if moving in the opposite direction
-            if (movementDirection.x > 0)
+        if(agent.enabled){
+            Vector3 movementDirection = agent.velocity.normalized;
+            if (movementDirection.sqrMagnitude > 0.01f) // Check if the unit is moving
             {
-                WitchSprite.transform.rotation = Quaternion.Euler(0, 0, 0); // Facing right
-            }
-            else
-            {
-                WitchSprite.transform.rotation = Quaternion.Euler(0, 180, 0); // Facing left
+                // Flip sprite if moving in the opposite direction
+                if (movementDirection.x > 0)
+                {
+                    WitchSprite.transform.rotation = Quaternion.Euler(0, 0, 0); // Facing right
+                }
+                else
+                {
+                    WitchSprite.transform.rotation = Quaternion.Euler(0, 180, 0); // Facing left
+                }
             }
         }
         
@@ -108,26 +113,27 @@ public class Melee : MonoBehaviourPunCallbacks
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, DetectRange, LayerMask.GetMask("PawnLayer"));
         bool targetFound = false;
-        DistanceToHomeBase = Vector3.Distance(transform.position, HomeBase.position);
+        DistanceToHomeBasePositionLocal = Vector3.Distance(transform.position, HomeBasePositionLocal);
         foreach (Collider2D collider in colliders)
         {
             Melee melee = collider.GetComponent<Melee>();
             WitchScript witch = collider.GetComponent<WitchScript>();
-            if (melee != null && melee.Team != Team && DistanceToHomeBase < 10 || witch != null && witch.Team != Team && DistanceToHomeBase < 10 || melee != null && melee.Team != Team && AttackOpponent || witch != null && witch.Team != Team && AttackOpponent)
+            if (melee != null && melee.Team != Team && DistanceToHomeBasePositionLocal < 10 || witch != null && witch.Team != Team && DistanceToHomeBasePositionLocal < 10 || melee != null && melee.Team != Team && AttackOpponent || witch != null && witch.Team != Team && AttackOpponent)
             {
                 targetFound = true;
-                agent.SetDestination(collider.transform.position);
-                if (agent.velocity.magnitude < 0.1f && !agent.pathPending && agent.remainingDistance > 0.1f)
+                if(agent.enabled)agent.SetDestination(collider.transform.position);
+                if (agent.enabled && agent.velocity.magnitude < 0.1f && !agent.pathPending && agent.remainingDistance > 0.1f)
                 {
                     Debug.Log("Agent stuck! Recalculating path.");
                     agent.ResetPath();
                     agent.SetDestination(collider.transform.position);
                 }
-                agent.stoppingDistance = 0;
+                if(agent.enabled)agent.stoppingDistance = 0;
 
                 PhotonView pv = collider.GetComponent<PhotonView>();
                 if (pv != null && canAttack && Vector3.Distance(transform.position, collider.transform.position) < AttackRange)
                 {
+                    if(agent.enabled)agent.speed = 0;
                     pv.RPC("TakeDamage", RpcTarget.AllBuffered, Damage);
                     StartCoroutine(Attack());
                 }
@@ -137,14 +143,14 @@ public class Melee : MonoBehaviourPunCallbacks
 
         if (!targetFound && AttackOpponent)
         {
-            agent.SetDestination(targetBase.position);
-            if (agent.velocity.magnitude < 0.1f && !agent.pathPending && agent.remainingDistance > 0.1f)
+            if(agent.enabled)agent.SetDestination(targetBase.position);
+            if (agent.enabled && agent.velocity.magnitude < 0.1f && !agent.pathPending && agent.remainingDistance > 0.1f)
             {
                 Debug.Log("Agent stuck! Recalculating path.");
                 agent.ResetPath();
                 agent.SetDestination(targetBase.position);
             }
-            agent.stoppingDistance = 0;
+            if(agent.enabled)agent.stoppingDistance = 0;
             Debug.Log($"Distance to target base: {Vector3.Distance(transform.position, targetBase.position)}");
             if (Vector3.Distance(transform.position, targetBase.position) < 20f)
             {
@@ -163,20 +169,36 @@ public class Melee : MonoBehaviourPunCallbacks
         }
         else if (!targetFound && !AttackOpponent)
         {
-            agent.SetDestination(HomeBase.position);
-            if (agent.velocity.magnitude < 0.1f && !agent.pathPending && agent.remainingDistance > 0.1f)
+            if(agent.enabled)agent.SetDestination(HomeBasePositionLocal);
+            if (agent.enabled && agent.velocity.magnitude < 0.1f && !agent.pathPending && agent.remainingDistance > 0.1f)
             {
                 Debug.Log("Agent stuck! Recalculating path.");
                 agent.ResetPath();
-                agent.SetDestination(HomeBase.position);
+                agent.SetDestination(HomeBasePositionLocal);
             }
-            agent.stoppingDistance = stopDistance;
+            if(agent.enabled)agent.stoppingDistance = stopDistance;
+
+            // Check if the agent is close to the home base and is stuck
+            if (agent.enabled && Vector3.Distance(transform.position, HomeBasePositionLocal) < 5f && agent.velocity.magnitude < 0.1f)
+            {
+                Debug.Log("Agent close to home base and stuck. Disabling agent and enabling obstacle.");
+                agent.enabled = false;
+                obstacle.enabled = true;
+            }
         }
 
-        Debug.Log($"Agent Destination: {agent.destination}");
-        Debug.Log($"Agent Speed: {agent.speed}");
-        Debug.Log($"Agent Remaining Distance: {agent.remainingDistance}");
+        // Re-enable the agent if any targets come near or if AttackOpponent is true
+        if (targetFound || AttackOpponent)
+        {
+            if (!agent.enabled)
+            {
+                Debug.Log("Re-enabling agent.");
+                agent.enabled = true;
+                obstacle.enabled = false;
+            }
+        }
     }
+
 
     [PunRPC]
     public void SetTeam(int team)
@@ -186,14 +208,16 @@ public class Melee : MonoBehaviourPunCallbacks
         if (Team == 1)
         {
             targetBase = GameObject.FindWithTag("PlayerTwoBase").transform;
-            HomeBase = GameObject.FindWithTag("HomeBaseOne").transform;
-            agent.SetDestination(targetBase.position);
+            HomeBasePosition = GameObject.FindWithTag("HomeBaseOne").transform;
+            HomeBasePositionLocal = new Vector3(HomeBasePosition.position.x + HomeBasePositionLocalOffset, HomeBasePosition.position.y, HomeBasePosition.position.z);
+            if(agent.enabled)agent.SetDestination(targetBase.position);
         }
         else if (Team == 2)
         {
             targetBase = GameObject.FindWithTag("PlayerOneBase").transform;
-            HomeBase = GameObject.FindWithTag("HomeBaseTwo").transform;
-            agent.SetDestination(targetBase.position);
+            HomeBasePosition = GameObject.FindWithTag("HomeBaseTwo").transform;
+            HomeBasePositionLocal = new Vector3(HomeBasePosition.position.x + HomeBasePositionLocalOffset, HomeBasePosition.position.y, HomeBasePosition.position.z);
+            if(agent.enabled)agent.SetDestination(targetBase.position);
         }
     }
 
@@ -201,6 +225,7 @@ public class Melee : MonoBehaviourPunCallbacks
     {
         canAttack = false;
         yield return new WaitForSeconds(AttackSpeed);
+        if(agent.enabled)agent.speed = 3.5f;
         canAttack = true;
     }
 

@@ -533,8 +533,8 @@ MonoBehaviour:
   Countdown: 5
   MaxRounds: 3
   RoundNumber: 1
-  PlayerOneTowerHealth: 1000
-  PlayerTwoTowerHealth: 1000
+  PlayerOneTowerHealth: 2500
+  PlayerTwoTowerHealth: 2500
   PlayerOneWins: 0
   PlayerTwoWins: 0
   Players: 0

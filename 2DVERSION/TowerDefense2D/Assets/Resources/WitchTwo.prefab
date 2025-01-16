@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1460333493127458476}
   - component: {fileID: 7415573889115251624}
+  - component: {fileID: 565820052470336047}
   m_Layer: 0
   m_Name: 8a65e13f7c2fa8cd36dacde11e8e8326_0
   m_TagString: Untagged
@@ -87,6 +88,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &565820052470336047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 33817642655132559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 0
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &919874777878086598
 GameObject:
   m_ObjectHideFlags: 0
@@ -556,6 +573,7 @@ GameObject:
   - component: {fileID: -369589219743779498}
   - component: {fileID: 7247229798192470825}
   - component: {fileID: 1063142565479508275}
+  - component: {fileID: 8012883761131844039}
   m_Layer: 3
   m_Name: WitchTwo
   m_TagString: PawnTwo
@@ -710,9 +728,9 @@ MonoBehaviour:
   Team: 0
   agent: {fileID: -6269713250337036773}
   targetBase: {fileID: 0}
-  HomeBase: {fileID: 0}
-  Health: 100
-  MaxHealth: 100
+  HomeBasePosition: {fileID: 0}
+  Health: 60
+  MaxHealth: 60
   HealthBar: {fileID: 1416844636602597746}
   HealthCanvas: {fileID: 919874777878086598}
   Damage: 40
@@ -722,8 +740,11 @@ MonoBehaviour:
   OrbPrefab: {fileID: 5421590144734858232, guid: 88b4e33d9d4bf044d84829bcd49c7e06, type: 3}
   OrbSpawnPoint: {fileID: 8538281296739774853}
   stopDistance: 0
-  DistanceToHomeBase: 0
+  DistanceToHomeBasePositionLocal: 0
   WitchSprite: {fileID: 33817642655132559}
+  obstacle: {fileID: -8281469786833707156, guid: 697a48a624a49fa4ab551ff7f1581eef, type: 3}
+  HomeBasePositionLocalOffset: 2
+  HomeBasePositionLocal: {x: 0, y: 0, z: 0}
 --- !u!61 &1063142565479508275
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -770,6 +791,22 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!208 &8012883761131844039
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6912931638620996338}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.00001, y: 0.00001, z: 0.00001}
+  m_MoveThreshold: 0.2
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.1
 --- !u!1 &8644614441200181205
 GameObject:
   m_ObjectHideFlags: 0

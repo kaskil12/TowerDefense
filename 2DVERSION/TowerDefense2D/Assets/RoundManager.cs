@@ -28,10 +28,10 @@ public class RoundManager : MonoBehaviourPunCallbacks
 
     [Header("Player Stats")]
     [Tooltip("Health of Player One's tower.")]
-    public int PlayerOneTowerHealth = 1000;
+    public int PlayerOneTowerHealth = 2500;
 
     [Tooltip("Health of Player Two's tower.")]
-    public int PlayerTwoTowerHealth = 1000;
+    public int PlayerTwoTowerHealth = 2500;
 
     [Tooltip("Wins by Player One.")]
     public int PlayerOneWins = 0;
@@ -104,8 +104,8 @@ public class RoundManager : MonoBehaviourPunCallbacks
         foreach (GameObject unit in unitstwo){
             Destroy(unit);
         }
-        PlayerOneTowerHealth = 1000;
-        PlayerTwoTowerHealth = 1000;
+        PlayerOneTowerHealth = 2500;
+        PlayerTwoTowerHealth = 2500;
         GameObject[] playerScript = GameObject.FindGameObjectsWithTag("Player");
         foreach (GameObject player in playerScript){
             PlayerScript playerScriptComponent = player.GetComponent<PlayerScript>();

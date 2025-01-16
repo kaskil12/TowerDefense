@@ -18,7 +18,7 @@ public class WitchScript : MonoBehaviourPunCallbacks
     public Transform targetBase;
 
     [Tooltip("Home base for the unit.")]
-    public Transform HomeBase;
+    public Transform HomeBasePosition;
 
     [Header("Health Settings")]
     [Tooltip("Current health of the unit.")]
@@ -54,8 +54,12 @@ public class WitchScript : MonoBehaviourPunCallbacks
     public Transform OrbSpawnPoint;
     public float stopDistance;
 
-    public float DistanceToHomeBase;
+    public float DistanceToHomeBasePositionLocal;
     public GameObject WitchSprite;
+    public NavMeshObstacle obstacle;
+    public float HomeBasePositionLocalOffset = 2;
+    public Vector3 HomeBasePositionLocal;
+    public float DetectionRange = 10f;
 
 
 
@@ -72,12 +76,13 @@ public class WitchScript : MonoBehaviourPunCallbacks
         //disable auto rotation
         agent.updateRotation = false;
         agent.updateUpAxis = false;
+        obstacle.enabled = false;
     }
 
     void Update()
     {
         FindAndAttack();
-        agent.avoidancePriority = Random.Range(0, 100);
+        if(agent.enabled)agent.avoidancePriority = Random.Range(0, 100);
         if(Health < MaxHealth)
         {
             if(!HealthBar.gameObject.activeSelf)HealthBar.gameObject.SetActive(true);
@@ -87,20 +92,21 @@ public class WitchScript : MonoBehaviourPunCallbacks
         {
             if(HealthBar.gameObject.activeSelf)HealthBar.gameObject.SetActive(false);
         }
-                DistanceToHomeBase = Vector3.Distance(transform.position, HomeBase.position);
+                DistanceToHomeBasePositionLocal = Vector3.Distance(transform.position, HomeBasePositionLocal);
         //make the unit face the direction it is moving towards by rotating the sprite on the Y axis only
-        Vector3 movementDirection = agent.velocity.normalized;
-        
-        if (movementDirection.sqrMagnitude > 0.01f) // Check if the unit is moving
-        {
-            // Flip sprite if moving in the opposite direction
-            if (movementDirection.x > 0)
+        if(agent.enabled){
+            Vector3 movementDirection = agent.velocity.normalized;
+            if (agent.enabled && movementDirection.sqrMagnitude > 0.01f) // Check if the unit is moving
             {
-                WitchSprite.transform.rotation = Quaternion.Euler(0, 0, 0); // Facing right
-            }
-            else
-            {
-                WitchSprite.transform.rotation = Quaternion.Euler(0, 180, 0); // Facing left
+                // Flip sprite if moving in the opposite direction
+                if (movementDirection.x > 0)
+                {
+                    WitchSprite.transform.rotation = Quaternion.Euler(0, 0, 0); // Facing right
+                }
+                else
+                {
+                    WitchSprite.transform.rotation = Quaternion.Euler(0, 180, 0); // Facing left
+                }
             }
         }
         
@@ -108,28 +114,28 @@ public class WitchScript : MonoBehaviourPunCallbacks
 
     void FindAndAttack()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 16f, LayerMask.GetMask("PawnLayer"));
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, DetectionRange, LayerMask.GetMask("PawnLayer"));
         bool targetFound = false;
         Melee nearestUnit = null;
         float nearestDistance = float.MaxValue;
-        DistanceToHomeBase = Vector3.Distance(transform.position, HomeBase.position);
+        DistanceToHomeBasePositionLocal = Vector3.Distance(transform.position, HomeBasePositionLocal);
 
         foreach (Collider2D collider in colliders)
         {
             Melee melee = collider.GetComponent<Melee>();
             WitchScript witch = collider.GetComponent<WitchScript>();
 
-            if (melee != null && melee.Team != Team && DistanceToHomeBase < 10 || witch != null && witch.Team != Team && DistanceToHomeBase < 10 || melee != null && melee.Team != Team && AttackOpponent || witch != null && witch.Team != Team && AttackOpponent)
+            if (melee != null && melee.Team != Team && DistanceToHomeBasePositionLocal < 10 || witch != null && witch.Team != Team && DistanceToHomeBasePositionLocal < 10 || melee != null && melee.Team != Team && AttackOpponent || witch != null && witch.Team != Team && AttackOpponent)
             {
                 targetFound = true;
-                agent.SetDestination(collider.transform.position);
-                if (agent.velocity.magnitude < 0.1f && !agent.pathPending && agent.remainingDistance > 0.1f)
+                if(agent.enabled)agent.SetDestination(collider.transform.position);
+                if (agent.enabled && agent.velocity.magnitude < 0.1f && !agent.pathPending && agent.remainingDistance > 0.1f)
                 {
                     Debug.Log("Agent stuck! Recalculating path.");
                     agent.ResetPath();
                     agent.SetDestination(collider.transform.position);
                 }
-                agent.stoppingDistance = 15;
+                if(agent.enabled)agent.stoppingDistance = 10;
                 Vector3 targetCenter = collider.bounds.center;
                 OrbSpawnPoint.LookAt(targetCenter);
 
@@ -157,31 +163,31 @@ public class WitchScript : MonoBehaviourPunCallbacks
             if (nearestUnit != null)
             {
                 Vector3 targetPosition = nearestUnit.transform.position - nearestUnit.transform.forward * 5;
-                agent.SetDestination(targetPosition);
-                if (agent.velocity.magnitude < 0.1f && !agent.pathPending && agent.remainingDistance > 0.1f)
+                if(agent.enabled)agent.SetDestination(targetPosition);
+                if (agent.enabled && agent.velocity.magnitude < 0.1f && !agent.pathPending && agent.remainingDistance > 0.1f)
                 {
                     Debug.Log("Agent stuck! Recalculating path.");
                     agent.ResetPath();
                     agent.SetDestination(targetPosition);
                 }
-                agent.stoppingDistance = 0;
+                if(agent.enabled)agent.stoppingDistance = 0;
 
                 // Continuously update the destination to follow the melee unit
                 if (Vector3.Distance(transform.position, targetPosition) > agent.stoppingDistance)
                 {
-                    agent.SetDestination(targetPosition);
+                    if(agent.enabled)agent.SetDestination(targetPosition);
                 }
             }
             else
             {
-                agent.SetDestination(targetBase.position);
-                if (agent.velocity.magnitude < 0.1f && !agent.pathPending && agent.remainingDistance > 0.1f)
+                if(agent.enabled)agent.SetDestination(targetBase.position);
+                if (agent.enabled && agent.velocity.magnitude < 0.1f && !agent.pathPending && agent.remainingDistance > 0.1f)
                 {
                     Debug.Log("Agent stuck! Recalculating path.");
                     agent.ResetPath();
                     agent.SetDestination(targetBase.position);
                 }
-                agent.stoppingDistance = 15;
+                if(agent.enabled)agent.stoppingDistance = 15;
                 if (Vector3.Distance(transform.position, targetBase.position) < 20f && OrbShoot)
                 {
                     OrbShoot = false;
@@ -194,14 +200,29 @@ public class WitchScript : MonoBehaviourPunCallbacks
         }
         else if (!targetFound && !AttackOpponent)
         {
-            agent.SetDestination(HomeBase.position);
-            if (agent.velocity.magnitude < 0.1f && !agent.pathPending && agent.remainingDistance > 0.1f)
+            if(agent.enabled)agent.SetDestination(HomeBasePositionLocal);
+            if (agent.enabled && agent.velocity.magnitude < 0.1f && !agent.pathPending && agent.remainingDistance > 0.1f)
             {
                 Debug.Log("Agent stuck! Recalculating path.");
                 agent.ResetPath();
-                agent.SetDestination(HomeBase.position);
+                agent.SetDestination(HomeBasePositionLocal);
             }
-            agent.stoppingDistance = stopDistance;
+            if(agent.enabled)agent.stoppingDistance = stopDistance;
+            if (agent.enabled && Vector3.Distance(transform.position, HomeBasePositionLocal) < 5f && agent.velocity.magnitude < 0.1f)
+            {
+                Debug.Log("Agent close to home base and stuck. Disabling agent and enabling obstacle.");
+                agent.enabled = false;
+                obstacle.enabled = true;
+            }
+        }
+        if (targetFound || AttackOpponent)
+        {
+            if (!agent.enabled)
+            {
+                Debug.Log("Re-enabling agent.");
+                agent.enabled = true;
+                obstacle.enabled = false;
+            }
         }
     }
 
@@ -213,6 +234,7 @@ public class WitchScript : MonoBehaviourPunCallbacks
         orbScript.Team = Team;
         orbScript.Damage = Damage;
     }
+   
 
     [PunRPC]
     public void SetTeam(int team)
@@ -221,14 +243,16 @@ public class WitchScript : MonoBehaviourPunCallbacks
         if (Team == 1)
         {
             targetBase = GameObject.FindWithTag("PlayerTwoBase").transform;
-            HomeBase = GameObject.FindWithTag("HomeBaseOne").transform;
+            HomeBasePosition = GameObject.FindWithTag("HomeBaseOne").transform;
+            HomeBasePositionLocal = new Vector3(HomeBasePosition.position.x + HomeBasePositionLocalOffset, HomeBasePosition.position.y, HomeBasePosition.position.z);
         }
         else if (Team == 2)
         {
             targetBase = GameObject.FindWithTag("PlayerOneBase").transform;
-            HomeBase = GameObject.FindWithTag("HomeBaseTwo").transform;
+            HomeBasePosition = GameObject.FindWithTag("HomeBaseTwo").transform;
+            HomeBasePositionLocal = new Vector3(HomeBasePosition.position.x + HomeBasePositionLocalOffset, HomeBasePosition.position.y, HomeBasePosition.position.z);
         }
-        agent.SetDestination(targetBase.position);
+        if(agent.enabled)agent.SetDestination(targetBase.position);
     }
 
     [PunRPC]
