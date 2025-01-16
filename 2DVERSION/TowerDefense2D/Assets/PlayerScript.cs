@@ -133,6 +133,8 @@ public class PlayerScript : MonoBehaviourPunCallbacks
 
     [Tooltip("Momentum of the camera during movement.")]
     private float momentum = 0f;
+
+    public Button AttackButton;
     
     void Start()
     {
@@ -556,6 +558,15 @@ public class PlayerScript : MonoBehaviourPunCallbacks
                     Debug.LogWarning($"Melee component not found on {unit.name}");
                 }
             }
+        }
+        //change the color of the button to indicate attack mode
+        if(AttackMode)
+        {
+            AttackButton.GetComponent<Image>().color = Color.red;
+        }
+        else
+        {
+            AttackButton.GetComponent<Image>().color = Color.white;
         }
     }
 

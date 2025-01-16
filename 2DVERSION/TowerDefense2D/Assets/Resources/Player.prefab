@@ -232,10 +232,10 @@ RectTransform:
   - {fileID: 8033773386567430130}
   m_Father: {fileID: 3302638286289831652}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.58478993, y: 0.83100003}
-  m_AnchorMax: {x: 0.67, y: 1}
-  m_AnchoredPosition: {x: 7, y: -2.4118042}
-  m_SizeDelta: {x: -19.7371, y: -21.41}
+  m_AnchorMin: {x: 0.6775545, y: 0.837}
+  m_AnchorMax: {x: 0.757, y: 0.98800004}
+  m_AnchoredPosition: {x: 1, y: 1.0881958}
+  m_SizeDelta: {x: -5.737091, y: -0.40999985}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3370466382332828617
 CanvasRenderer:
@@ -363,10 +363,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 3302638286289831652}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.037, y: 0.902658}
-  m_AnchorMax: {x: 0.26152083, y: 1}
-  m_AnchoredPosition: {x: -1.5, y: -2}
-  m_SizeDelta: {x: -5, y: 0}
+  m_AnchorMin: {x: 0.020757576, y: 0.8651453}
+  m_AnchorMax: {x: 0.2443485, y: 0.9021667}
+  m_AnchoredPosition: {x: -1, y: -3.8275}
+  m_SizeDelta: {x: -1, y: 7.655}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7864270132378412464
 CanvasRenderer:
@@ -461,7 +461,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: -1.1906738, z: 0, w: 70.24573}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -911,10 +911,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 3302638286289831652}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.88500005}
-  m_AnchorMax: {x: 0, y: 0.88500005}
-  m_AnchoredPosition: {x: 119.00012, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchorMin: {x: 0.41351518, y: 0.95550007}
+  m_AnchorMax: {x: 0.597, y: 1}
+  m_AnchoredPosition: {x: -22.999878, y: -1.5}
+  m_SizeDelta: {x: -282, y: -3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1984155649927448427
 CanvasRenderer:
@@ -1855,10 +1855,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 3302638286289831652}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.67, y: 0.83100003}
-  m_AnchorMax: {x: 0.7542102, y: 0.9881311}
-  m_AnchoredPosition: {x: -2.9000244, y: 6.505005}
-  m_SizeDelta: {x: 1.0600586, y: 10.690002}
+  m_AnchorMin: {x: 0.008, y: 0.6927095}
+  m_AnchorMax: {x: 0.09218484, y: 0.86014533}
+  m_AnchoredPosition: {x: 0, y: -1}
+  m_SizeDelta: {x: 1.0600586, y: -1.3099976}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4390897162914448298
 CanvasRenderer:
@@ -2577,6 +2577,7 @@ MonoBehaviour:
   MeleeButtonText: {fileID: 1161083992590380023}
   WitchButtonText: {fileID: 3830735012092345197}
   BearButtonText: {fileID: 4934905184081956956}
+  AttackButton: {fileID: 7384165048191486347}
   CoinPerTickUpgradeCost: 100
 --- !u!1 &9108419075081083427
 GameObject:
