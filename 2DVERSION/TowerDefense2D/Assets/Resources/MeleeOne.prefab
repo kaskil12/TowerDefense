@@ -914,6 +914,7 @@ MonoBehaviour:
   HomeBasePositionLocal: {x: 0, y: 0, z: 0}
   isInvincible: 0
   animator: {fileID: 7380623011134395959}
+  TargetChosen: {fileID: 0}
 --- !u!195 &4207357713282794659
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -956,6 +957,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 8026934409191624740}
+  - {fileID: 5625422644260987850}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

@@ -119,61 +119,38 @@ public class Melee : MonoBehaviourPunCallbacks
         
 
     }
-
+    public Transform TargetChosen;
     void FindAndAttack()
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, DetectRange, LayerMask.GetMask("PawnLayer"));
         bool targetFound = false;
         DistanceToHomeBasePositionLocal = Vector3.Distance(transform.position, HomeBasePositionLocal);
-
         foreach (Collider2D collider in colliders)
         {
             Melee melee = collider.GetComponent<Melee>();
             WitchScript witch = collider.GetComponent<WitchScript>();
-
-            if (melee != null && melee.Team != Team && (DistanceToHomeBasePositionLocal < 10 || AttackOpponent))
+            if (melee != null && melee.Team != Team && DistanceToHomeBasePositionLocal < 10 || witch != null && witch.Team != Team && DistanceToHomeBasePositionLocal < 10 || melee != null && melee.Team != Team && AttackOpponent || witch != null && witch.Team != Team && AttackOpponent)
             {
                 targetFound = true;
-                if (agent.enabled) agent.SetDestination(collider.transform.position);
+                if(TargetChosen == null)TargetChosen = collider.transform;
+                if(agent.enabled)agent.SetDestination(TargetChosen.transform.position);
                 if (agent.enabled && agent.velocity.magnitude < 0.1f && !agent.pathPending && agent.remainingDistance > 0.1f)
                 {
                     Debug.Log("Agent stuck! Recalculating path.");
                     agent.ResetPath();
                     agent.SetDestination(collider.transform.position);
                 }
-                if (agent.enabled) agent.stoppingDistance = 0;
+                if(agent.enabled)agent.stoppingDistance = 0;
 
                 PhotonView pv = collider.GetComponent<PhotonView>();
                 if (pv != null && canAttack && Vector3.Distance(transform.position, collider.transform.position) < AttackRange)
                 {
-                    if (agent.enabled) agent.speed = 0;
+                    if(agent.enabled)agent.speed = 0;
                     pv.RPC("TakeDamage", RpcTarget.AllBuffered, Damage);
                     animator.SetTrigger("Attack");
                     StartCoroutine(Attack());
                 }
-                break;
-            }
-            else if (witch != null && witch.Team != Team && (DistanceToHomeBasePositionLocal < 10 || AttackOpponent))
-            {
-                targetFound = true;
-                if (agent.enabled) agent.SetDestination(collider.transform.position);
-                if (agent.enabled && agent.velocity.magnitude < 0.1f && !agent.pathPending && agent.remainingDistance > 0.1f)
-                {
-                    Debug.Log("Agent stuck! Recalculating path.");
-                    agent.ResetPath();
-                    agent.SetDestination(collider.transform.position);
-                }
-                if (agent.enabled) agent.stoppingDistance = 0;
-
-                PhotonView pv = collider.GetComponent<PhotonView>();
-                if (pv != null && canAttack && Vector3.Distance(transform.position, collider.transform.position) < AttackRange)
-                {
-                    if (agent.enabled) agent.speed = 0;
-                    pv.RPC("TakeDamage", RpcTarget.AllBuffered, Damage);
-                    animator.SetTrigger("Attack");
-                    StartCoroutine(Attack());
-                }
-                break;
+                break; 
             }
         }
 
