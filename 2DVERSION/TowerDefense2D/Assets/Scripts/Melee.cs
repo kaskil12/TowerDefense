@@ -62,6 +62,7 @@ public class Melee : MonoBehaviourPunCallbacks
     public float HomeBasePositionLocalOffset = 5;
     public Vector3 HomeBasePositionLocal;
     public bool isInvincible = false;
+    public Animator animator;
 
     void Start(){
         canAttack = true;
@@ -80,6 +81,15 @@ public class Melee : MonoBehaviourPunCallbacks
     {
         FindAndAttack();
         if(agent.enabled)agent.avoidancePriority = Random.Range(0, 100);
+        //animation
+        if(agent.enabled && agent.velocity.magnitude > 0.1f)
+        {
+            animator.SetBool("Walking", true);
+        }
+        else
+        {
+            animator.SetBool("Walking", false);
+        }
         if(Health < MaxHealth)
         {
             if(!HealthBar.gameObject.activeSelf)HealthBar.gameObject.SetActive(true);
@@ -136,6 +146,7 @@ public class Melee : MonoBehaviourPunCallbacks
                 {
                     if(agent.enabled)agent.speed = 0;
                     pv.RPC("TakeDamage", RpcTarget.AllBuffered, Damage);
+                    animator.SetTrigger("Attack");
                     StartCoroutine(Attack());
                 }
                 break; 
@@ -159,11 +170,13 @@ public class Melee : MonoBehaviourPunCallbacks
                 if (Team == 1 && canAttack && Vector3.Distance(transform.position, targetBase.position) < AttackRange + 3f)
                 {
                     phv.RPC("PlayerTwoDamageTower", RpcTarget.AllBuffered, Damage);
+                    animator.SetTrigger("Attack");
                     StartCoroutine(Attack());
                 }
                 else if (Team == 2 && canAttack && Vector3.Distance(transform.position, targetBase.position) < AttackRange + 3f)
                 {
                     phv.RPC("PlayerOneDamageTower", RpcTarget.AllBuffered, Damage);
+                    animator.SetTrigger("Attack");
                     StartCoroutine(Attack());
                 }
             }

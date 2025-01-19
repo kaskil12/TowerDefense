@@ -12,7 +12,16 @@ public class CreateAndJoin : MonoBehaviourPunCallbacks
 {
     public TMP_InputField input_Create;
     public TMP_InputField input_Join;
+    public GameObject CustomRoomView;
+    public Toggle CustomRoomToggle;
 
+    void Update(){
+        if(CustomRoomToggle.isOn){
+            CustomRoomView.SetActive(true);
+        }else{
+            CustomRoomView.SetActive(false);
+        }
+    }
     public void CreateRoom()
     {
         if(!String.IsNullOrEmpty(input_Create.text)){

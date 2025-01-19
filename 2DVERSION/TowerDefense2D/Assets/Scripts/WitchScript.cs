@@ -61,6 +61,7 @@ public class WitchScript : MonoBehaviourPunCallbacks
     public Vector3 HomeBasePositionLocal;
     public float DetectionRange = 10f;
     public bool isInvincible;
+    public Animator animator;
 
 
 
@@ -277,6 +278,7 @@ public class WitchScript : MonoBehaviourPunCallbacks
     IEnumerator OrbAttack()
     {
         OrbShoot = false;
+        animator.SetTrigger("Attack");
         yield return new WaitForSeconds(3);
         OrbShoot = true;
     }
