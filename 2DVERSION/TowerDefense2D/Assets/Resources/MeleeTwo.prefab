@@ -359,6 +359,7 @@ GameObject:
   - component: {fileID: 5796791233863881384}
   - component: {fileID: 1648117770378478733}
   - component: {fileID: 6242881823347876574}
+  - component: {fileID: 4205323389345259641}
   m_Layer: 0
   m_Name: pixil-frame-1
   m_TagString: Untagged
@@ -475,6 +476,30 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &4205323389345259641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4099276277578350885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 4
+    SynchronizeType: 2
+    Name: Walking
+  - Type: 9
+    SynchronizeType: 2
+    Name: Attack
+  m_SynchronizeLayers:
+  - SynchronizeType: 1
+    LayerIndex: 0
 --- !u!1 &4603164590345473466
 GameObject:
   m_ObjectHideFlags: 0
@@ -954,6 +979,7 @@ MonoBehaviour:
   HomeBasePositionLocal: {x: 0, y: 0, z: 0}
   isInvincible: 0
   animator: {fileID: 1648117770378478733}
+  IsAttacking: 0
   TargetChosen: {fileID: 0}
 --- !u!195 &-6269713250337036773
 NavMeshAgent:

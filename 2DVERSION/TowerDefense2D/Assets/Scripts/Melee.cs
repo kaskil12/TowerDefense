@@ -63,6 +63,7 @@ public class Melee : MonoBehaviourPunCallbacks
     public Vector3 HomeBasePositionLocal;
     public bool isInvincible = false;
     public Animator animator;
+    public bool IsAttacking = false;
 
     void Start(){
         canAttack = true;
@@ -116,6 +117,11 @@ public class Melee : MonoBehaviourPunCallbacks
                 }
             }
         }
+        if(IsAttacking){
+            if(agent.enabled)agent.speed = 0;
+        }else{
+            if(agent.enabled)agent.speed = 3.5f;
+        }
         
 
     }
@@ -143,6 +149,11 @@ public class Melee : MonoBehaviourPunCallbacks
                 if(agent.enabled)agent.stoppingDistance = 0;
 
                 PhotonView pv = collider.GetComponent<PhotonView>();
+                if(Vector3.Distance(transform.position, collider.transform.position) < AttackRange){
+                    IsAttacking = true;
+                }else{
+                    IsAttacking = false;
+                }
                 if (pv != null && canAttack && Vector3.Distance(transform.position, collider.transform.position) < AttackRange)
                 {
                     if(agent.enabled)agent.speed = 0;
@@ -156,6 +167,7 @@ public class Melee : MonoBehaviourPunCallbacks
 
         if (!targetFound && AttackOpponent)
         {
+            DetectRange = 10f;
             if(agent.enabled)agent.SetDestination(targetBase.position);
             if (agent.enabled && agent.velocity.magnitude < 0.1f && !agent.pathPending && agent.remainingDistance > 0.1f)
             {
@@ -184,6 +196,7 @@ public class Melee : MonoBehaviourPunCallbacks
         }
         else if (!targetFound && !AttackOpponent)
         {
+            DetectRange = 3f;
             if(agent.enabled)agent.SetDestination(HomeBasePositionLocal);
             if (agent.enabled && agent.velocity.magnitude < 0.1f && !agent.pathPending && agent.remainingDistance > 0.1f)
             {
@@ -240,7 +253,6 @@ public class Melee : MonoBehaviourPunCallbacks
     {
         canAttack = false;
         yield return new WaitForSeconds(AttackSpeed);
-        if(agent.enabled)agent.speed = 3.5f;
         canAttack = true;
     }
 

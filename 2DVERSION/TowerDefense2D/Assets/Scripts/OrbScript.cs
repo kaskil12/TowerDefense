@@ -6,6 +6,7 @@ public class OrbScript : MonoBehaviourPunCallbacks
 {
     public int Team { get; set; }
     public int Damage { get; set; }
+    public bool HasDoneDamage = false;
 
     private void Start()
     {
@@ -13,6 +14,9 @@ public class OrbScript : MonoBehaviourPunCallbacks
     }
     public void Update()
     {
+        if(HasDoneDamage){
+            return;
+        }
         transform.position += transform.forward * Time.deltaTime * 10f;
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 1f, LayerMask.GetMask("PawnLayer"));
         foreach (Collider2D collider in colliders)
@@ -27,6 +31,7 @@ public class OrbScript : MonoBehaviourPunCallbacks
                     if ((melee != null && melee.Team != Team) || (witch != null && witch.Team != Team))
                     {
                         targetPv.RPC("TakeDamage", RpcTarget.AllBuffered, Damage);
+                        HasDoneDamage = true;
                         Destroy(gameObject); 
                     }
                 }
@@ -42,11 +47,13 @@ public class OrbScript : MonoBehaviourPunCallbacks
                     if (Team == 1)
                     {
                         phv.RPC("PlayerTwoDamageTower", RpcTarget.AllBuffered, Damage);
+                        HasDoneDamage = true;
                         Destroy(gameObject);
                     }
                     else if (Team == 2)
                     {
                         phv.RPC("PlayerOneDamageTower", RpcTarget.AllBuffered, Damage);
+                        HasDoneDamage = true;
                         Destroy(gameObject);
                     }
                 }

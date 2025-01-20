@@ -433,6 +433,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 4702702709459623995}
+  - {fileID: 285118207711208285}
   - {fileID: 5732022529645732109}
   sceneViewId: 0
   InstantiationId: 0
@@ -487,6 +488,8 @@ MonoBehaviour:
   HomeBasePositionLocal: {x: 0, y: 0, z: 0}
   isInvincible: 0
   animator: {fileID: 6680844891936773171}
+  IsAttacking: 0
+  TargetChosen: {fileID: 0}
 --- !u!61 &6131917330259833595
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -802,6 +805,7 @@ GameObject:
   - component: {fileID: 7174112616786775538}
   - component: {fileID: 6680844891936773171}
   - component: {fileID: 5732022529645732109}
+  - component: {fileID: 3139026865718820782}
   m_Layer: 0
   m_Name: black_bear_0
   m_TagString: Untagged
@@ -917,3 +921,27 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &3139026865718820782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9126006487963980768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 4
+    SynchronizeType: 2
+    Name: Walking
+  - Type: 9
+    SynchronizeType: 2
+    Name: Attack
+  m_SynchronizeLayers:
+  - SynchronizeType: 1
+    LayerIndex: 0

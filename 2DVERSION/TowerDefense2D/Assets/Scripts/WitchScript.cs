@@ -113,7 +113,7 @@ public class WitchScript : MonoBehaviourPunCallbacks
         }
         
     }
-
+    public Transform TargetChosen;
     void FindAndAttack()
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, DetectionRange, LayerMask.GetMask("PawnLayer"));
@@ -130,7 +130,8 @@ public class WitchScript : MonoBehaviourPunCallbacks
             if (melee != null && melee.Team != Team && DistanceToHomeBasePositionLocal < 10 || witch != null && witch.Team != Team && DistanceToHomeBasePositionLocal < 10 || melee != null && melee.Team != Team && AttackOpponent || witch != null && witch.Team != Team && AttackOpponent)
             {
                 targetFound = true;
-                if(agent.enabled)agent.SetDestination(collider.transform.position);
+                if(TargetChosen == null)TargetChosen = collider.transform;
+                if(agent.enabled)agent.SetDestination(TargetChosen.transform.position);
                 if (agent.enabled && agent.velocity.magnitude < 0.1f && !agent.pathPending && agent.remainingDistance > 0.1f)
                 {
                     Debug.Log("Agent stuck! Recalculating path.");
@@ -162,6 +163,7 @@ public class WitchScript : MonoBehaviourPunCallbacks
         if(Vector3.Distance(transform.position, targetBase.position) < 20f)nearestUnit = null;
         if (!targetFound && AttackOpponent)
         {
+            DetectionRange = 10f;
             if (nearestUnit != null)
             {
                 Vector3 targetPosition = nearestUnit.transform.position - nearestUnit.transform.forward * 5;
@@ -202,6 +204,7 @@ public class WitchScript : MonoBehaviourPunCallbacks
         }
         else if (!targetFound && !AttackOpponent)
         {
+            DetectionRange = 5f;
             if(agent.enabled)agent.SetDestination(HomeBasePositionLocal);
             if (agent.enabled && agent.velocity.magnitude < 0.1f && !agent.pathPending && agent.remainingDistance > 0.1f)
             {

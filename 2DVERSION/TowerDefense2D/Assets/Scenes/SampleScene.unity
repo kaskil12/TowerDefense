@@ -691,33 +691,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &675518050
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5919342377350575883}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4762ea565be091148b641f0c9869e40f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GameOver: 0
-  Started: 0
-  Countdown: 5
-  MaxRounds: 3
-  RoundNumber: 1
-  PlayerOneTowerHealth: 2500
-  PlayerTwoTowerHealth: 2500
-  PlayerOneWins: 0
-  PlayerTwoWins: 0
-  Players: 0
-  PLayerOneTowerHealthBar: {fileID: 530869939}
-  PLayerTwoTowerHealthBar: {fileID: 1688533028807734007}
-  PlayerOneWinsText: {fileID: 5070822349253074145}
-  PlayerTwoWinsText: {fileID: 2085198988905281908}
-  CountdownText: {fileID: 5199568097876489807}
 --- !u!1 &688824878
 GameObject:
   m_ObjectHideFlags: 0
@@ -2610,8 +2583,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3738190208694241854}
-  - component: {fileID: 675518050}
   - component: {fileID: 2722028099174096992}
+  - component: {fileID: 5919342377350575884}
   m_Layer: 0
   m_Name: RoundManager
   m_TagString: Untagged
@@ -2619,6 +2592,33 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &5919342377350575884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5919342377350575883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4762ea565be091148b641f0c9869e40f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GameOver: 0
+  Started: 0
+  Countdown: 5
+  MaxRounds: 3
+  RoundNumber: 1
+  PlayerOneTowerHealth: 2500
+  PlayerTwoTowerHealth: 2500
+  PlayerOneWins: 0
+  PlayerTwoWins: 0
+  Players: 0
+  PLayerOneTowerHealthBar: {fileID: 530869939}
+  PLayerTwoTowerHealthBar: {fileID: 1688533028807734007}
+  PlayerOneWinsText: {fileID: 5070822349253074145}
+  PlayerTwoWinsText: {fileID: 2085198988905281908}
+  CountdownText: {fileID: 5199568097876489807}
 --- !u!1 &6174452939350036242
 GameObject:
   m_ObjectHideFlags: 0

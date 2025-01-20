@@ -398,6 +398,7 @@ MonoBehaviour:
   DetectionRange: 10
   isInvincible: 0
   animator: {fileID: 7946773599456730728}
+  TargetChosen: {fileID: 0}
 --- !u!61 &5194487138512462405
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -786,6 +787,7 @@ GameObject:
   - component: {fileID: 1071975652738697993}
   - component: {fileID: 7946773599456730728}
   - component: {fileID: 2371874297912247467}
+  - component: {fileID: 376561169868410756}
   m_Layer: 3
   m_Name: WhitchPos
   m_TagString: Untagged
@@ -901,3 +903,27 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &376561169868410756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9072475433742299512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 4
+    SynchronizeType: 2
+    Name: Walking
+  - Type: 9
+    SynchronizeType: 2
+    Name: Attack
+  m_SynchronizeLayers:
+  - SynchronizeType: 1
+    LayerIndex: 0
