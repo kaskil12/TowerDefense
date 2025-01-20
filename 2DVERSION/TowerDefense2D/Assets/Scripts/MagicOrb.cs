@@ -8,7 +8,7 @@ public class MagicOrb : MonoBehaviourPunCallbacks
     [Range(0.0f, 50.0f)]
     public float DetectAndDestroyRadius;
     [Range(0.0f, 50.0f)]
-    public float Damage = 10.0f;
+    public int Damage = 10;
     [Range(0.0f, 10.0f)]
     public float AttackSpeed = 1.0f;
     private float AttackSpeedTimer = 0.0f;
@@ -32,7 +32,8 @@ public class MagicOrb : MonoBehaviourPunCallbacks
                 if (collider.gameObject.tag == "PawnOne" && Team == 2)
                 {
                     AttackSpeedTimer = AttackSpeed;
-                    photonView.RPC("TakeDamageToEnemy", RpcTarget.All, Damage, collider.gameObject);
+                    PhotonView pv = collider.gameObject.transform.GetComponent<PhotonView>();
+                    pv.RPC("TakeDamage", RpcTarget.All, Damage);
                     lineRenderer.positionCount = 2;
                     lineRenderer.SetPosition(0, transform.position);
                     lineRenderer.SetPosition(1, collider.transform.position);
@@ -40,18 +41,14 @@ public class MagicOrb : MonoBehaviourPunCallbacks
                 else if (collider.gameObject.tag == "PawnTwo" && Team == 1)
                 {
                     AttackSpeedTimer = AttackSpeed;
-                    photonView.RPC("TakeDamageToEnemy", RpcTarget.All, Damage, collider.gameObject);
+                    PhotonView pv = collider.gameObject.transform.GetComponent<PhotonView>();
+                    pv.RPC("TakeDamage", RpcTarget.All, Damage);
                     lineRenderer.positionCount = 2;
                     lineRenderer.SetPosition(0, transform.position);
                     lineRenderer.SetPosition(1, collider.transform.position);
                 }
             }
         }
-    }
-    [PunRPC]
-    public void TakeDamageToEnemy(float damage, GameObject enemy)
-    {
-        enemy.SendMessage("TakeDamage", damage);
     }
     //draw a circle in the scene view
     private void OnDrawGizmos()
