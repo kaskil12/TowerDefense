@@ -137,6 +137,7 @@ public class Melee : MonoBehaviourPunCallbacks
             WitchScript witch = collider.GetComponent<WitchScript>();
             if (melee != null && melee.Team != Team && DistanceToHomeBasePositionLocal < 10 || witch != null && witch.Team != Team && DistanceToHomeBasePositionLocal < 10 || melee != null && melee.Team != Team && AttackOpponent || witch != null && witch.Team != Team && AttackOpponent)
             {
+                obstacle.enabled = false;
                 targetFound = true;
                 if(TargetChosen == null)TargetChosen = collider.transform;
                 if(agent.enabled)agent.SetDestination(TargetChosen.transform.position);
@@ -149,14 +150,9 @@ public class Melee : MonoBehaviourPunCallbacks
                 if(agent.enabled)agent.stoppingDistance = 0;
 
                 PhotonView pv = collider.GetComponent<PhotonView>();
-                if(Vector3.Distance(transform.position, collider.transform.position) < AttackRange){
-                    IsAttacking = true;
-                }else{
-                    IsAttacking = false;
-                }
                 if (pv != null && canAttack && Vector3.Distance(transform.position, collider.transform.position) < AttackRange)
                 {
-                    if(agent.enabled)agent.speed = 0;
+                    if(agent.enabled)agent.enabled = false;
                     pv.RPC("TakeDamage", RpcTarget.AllBuffered, Damage);
                     animator.SetTrigger("Attack");
                     StartCoroutine(Attack());
@@ -164,9 +160,15 @@ public class Melee : MonoBehaviourPunCallbacks
                 break; 
             }
         }
+        if(TargetChosen != null && Vector3.Distance(transform.position, TargetChosen.transform.position) < AttackRange){
+            IsAttacking = true;
+        }else{
+            IsAttacking = false;
+        }
 
         if (!targetFound && AttackOpponent)
         {
+            obstacle.enabled = false;
             DetectRange = 10f;
             if(agent.enabled)agent.SetDestination(targetBase.position);
             if (agent.enabled && agent.velocity.magnitude < 0.1f && !agent.pathPending && agent.remainingDistance > 0.1f)
@@ -218,7 +220,7 @@ public class Melee : MonoBehaviourPunCallbacks
         // Re-enable the agent if any targets come near or if AttackOpponent is true
         if (targetFound || AttackOpponent)
         {
-            if (!agent.enabled)
+            if (!agent.enabled && IsAttacking == false)
             {
                 Debug.Log("Re-enabling agent.");
                 agent.enabled = true;

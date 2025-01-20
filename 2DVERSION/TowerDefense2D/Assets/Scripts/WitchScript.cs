@@ -129,6 +129,7 @@ public class WitchScript : MonoBehaviourPunCallbacks
 
             if (melee != null && melee.Team != Team && DistanceToHomeBasePositionLocal < 10 || witch != null && witch.Team != Team && DistanceToHomeBasePositionLocal < 10 || melee != null && melee.Team != Team && AttackOpponent || witch != null && witch.Team != Team && AttackOpponent)
             {
+                obstacle.enabled = false;
                 targetFound = true;
                 if(TargetChosen == null)TargetChosen = collider.transform;
                 if(agent.enabled)agent.SetDestination(TargetChosen.transform.position);
@@ -163,6 +164,7 @@ public class WitchScript : MonoBehaviourPunCallbacks
         if(Vector3.Distance(transform.position, targetBase.position) < 20f)nearestUnit = null;
         if (!targetFound && AttackOpponent)
         {
+            obstacle.enabled = false;
             DetectionRange = 10f;
             if (nearestUnit != null)
             {
