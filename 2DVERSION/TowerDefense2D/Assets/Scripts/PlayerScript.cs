@@ -136,6 +136,10 @@ public class PlayerScript : MonoBehaviourPunCallbacks
 
     public Button AttackButton;
     
+    [Header("Magic Orb Settings")]
+    public MagicOrb magicOrb;
+    public int magicOrbCost = 500;
+    
     void Start()
     {
         StartCoroutine(GetCoins());
@@ -318,7 +322,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks
             }
         }
     }
-  
+    #region Melee
     public void SpawnButtonMelee()
     {
         
@@ -381,7 +385,9 @@ public class PlayerScript : MonoBehaviourPunCallbacks
             }
         }
     }
-    
+    #endregion Melee
+
+    #region Witch
     public void SpawnWitch(){
         Debug.Log(localPlayerRole);
         RoundManager roundManager = GameObject.Find("RoundManager").GetComponent<RoundManager>();
@@ -442,6 +448,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks
             }
         }
     }
+    #endregion Witch
 
     #region Bear
     public void SpawnBear(){
@@ -505,6 +512,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks
         }
     }
     #endregion Bear
+    #region Coins
     public int CoinPerTickUpgradeCost = 100;
     public void CoinUpgrade()
     {
@@ -516,6 +524,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks
             CoinPerTickText.text = $"{CoinPerTickUpgradeCost}";
         }
     }
+    #endregion Coins
     public void ToggleAttack()
     {
         AttackMode = !AttackMode;
@@ -599,7 +608,21 @@ public class PlayerScript : MonoBehaviourPunCallbacks
     //         GameObject.FindWithTag("PlayerTwo").GetComponent<PlayerTwo>().ToggleAttack();
     //     }
     // }
-
+    #region MagicOrb
+    public void UpgradeMagicOrb()
+    {
+        if(Coins >= magicOrbCost)
+        {
+            if(localPlayerRole == "PlayerOne")magicOrb = GameObject.Find("OrbOne").GetComponent<MagicOrb>();
+            else if(localPlayerRole == "PlayerTwo")magicOrb = GameObject.Find("OrbTwo").GetComponent<MagicOrb>();
+            PhotonView pv = magicOrb.GetComponent<PhotonView>();
+            pv.RPC("UpgradeMagicOrb", RpcTarget.AllBuffered);
+            Coins -= magicOrbCost;
+            magicOrbCost += 100;
+        }
+    }
+    #endregion MagicOrb
+    #region Swipes
     public void Swipes()
     {
         if (Input.touchCount > 0)
@@ -641,6 +664,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks
 
         ClampCameraPosition();
     }
+    #endregion Swipes
 
     private void ApplyMomentum()
     {

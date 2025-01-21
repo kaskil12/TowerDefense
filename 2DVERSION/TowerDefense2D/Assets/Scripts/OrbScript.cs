@@ -7,10 +7,14 @@ public class OrbScript : MonoBehaviourPunCallbacks
     public int Team { get; set; }
     public int Damage { get; set; }
     public bool HasDoneDamage = false;
+    private SpriteRenderer OrbSprite;
+    
 
     private void Start()
     {
         Destroy(gameObject, 2f); 
+        OrbSprite = GetComponentInChildren<SpriteRenderer>();
+        OrbSprite.transform.rotation = Quaternion.Euler(0, 0, 0);
     }
     public void Update()
     {
@@ -21,21 +25,14 @@ public class OrbScript : MonoBehaviourPunCallbacks
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 1f, LayerMask.GetMask("PawnLayer"));
         foreach (Collider2D collider in colliders)
         {
-            if(collider.gameObject.tag == "PawnOne" || collider.gameObject.tag == "PawnTwo"){
+            if (collider.gameObject.tag == "PawnOne" && Team == 2 || collider.gameObject.tag == "PawnTwo" && Team == 1)
+            {
                 PhotonView targetPv = collider.GetComponent<PhotonView>();
-                if (targetPv != null)
-                {
-                    Melee melee = collider.GetComponent<Melee>();
-                    WitchScript witch = collider.GetComponent<WitchScript>();
-
-                    if ((melee != null && melee.Team != Team) || (witch != null && witch.Team != Team))
-                    {
-                        targetPv.RPC("TakeDamage", RpcTarget.AllBuffered, Damage);
-                        HasDoneDamage = true;
-                        Destroy(gameObject); 
-                    }
-                }
+                targetPv.RPC("TakeDamage", RpcTarget.AllBuffered, Damage);
+                HasDoneDamage = true;
+                Destroy(gameObject); 
             }
+            
         }
         Collider2D[] TowerCollider = Physics2D.OverlapCircleAll(transform.position, 1f);
         foreach (Collider2D collider in TowerCollider)

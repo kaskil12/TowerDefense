@@ -1,6 +1,6 @@
 using Photon.Pun;
 using UnityEngine;
-
+using TMPro;
 public class MagicOrb : MonoBehaviourPunCallbacks
 {
     public int Team;
@@ -13,10 +13,14 @@ public class MagicOrb : MonoBehaviourPunCallbacks
     public float AttackSpeed = 1.0f;
     private float AttackSpeedTimer = 0.0f;
     public LineRenderer lineRenderer;
+    public bool enabled = true;
+    private SpriteRenderer OrbSprite;
+    public int MagicOrbLevel = 0;
+    public TMP_Text MagicOrbLevelText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        OrbSprite = GetComponentInChildren<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -49,6 +53,14 @@ public class MagicOrb : MonoBehaviourPunCallbacks
                 }
             }
         }
+    }
+    [PunRPC]
+    public void Upgrade(){
+        if(OrbSprite.enabled == false && enabled == false){
+            OrbSprite.enabled = true;
+            enabled = true;
+        }
+        MagicOrbLevel++;
     }
     //draw a circle in the scene view
     private void OnDrawGizmos()

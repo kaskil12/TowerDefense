@@ -133,9 +133,10 @@ public class Melee : MonoBehaviourPunCallbacks
         DistanceToHomeBasePositionLocal = Vector3.Distance(transform.position, HomeBasePositionLocal);
         foreach (Collider2D collider in colliders)
         {
-            Melee melee = collider.GetComponent<Melee>();
-            WitchScript witch = collider.GetComponent<WitchScript>();
-            if (melee != null && melee.Team != Team && DistanceToHomeBasePositionLocal < 10 || witch != null && witch.Team != Team && DistanceToHomeBasePositionLocal < 10 || melee != null && melee.Team != Team && AttackOpponent || witch != null && witch.Team != Team && AttackOpponent)
+            // Melee melee = collider.GetComponent<Melee>();
+            // WitchScript witch = collider.GetComponent<WitchScript>();
+            // if (melee != null && melee.Team != Team && DistanceToHomeBasePositionLocal < 10 || witch != null && witch.Team != Team && DistanceToHomeBasePositionLocal < 10 || melee != null && melee.Team != Team && AttackOpponent || witch != null && witch.Team != Team && AttackOpponent)
+            if(collider.gameObject.tag == "PawnOne" && Team == 2  && DistanceToHomeBasePositionLocal < 10|| collider.gameObject.tag == "PawnTwo" && Team == 1 && DistanceToHomeBasePositionLocal < 10 || collider.gameObject.tag == "PawnOne" && Team == 2 && AttackOpponent || collider.gameObject.tag == "PawnTwo" && Team == 1 && AttackOpponent)
             {
                 obstacle.enabled = false;
                 targetFound = true;
