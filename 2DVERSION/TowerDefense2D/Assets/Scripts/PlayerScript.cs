@@ -90,7 +90,8 @@ public class PlayerScript : MonoBehaviourPunCallbacks
     public int WitchCost = 100;
 
     [Tooltip("Cost of bear units.")]
-    public int BearCost = 500;
+    public int BearCost = 300;
+    public int magicOrbCost = 500;
 
     [Header("Cooldowns and Timers")]
     [Tooltip("Cooldown for melee units.")]
@@ -138,7 +139,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks
     
     [Header("Magic Orb Settings")]
     public MagicOrb magicOrb;
-    public int magicOrbCost = 500;
+    public TMP_Text magicOrbCostText;
     
     void Start()
     {
@@ -158,6 +159,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks
         CoinPerTickText.text = $"{CoinPerTickUpgradeCost}";
         MeleeButtonText.text = $"{MeleeCost}";
         WitchButtonText.text = $"{WitchCost}";
+        magicOrbCostText.text = $"{magicOrbCost}";
     }
     bool player1Taken = false;
     bool player2Taken = false;
@@ -520,7 +522,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks
         {
             CoinPerTick += 5;
             Coins -= CoinPerTickUpgradeCost;
-            CoinPerTickUpgradeCost += 100;
+            CoinPerTickUpgradeCost += 50;
             CoinPerTickText.text = $"{CoinPerTickUpgradeCost}";
         }
     }
@@ -616,9 +618,10 @@ public class PlayerScript : MonoBehaviourPunCallbacks
             if(localPlayerRole == "PlayerOne")magicOrb = GameObject.Find("OrbOne").GetComponent<MagicOrb>();
             else if(localPlayerRole == "PlayerTwo")magicOrb = GameObject.Find("OrbTwo").GetComponent<MagicOrb>();
             PhotonView pv = magicOrb.GetComponent<PhotonView>();
-            pv.RPC("UpgradeMagicOrb", RpcTarget.AllBuffered);
+            pv.RPC("Upgrade", RpcTarget.AllBuffered);
             Coins -= magicOrbCost;
             magicOrbCost += 100;
+            magicOrbCostText.text = $"{magicOrbCost}";
         }
     }
     #endregion MagicOrb

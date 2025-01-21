@@ -21,11 +21,41 @@ public class MagicOrb : MonoBehaviourPunCallbacks
     void Start()
     {
         OrbSprite = GetComponentInChildren<SpriteRenderer>();
+        OrbSprite.enabled = false;
+        enabled = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(enabled == false){
+            return;
+        }
+        switch (MagicOrbLevel)
+        {
+            case 0:
+                Damage = 5;
+                AttackSpeed = 3f;
+                break;
+            case 1:
+                Damage = 10;
+                AttackSpeed = 2.5f;
+                break;
+            case 2:
+                Damage = 20;
+                AttackSpeed = 2f;
+                break;
+            case 3:
+                Damage = 30;
+                AttackSpeed = 1.5f;
+                break;
+            case 4:
+                Damage = 40;
+                AttackSpeed = 1f;
+                break;
+            default:
+                break;
+        }
         if(AttackSpeedTimer > 0){
             AttackSpeedTimer -= Time.deltaTime;
         }
@@ -37,6 +67,7 @@ public class MagicOrb : MonoBehaviourPunCallbacks
                 {
                     AttackSpeedTimer = AttackSpeed;
                     PhotonView pv = collider.gameObject.transform.GetComponent<PhotonView>();
+                    Debug.Log("MagicOrb 2 : " + Damage);
                     pv.RPC("TakeDamage", RpcTarget.All, Damage);
                     lineRenderer.positionCount = 2;
                     lineRenderer.SetPosition(0, transform.position);
@@ -47,6 +78,7 @@ public class MagicOrb : MonoBehaviourPunCallbacks
                     AttackSpeedTimer = AttackSpeed;
                     PhotonView pv = collider.gameObject.transform.GetComponent<PhotonView>();
                     pv.RPC("TakeDamage", RpcTarget.All, Damage);
+                    Debug.Log("MagicOrb 1 : " + Damage);
                     lineRenderer.positionCount = 2;
                     lineRenderer.SetPosition(0, transform.position);
                     lineRenderer.SetPosition(1, collider.transform.position);
