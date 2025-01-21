@@ -2838,6 +2838,7 @@ MonoBehaviour:
   MeleeCost: 50
   WitchCost: 100
   BearCost: 300
+  magicOrbCost: 500
   MeleeCooldown: 2
   WitchCooldown: 5
   BearCooldown: 10
@@ -2849,7 +2850,6 @@ MonoBehaviour:
   BearButtonText: {fileID: 4934905184081956956}
   AttackButton: {fileID: 7384165048191486347}
   magicOrb: {fileID: 0}
-  magicOrbCost: 500
   magicOrbCostText: {fileID: 705782561358985695}
   CoinPerTickUpgradeCost: 100
 --- !u!1 &9108419075081083427

@@ -400,7 +400,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 4779824965850215203}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.08
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 0
@@ -434,7 +434,6 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 4702702709459623995}
   - {fileID: 285118207711208285}
-  - {fileID: 5732022529645732109}
   - {fileID: 3139026865718820782}
   sceneViewId: 0
   InstantiationId: 0
@@ -544,10 +543,10 @@ NavMeshObstacle:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4779824965850215203}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.00001, y: 0.00001, z: 0.00001}
+  m_Shape: 0
+  m_Extents: {x: 0.03, y: 0.015, z: 0.03}
   m_MoveThreshold: 0.2
   m_Carve: 1
   m_CarveOnlyStationary: 0
@@ -695,7 +694,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6603601043353424359}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
   m_Name: 
@@ -703,7 +702,7 @@ MonoBehaviour:
   m_SynchronizePosition: 0
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
-  m_UseLocal: 1
+  m_UseLocal: 0
 --- !u!1 &7799821589961825340
 GameObject:
   m_ObjectHideFlags: 0
@@ -805,7 +804,6 @@ GameObject:
   - component: {fileID: 8951074228673674448}
   - component: {fileID: 7174112616786775538}
   - component: {fileID: 6680844891936773171}
-  - component: {fileID: 5732022529645732109}
   - component: {fileID: 3139026865718820782}
   m_Layer: 0
   m_Name: black_bear_0
@@ -906,22 +904,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5732022529645732109
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9126006487963980768}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 0
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
-  m_UseLocal: 1
 --- !u!114 &3139026865718820782
 MonoBehaviour:
   m_ObjectHideFlags: 0

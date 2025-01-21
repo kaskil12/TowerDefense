@@ -124,10 +124,10 @@ public class WitchScript : MonoBehaviourPunCallbacks
 
         foreach (Collider2D collider in colliders)
         {
+            
             Melee melee = collider.GetComponent<Melee>();
-            WitchScript witch = collider.GetComponent<WitchScript>();
-
-            if (melee != null && melee.Team != Team && DistanceToHomeBasePositionLocal < 10 || witch != null && witch.Team != Team && DistanceToHomeBasePositionLocal < 10 || melee != null && melee.Team != Team && AttackOpponent || witch != null && witch.Team != Team && AttackOpponent)
+          
+            if (collider.gameObject.tag == "PawnOne" && Team == 2  && DistanceToHomeBasePositionLocal < 10|| collider.gameObject.tag == "PawnTwo" && Team == 1 && DistanceToHomeBasePositionLocal < 10 || collider.gameObject.tag == "PawnOne" && Team == 2 && AttackOpponent || collider.gameObject.tag == "PawnTwo" && Team == 1 && AttackOpponent)
             {
                 obstacle.enabled = false;
                 targetFound = true;
@@ -142,7 +142,7 @@ public class WitchScript : MonoBehaviourPunCallbacks
                 if(agent.enabled)agent.stoppingDistance = 10;
                 Vector3 targetCenter = collider.bounds.center;
                 OrbSpawnPoint.LookAt(targetCenter);
-
+                
                 if (OrbShoot)
                 {
                     OrbShoot = false;
@@ -168,21 +168,24 @@ public class WitchScript : MonoBehaviourPunCallbacks
             DetectionRange = 10f;
             if (nearestUnit != null)
             {
-                Vector3 targetPosition = nearestUnit.transform.position - nearestUnit.transform.forward * 5;
-                if(agent.enabled)agent.SetDestination(targetPosition);
-                if (agent.enabled && agent.velocity.magnitude < 0.1f && !agent.pathPending && agent.remainingDistance > 0.1f)
+                Vector3 offsetPosition = nearestUnit.transform.position - nearestUnit.transform.forward * 1.5f; // Shorter offset
+                if (Vector3.Distance(transform.position, offsetPosition) > 0.5f) // Tolerance to avoid jitter
                 {
-                    Debug.Log("Agent stuck! Recalculating path.");
-                    agent.ResetPath();
-                    agent.SetDestination(targetPosition);
+                    if (agent.enabled) agent.SetDestination(offsetPosition);
                 }
+                // if (agent.enabled && agent.velocity.magnitude < 0.1f && !agent.pathPending && agent.remainingDistance > 0.1f)
+                // {
+                //     Debug.Log("Agent stuck! Recalculating path.");
+                //     agent.ResetPath();
+                //     agent.SetDestination(targetPosition);
+                // }
                 if(agent.enabled)agent.stoppingDistance = 0;
 
-                // Continuously update the destination to follow the melee unit
-                if (Vector3.Distance(transform.position, targetPosition) > agent.stoppingDistance)
-                {
-                    if(agent.enabled)agent.SetDestination(targetPosition);
-                }
+                // // Continuously update the destination to follow the melee unit
+                // if (Vector3.Distance(transform.position, targetPosition) > agent.stoppingDistance)
+                // {
+                //     if(agent.enabled)agent.SetDestination(targetPosition);
+                // }
             }
             else
             {
@@ -226,6 +229,8 @@ public class WitchScript : MonoBehaviourPunCallbacks
         {
             if (!agent.enabled)
             {
+                if(targetFound)agent.speed = 0;
+                else agent.speed = 3.5f;
                 Debug.Log("Re-enabling agent.");
                 agent.enabled = true;
                 obstacle.enabled = false;
@@ -292,5 +297,11 @@ public class WitchScript : MonoBehaviourPunCallbacks
         isInvincible = true;
         yield return new WaitForSeconds(1.5f);
         isInvincible = false;
+    }
+    //draw a circle in the scene view
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, DetectionRange);
     }
 }
