@@ -22,7 +22,7 @@ public class OrbScript : MonoBehaviourPunCallbacks
             return;
         }
         transform.position += transform.forward * Time.deltaTime * 10f;
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 1f, LayerMask.GetMask("PawnLayer"));
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 2f, LayerMask.GetMask("PawnLayer"));
         foreach (Collider2D collider in colliders)
         {
             if (collider.gameObject.tag == "PawnOne" && Team == 2 || collider.gameObject.tag == "PawnTwo" && Team == 1)

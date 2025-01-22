@@ -1,6 +1,7 @@
 using Photon.Pun;
 using UnityEngine;
 using TMPro;
+using System.Collections;
 public class MagicOrb : MonoBehaviourPunCallbacks
 {
     public int Team;
@@ -71,6 +72,7 @@ public class MagicOrb : MonoBehaviourPunCallbacks
                     lineRenderer.positionCount = 2;
                     lineRenderer.SetPosition(0, transform.position);
                     lineRenderer.SetPosition(1, collider.transform.position);
+                    StartCoroutine(LineRendererOff());
                 }
                 else if (collider.gameObject.tag == "PawnTwo" && Team == 1)
                 {
@@ -79,8 +81,8 @@ public class MagicOrb : MonoBehaviourPunCallbacks
                     pv.RPC("TakeDamage", RpcTarget.All, Damage);
                     Debug.Log("MagicOrb 1 : " + Damage);
                     lineRenderer.positionCount = 2;
-                    lineRenderer.SetPosition(0, transform.position);
-                    lineRenderer.SetPosition(1, collider.transform.position);
+                    //call the line renderer with photon rpc
+                    photonView.RPC("ShootLine", RpcTarget.All, collider.transform.position);
                 }
             }
         }
@@ -92,6 +94,17 @@ public class MagicOrb : MonoBehaviourPunCallbacks
             enabled = true;
         }
         MagicOrbLevel++;
+    }
+    [PunRPC]
+    public void ShootLine(Vector3 target){
+        lineRenderer.positionCount = 2;
+        lineRenderer.SetPosition(0, transform.position);
+        lineRenderer.SetPosition(1, target);
+        StartCoroutine(LineRendererOff());
+    }
+    IEnumerator LineRendererOff(){
+        yield return new WaitForSeconds(0.1f);
+        lineRenderer.positionCount = 0;
     }
     //draw a circle in the scene view
     private void OnDrawGizmos()
