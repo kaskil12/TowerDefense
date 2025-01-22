@@ -16,7 +16,6 @@ public class MagicOrb : MonoBehaviourPunCallbacks
     public bool enabled = true;
     private SpriteRenderer OrbSprite;
     public int MagicOrbLevel = 0;
-    public TMP_Text MagicOrbLevelText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
