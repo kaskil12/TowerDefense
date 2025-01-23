@@ -315,7 +315,7 @@ GameObject:
   - component: {fileID: 6131917330259833595}
   - component: {fileID: -2439033422974835078}
   m_Layer: 3
-  m_Name: BearOne
+  m_Name: Bear
   m_TagString: PawnOne
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

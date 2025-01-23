@@ -335,7 +335,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks
         {
             Debug.Log("Player One spawning unit...");
             Transform PlayerOneSpawn = GameObject.FindGameObjectWithTag("HomeBaseOne").transform;
-            GameObject unit = PhotonNetwork.Instantiate("MeleeOne", PlayerOneSpawn.position, Quaternion.identity);
+            GameObject unit = PhotonNetwork.Instantiate("Melee", PlayerOneSpawn.position, Quaternion.identity);
             unit.GetComponent<Melee>().SetTeam(1);
             unit.GetComponent<PhotonView>().RPC("SetTeam", RpcTarget.AllBuffered, 1);
             Coins -= 50;
@@ -345,7 +345,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks
         {
             Debug.Log("Player Two spawning unit...");
             Transform PlayerTwoSpawn = GameObject.FindGameObjectWithTag("HomeBaseTwo").transform;
-            GameObject unit = PhotonNetwork.Instantiate("MeleeTwo", PlayerTwoSpawn.position, Quaternion.identity);
+            GameObject unit = PhotonNetwork.Instantiate("Melee", PlayerTwoSpawn.position, Quaternion.identity);
             unit.GetComponent<Melee>().SetTeam(2);
             unit.GetComponent<PhotonView>().RPC("SetTeam", RpcTarget.AllBuffered, 2);
             Coins -= 50;
@@ -357,16 +357,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks
             GameObject[] units = GameObject.FindGameObjectsWithTag("PawnOne");
             foreach (GameObject unit in units)
             {
-                var melee = unit.GetComponent<Melee>();
-                if (melee != null)
-                {
-                    melee.AttackOpponent = AttackMode;
-                    Debug.Log($"{unit.name}'s AttackOpponent set to {AttackMode}");
-                }
-                else
-                {
-                    Debug.LogWarning($"Melee component not found on {unit.name}");
-                }
+                unit.SendMessage("ToggleAttack", AttackMode);
             }
         }
         else if(localPlayerRole == "PlayerTwo")
@@ -374,16 +365,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks
             GameObject[] units = GameObject.FindGameObjectsWithTag("PawnTwo");
             foreach (GameObject unit in units)
             {
-                var melee = unit.GetComponent<Melee>();
-                if (melee != null)
-                {
-                    melee.AttackOpponent = AttackMode;
-                    Debug.Log($"{unit.name}'s AttackOpponent set to {AttackMode}");
-                }
-                else
-                {
-                    Debug.LogWarning($"Melee component not found on {unit.name}");
-                }
+                unit.SendMessage("ToggleAttack", AttackMode);
             }
         }
     }
@@ -398,7 +380,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks
         {   
             Debug.Log("Player One spawning unit...");
             Transform PlayerOneSpawn = GameObject.FindGameObjectWithTag("HomeBaseOne").transform;
-            GameObject unit = PhotonNetwork.Instantiate("WitchOne", PlayerOneSpawn.position, Quaternion.identity);
+            GameObject unit = PhotonNetwork.Instantiate("Witch", PlayerOneSpawn.position, Quaternion.identity);
             unit.GetComponent<WitchScript>().SetTeam(1);
             unit.GetComponent<PhotonView>().RPC("SetTeam", RpcTarget.AllBuffered, 1);
             Coins -= 100;
@@ -408,7 +390,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks
         {
             Debug.Log("Player Two spawning unit...");
             Transform PlayerTwoSpawn = GameObject.FindGameObjectWithTag("HomeBaseTwo").transform;
-            GameObject unit = PhotonNetwork.Instantiate("WitchTwo", PlayerTwoSpawn.position, Quaternion.identity);
+            GameObject unit = PhotonNetwork.Instantiate("Witch", PlayerTwoSpawn.position, Quaternion.identity);
             unit.GetComponent<WitchScript>().SetTeam(2);
             unit.GetComponent<PhotonView>().RPC("SetTeam", RpcTarget.AllBuffered, 2);
             Coins -= 100;
@@ -420,16 +402,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks
             GameObject[] units = GameObject.FindGameObjectsWithTag("PawnOne");
             foreach (GameObject unit in units)
             {
-                var witch = unit.GetComponent<WitchScript>();
-                if (witch != null)
-                {
-                    witch.AttackOpponent = AttackMode;
-                    Debug.Log($"{unit.name}'s AttackOpponent set to {AttackMode}");
-                }
-                else
-                {
-                    Debug.LogWarning($"witch component not found on {unit.name}");
-                }
+                unit.SendMessage("ToggleAttack", AttackMode);
             }
         }
         else if(localPlayerRole == "PlayerTwo")
@@ -437,16 +410,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks
             GameObject[] units = GameObject.FindGameObjectsWithTag("PawnTwo");
             foreach (GameObject unit in units)
             {
-                var witch = unit.GetComponent<WitchScript>();
-                if (witch != null)
-                {
-                    witch.AttackOpponent = AttackMode;
-                    Debug.Log($"{unit.name}'s AttackOpponent set to {AttackMode}");
-                }
-                else
-                {
-                    Debug.LogWarning($"Melee component not found on {unit.name}");
-                }
+                unit.SendMessage("ToggleAttack", AttackMode);
             }
         }
     }
@@ -461,7 +425,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks
         {   
             Debug.Log("Player One spawning unit...");
             Transform PlayerOneSpawn = GameObject.FindGameObjectWithTag("HomeBaseOne").transform;
-            GameObject unit = PhotonNetwork.Instantiate("BearOne", PlayerOneSpawn.position, Quaternion.identity);
+            GameObject unit = PhotonNetwork.Instantiate("Bear", PlayerOneSpawn.position, Quaternion.identity);
             unit.GetComponent<Melee>().SetTeam(1);
             unit.GetComponent<PhotonView>().RPC("SetTeam", RpcTarget.AllBuffered, 1);
             Coins -= BearCost;
@@ -471,7 +435,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks
         {
             Debug.Log("Player Two spawning unit...");
             Transform PlayerTwoSpawn = GameObject.FindGameObjectWithTag("HomeBaseTwo").transform;
-            GameObject unit = PhotonNetwork.Instantiate("BearTwo", PlayerTwoSpawn.position, Quaternion.identity);
+            GameObject unit = PhotonNetwork.Instantiate("Bear", PlayerTwoSpawn.position, Quaternion.identity);
             unit.GetComponent<Melee>().SetTeam(2);
             unit.GetComponent<PhotonView>().RPC("SetTeam", RpcTarget.AllBuffered, 2);
             Coins -= BearCost;
@@ -483,16 +447,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks
             GameObject[] units = GameObject.FindGameObjectsWithTag("PawnOne");
             foreach (GameObject unit in units)
             {
-                var melee = unit.GetComponent<Melee>();
-                if (melee != null)
-                {
-                    melee.AttackOpponent = AttackMode;
-                    Debug.Log($"{unit.name}'s AttackOpponent set to {AttackMode}");
-                }
-                else
-                {
-                    Debug.LogWarning($"witch component not found on {unit.name}");
-                }
+                unit.SendMessage("ToggleAttack", AttackMode);
             }
         }
         else if(localPlayerRole == "PlayerTwo")
@@ -500,16 +455,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks
             GameObject[] units = GameObject.FindGameObjectsWithTag("PawnTwo");
             foreach (GameObject unit in units)
             {
-                var melee = unit.GetComponent<Melee>();
-                if (melee != null)
-                {
-                    melee.AttackOpponent = AttackMode;
-                    Debug.Log($"{unit.name}'s AttackOpponent set to {AttackMode}");
-                }
-                else
-                {
-                    Debug.LogWarning($"Melee component not found on {unit.name}");
-                }
+                unit.SendMessage("ToggleAttack", AttackMode);
             }
         }
     }
@@ -527,6 +473,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks
         }
     }
     #endregion Coins
+    #region AttackMode
     public void ToggleAttack()
     {
         AttackMode = !AttackMode;
@@ -537,18 +484,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks
             GameObject[] units = GameObject.FindGameObjectsWithTag("PawnOne");
             foreach (GameObject unit in units)
             {
-                var melee = unit.GetComponent<Melee>();
-                var witch = unit.GetComponent<WitchScript>();
-                if (melee != null || witch != null)
-                {
-                    if(melee)melee.AttackOpponent = AttackMode;
-                    if(witch)witch.AttackOpponent = AttackMode;
-                    Debug.Log($"{unit.name}'s AttackOpponent set to {AttackMode}");
-                }
-                else
-                {
-                    Debug.LogWarning($"Melee component not found on {unit.name}");
-                }
+                unit.SendMessage("ToggleAttack", AttackMode);
             }
         }
         else if(localPlayerRole == "PlayerTwo")
@@ -556,18 +492,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks
             GameObject[] units = GameObject.FindGameObjectsWithTag("PawnTwo");
             foreach (GameObject unit in units)
             {
-                var melee = unit.GetComponent<Melee>();
-                var witch = unit.GetComponent<WitchScript>();
-                if (melee != null || witch != null)
-                {
-                    if(melee)melee.AttackOpponent = AttackMode;
-                    if(witch)witch.AttackOpponent = AttackMode;
-                    Debug.Log($"{unit.name}'s AttackOpponent set to {AttackMode}");
-                }
-                else
-                {
-                    Debug.LogWarning($"Melee component not found on {unit.name}");
-                }
+                unit.SendMessage("ToggleAttack", AttackMode);
             }
         }
         //change the color of the button to indicate attack mode
@@ -580,6 +505,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks
             AttackButton.GetComponent<Image>().color = Color.white;
         }
     }
+    #endregion AttackMode
 
     // public void HandlePlayerOneInput()
     // {

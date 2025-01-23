@@ -245,6 +245,7 @@ public class Melee : MonoBehaviourPunCallbacks
             HomeBasePosition = GameObject.FindWithTag("HomeBaseOne").transform;
             HomeBasePositionLocal = new Vector3(HomeBasePosition.position.x + HomeBasePositionLocalOffset, HomeBasePosition.position.y, HomeBasePosition.position.z);
             if(agent.enabled)agent.SetDestination(targetBase.position);
+            gameObject.tag = "PawnOne";
         }
         else if (Team == 2)
         {
@@ -252,7 +253,12 @@ public class Melee : MonoBehaviourPunCallbacks
             HomeBasePosition = GameObject.FindWithTag("HomeBaseTwo").transform;
             HomeBasePositionLocal = new Vector3(HomeBasePosition.position.x - HomeBasePositionLocalOffset, HomeBasePosition.position.y, HomeBasePosition.position.z);
             if(agent.enabled)agent.SetDestination(targetBase.position);
+            gameObject.tag = "PawnTwo";
         }
+    }
+    public void ToggleAttack(bool attackOpponent)
+    {
+        AttackOpponent = attackOpponent;
     }
 
     IEnumerator Attack()
