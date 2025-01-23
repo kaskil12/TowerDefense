@@ -55,6 +55,7 @@ public class Melee : MonoBehaviourPunCallbacks
     public float AttackRange = 2f;
     [Tooltip("Range at which the unit stops moving towards the target.")]
     public float stopDistance;
+    public int UnitSize = 1;
 
     public float DistanceToHomeBasePositionLocal;
     public GameObject WitchSprite;
@@ -238,7 +239,6 @@ public class Melee : MonoBehaviourPunCallbacks
     public void SetTeam(int team)
     {
         Team = team;
-        StartCoroutine(Invincible());
         if (Team == 1)
         {
             targetBase = GameObject.FindWithTag("PlayerTwoBase").transform;
@@ -271,16 +271,10 @@ public class Melee : MonoBehaviourPunCallbacks
     [PunRPC]
     public void TakeDamage(int damage)
     {
-        if(!isInvincible)Health -= damage;
+        Health -= damage;
         if (Health <= 0)
         {
             Destroy(gameObject);
         }
-    }
-    IEnumerator Invincible()
-    {
-        isInvincible = true;
-        yield return new WaitForSeconds(3f);
-        isInvincible = false;
     }
 }

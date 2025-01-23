@@ -62,6 +62,7 @@ public class WitchScript : MonoBehaviourPunCallbacks
     public float DetectionRange = 10f;
     public bool isInvincible;
     public Animator animator;
+    public int UnitSize = 1;
 
 
 
@@ -252,7 +253,6 @@ public class WitchScript : MonoBehaviourPunCallbacks
     public void SetTeam(int team)
     {
         Team = team;
-        StartCoroutine(Invincible());
         if (Team == 1)
         {
             targetBase = GameObject.FindWithTag("PlayerTwoBase").transform;
@@ -277,7 +277,7 @@ public class WitchScript : MonoBehaviourPunCallbacks
     [PunRPC]
     public void TakeDamage(int damage)
     {
-        if(!isInvincible)Health -= damage;
+        Health -= damage;
         if (Health <= 0)
         {
             Destroy(gameObject);
@@ -298,12 +298,7 @@ public class WitchScript : MonoBehaviourPunCallbacks
         yield return new WaitForSeconds(3);
         OrbShoot = true;
     }
-    IEnumerator Invincible()
-    {
-        isInvincible = true;
-        yield return new WaitForSeconds(1.5f);
-        isInvincible = false;
-    }
+
     //draw a circle in the scene view
     void OnDrawGizmosSelected()
     {

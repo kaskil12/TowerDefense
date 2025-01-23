@@ -140,6 +140,9 @@ public class PlayerScript : MonoBehaviourPunCallbacks
     [Header("Magic Orb Settings")]
     public MagicOrb magicOrb;
     public TMP_Text magicOrbCostText;
+
+    [Header("Max Units")]
+    public int MaxUnits = 100;
     
     void Start()
     {
