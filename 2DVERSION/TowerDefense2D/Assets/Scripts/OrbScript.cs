@@ -8,6 +8,7 @@ public class OrbScript : MonoBehaviourPunCallbacks
     public int Damage { get; set; }
     public bool HasDoneDamage = false;
     private SpriteRenderer OrbSprite;
+    public Transform Target { get; set; }
     
 
     private void Start()
@@ -21,7 +22,18 @@ public class OrbScript : MonoBehaviourPunCallbacks
         if(HasDoneDamage){
             return;
         }
-        transform.position += transform.forward * Time.deltaTime * 10f;
+        //make the orb move forward to the target
+        if (Target != null)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, Target.position, Time.deltaTime * 10f);
+            Vector3 direction = Target.position - transform.position;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            OrbSprite.transform.rotation = Quaternion.Euler(0, 0, angle);
+        }
+        else
+        {
+            transform.position += transform.forward * Time.deltaTime * 10f;
+        }
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 2f, LayerMask.GetMask("PawnLayer"));
         foreach (Collider2D collider in colliders)
         {

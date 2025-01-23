@@ -34,6 +34,8 @@ public class PlayerScript : MonoBehaviourPunCallbacks
 
     [Tooltip("Coins gained per tick.")]
     public int CoinPerTick = 10;
+    public int CoinPerTickUpgradeCost = 100;
+    public int CoinPerTickUpgrade = 50;
 
     [Tooltip("Text element for displaying coins gained per tick.")]
     public TMP_Text CoinPerTickText;
@@ -143,6 +145,12 @@ public class PlayerScript : MonoBehaviourPunCallbacks
 
     [Header("Max Units")]
     public int MaxUnits = 100;
+    public TMP_Text MaxUnitsText;
+    public int CurrentUnits = 0;
+    [Header("Unit sizes")]
+    public int MeleeSize = 1;
+    public int WitchSize = 2;
+    public int BearSize = 3;
     
     void Start()
     {
@@ -330,7 +338,9 @@ public class PlayerScript : MonoBehaviourPunCallbacks
     #region Melee
     public void SpawnButtonMelee()
     {
-        
+        if(MeleeSize + CurrentUnits > MaxUnits) return;
+        CurrentUnits += MeleeSize;
+        MaxUnitsText.text = $"{CurrentUnits}/{MaxUnits}";
         Debug.Log(localPlayerRole);
         RoundManager roundManager = GameObject.Find("RoundManager").GetComponent<RoundManager>();
         if(roundManager.Started == false) return;
@@ -376,6 +386,9 @@ public class PlayerScript : MonoBehaviourPunCallbacks
 
     #region Witch
     public void SpawnWitch(){
+        if(WitchSize + CurrentUnits > MaxUnits) return;
+        CurrentUnits += WitchSize;
+        MaxUnitsText.text = $"{CurrentUnits}/{MaxUnits}";
         Debug.Log(localPlayerRole);
         RoundManager roundManager = GameObject.Find("RoundManager").GetComponent<RoundManager>();
         if(roundManager.Started == false) return;
@@ -421,6 +434,9 @@ public class PlayerScript : MonoBehaviourPunCallbacks
 
     #region Bear
     public void SpawnBear(){
+        if(BearSize + CurrentUnits > MaxUnits) return;
+        CurrentUnits += BearSize;
+        MaxUnitsText.text = $"{CurrentUnits}/{MaxUnits}";
         Debug.Log(localPlayerRole);
         RoundManager roundManager = GameObject.Find("RoundManager").GetComponent<RoundManager>();
         if(roundManager.Started == false) return;
@@ -464,14 +480,13 @@ public class PlayerScript : MonoBehaviourPunCallbacks
     }
     #endregion Bear
     #region Coins
-    public int CoinPerTickUpgradeCost = 100;
     public void CoinUpgrade()
     {
         if(Coins >= CoinPerTickUpgradeCost)
         {
             CoinPerTick += 5;
             Coins -= CoinPerTickUpgradeCost;
-            CoinPerTickUpgradeCost += 50;
+            CoinPerTickUpgradeCost += CoinPerTickUpgrade + 50;
             CoinPerTickText.text = $"{CoinPerTickUpgradeCost}";
         }
     }
@@ -540,9 +555,18 @@ public class PlayerScript : MonoBehaviourPunCallbacks
     //     }
     // }
     #region MagicOrb
+    public bool CanUpgradeMagicOrb = true;
     public void UpgradeMagicOrb()
     {
-        if(Coins >= magicOrbCost)
+        if(magicOrb.MagicOrbLevel == 5)
+            {
+                CanUpgradeMagicOrb = false;
+                magicOrbCostText.text = "Max Level";
+                
+            }else{
+                CanUpgradeMagicOrb = true;
+            }
+        if(Coins >= magicOrbCost && CanUpgradeMagicOrb)
         {
             if(localPlayerRole == "PlayerOne")magicOrb = GameObject.Find("OrbOne").GetComponent<MagicOrb>();
             else if(localPlayerRole == "PlayerTwo")magicOrb = GameObject.Find("OrbTwo").GetComponent<MagicOrb>();
@@ -551,6 +575,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks
             Coins -= magicOrbCost;
             magicOrbCost += 100;
             magicOrbCostText.text = $"{magicOrbCost}";
+            
         }
     }
     #endregion MagicOrb

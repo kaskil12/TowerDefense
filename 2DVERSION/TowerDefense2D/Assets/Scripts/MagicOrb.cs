@@ -34,22 +34,26 @@ public class MagicOrb : MonoBehaviourPunCallbacks
         switch (MagicOrbLevel)
         {
             case 0:
+                enabled = false;
+                OrbSprite.enabled = false;
+                break;
+            case 1:
                 Damage = 5;
                 AttackSpeed = 3f;
                 break;
-            case 1:
+            case 2:
                 Damage = 10;
                 AttackSpeed = 2.5f;
                 break;
-            case 2:
+            case 3:
                 Damage = 20;
                 AttackSpeed = 2f;
                 break;
-            case 3:
+            case 4:
                 Damage = 30;
                 AttackSpeed = 1.5f;
                 break;
-            case 4:
+            case 5:
                 Damage = 40;
                 AttackSpeed = 1f;
                 break;

@@ -110,9 +110,17 @@ public class RoundManager : MonoBehaviourPunCallbacks
         foreach (GameObject player in playerScript){
             PlayerScript playerScriptComponent = player.GetComponent<PlayerScript>();
             playerScriptComponent.Coins = 200;
-            playerScriptComponent.CoinPerTickText.text = playerScriptComponent.CoinPerTick.ToString();
             playerScriptComponent.CoinPerTickUpgradeCost = 100;
             playerScriptComponent.CoinPerTick = 10;
+            playerScriptComponent.CoinPerTickText.text = playerScriptComponent.CoinPerTick.ToString();
+            playerScriptComponent.CoinPerTickUpgrade = 50;
+            playerScriptComponent.magicOrbCost = 500;
+            playerScriptComponent.magicOrbCostText.text = playerScriptComponent.magicOrbCost.ToString();
+            MagicOrb magicOrbOne = GameObject.Find("OrbOne").GetComponent<MagicOrb>();
+            MagicOrb magicOrbTwo = GameObject.Find("OrbTwo").GetComponent<MagicOrb>();
+            magicOrbOne.MagicOrbLevel = 0;
+            magicOrbTwo.MagicOrbLevel = 0;
+            playerScriptComponent.CanUpgradeMagicOrb = true;
         }
         PLayerOneTowerHealthBar.value = PlayerOneTowerHealth;
         PLayerTwoTowerHealthBar.value = PlayerTwoTowerHealth;

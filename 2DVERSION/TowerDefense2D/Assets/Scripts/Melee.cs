@@ -55,7 +55,6 @@ public class Melee : MonoBehaviourPunCallbacks
     public float AttackRange = 2f;
     [Tooltip("Range at which the unit stops moving towards the target.")]
     public float stopDistance;
-    public int UnitSize = 1;
 
     public float DistanceToHomeBasePositionLocal;
     public GameObject WitchSprite;

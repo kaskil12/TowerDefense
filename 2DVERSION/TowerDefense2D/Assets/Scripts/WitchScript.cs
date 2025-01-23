@@ -62,7 +62,6 @@ public class WitchScript : MonoBehaviourPunCallbacks
     public float DetectionRange = 10f;
     public bool isInvincible;
     public Animator animator;
-    public int UnitSize = 1;
 
 
 
@@ -148,7 +147,7 @@ public class WitchScript : MonoBehaviourPunCallbacks
                 {
                     OrbShoot = false;
                     StartCoroutine(OrbAttack());
-                    SpawnOrb();
+                    SpawnOrb(TargetChosen.transform);
                 }
             }
             else if (melee != null && melee.Team == Team)
@@ -204,7 +203,7 @@ public class WitchScript : MonoBehaviourPunCallbacks
                     StartCoroutine(OrbAttack());
                     Vector3 targetCenter = targetBase.gameObject.transform.position;
                     OrbSpawnPoint.LookAt(targetCenter);
-                    SpawnOrb();
+                    SpawnOrb(targetBase);
                 }
             }
         }
@@ -239,13 +238,15 @@ public class WitchScript : MonoBehaviourPunCallbacks
         }
     }
 
-    void SpawnOrb()
+    void SpawnOrb(Transform target)
     {
         GameObject orbInstance = PhotonNetwork.Instantiate(OrbPrefab.name, OrbSpawnPoint.transform.position, OrbSpawnPoint.transform.rotation);
 
         OrbScript orbScript = orbInstance.GetComponent<OrbScript>();
         orbScript.Team = Team;
         orbScript.Damage = Damage;
+        orbScript.Target = target;
+
     }
    
 
