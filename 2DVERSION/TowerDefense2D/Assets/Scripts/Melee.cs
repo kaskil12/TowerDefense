@@ -64,6 +64,7 @@ public class Melee : MonoBehaviourPunCallbacks
     public bool isInvincible = false;
     public Animator animator;
     public bool IsAttacking = false;
+    public int UnitSize { get; set; }
 
     void Start(){
         canAttack = true;
@@ -273,6 +274,14 @@ public class Melee : MonoBehaviourPunCallbacks
         Health -= damage;
         if (Health <= 0)
         {
+            //remove the unit from the unit size list
+            if(Team == 1){
+                PlayerScript playerScript = GameObject.Find("PlayerOne").GetComponent<PlayerScript>();
+                playerScript.RemoveUnit(UnitSize);
+            }else if(Team == 2){
+                PlayerScript playerScript = GameObject.Find("PlayerTwo").GetComponent<PlayerScript>();
+                playerScript.RemoveUnit(UnitSize);
+            }
             Destroy(gameObject);
         }
     }

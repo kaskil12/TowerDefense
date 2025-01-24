@@ -35,7 +35,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks
     [Tooltip("Coins gained per tick.")]
     public int CoinPerTick = 10;
     public int CoinPerTickUpgradeCost = 100;
-    public int CoinPerTickUpgrade = 50;
+    public int CoinPerTickUpgrade = 5;
 
     [Tooltip("Text element for displaying coins gained per tick.")]
     public TMP_Text CoinPerTickText;
@@ -339,8 +339,6 @@ public class PlayerScript : MonoBehaviourPunCallbacks
     public void SpawnButtonMelee()
     {
         if(MeleeSize + CurrentUnits > MaxUnits) return;
-        CurrentUnits += MeleeSize;
-        MaxUnitsText.text = $"{CurrentUnits}/{MaxUnits}";
         Debug.Log(localPlayerRole);
         RoundManager roundManager = GameObject.Find("RoundManager").GetComponent<RoundManager>();
         if(roundManager.Started == false) return;
@@ -350,9 +348,12 @@ public class PlayerScript : MonoBehaviourPunCallbacks
             Transform PlayerOneSpawn = GameObject.FindGameObjectWithTag("HomeBaseOne").transform;
             GameObject unit = PhotonNetwork.Instantiate("Melee", PlayerOneSpawn.position, Quaternion.identity);
             unit.GetComponent<Melee>().SetTeam(1);
+            unit.GetComponent<Melee>().UnitSize = MeleeSize;
             unit.GetComponent<PhotonView>().RPC("SetTeam", RpcTarget.AllBuffered, 1);
             Coins -= 50;
             MeleeTimer = MeleeCooldown;
+            CurrentUnits += MeleeSize;
+            MaxUnitsText.text = $"{CurrentUnits}/{MaxUnits}";
         }
         else if(localPlayerRole == "PlayerTwo" && Coins >= MeleeCost && CanBuyMelee)
         {
@@ -360,9 +361,12 @@ public class PlayerScript : MonoBehaviourPunCallbacks
             Transform PlayerTwoSpawn = GameObject.FindGameObjectWithTag("HomeBaseTwo").transform;
             GameObject unit = PhotonNetwork.Instantiate("Melee", PlayerTwoSpawn.position, Quaternion.identity);
             unit.GetComponent<Melee>().SetTeam(2);
+            unit.GetComponent<Melee>().UnitSize = MeleeSize;
             unit.GetComponent<PhotonView>().RPC("SetTeam", RpcTarget.AllBuffered, 2);
             Coins -= 50;
             MeleeTimer = MeleeCooldown;
+            CurrentUnits += MeleeSize;
+            MaxUnitsText.text = $"{CurrentUnits}/{MaxUnits}";
         }
         if(localPlayerRole == "PlayerOne")
         {
@@ -387,8 +391,6 @@ public class PlayerScript : MonoBehaviourPunCallbacks
     #region Witch
     public void SpawnWitch(){
         if(WitchSize + CurrentUnits > MaxUnits) return;
-        CurrentUnits += WitchSize;
-        MaxUnitsText.text = $"{CurrentUnits}/{MaxUnits}";
         Debug.Log(localPlayerRole);
         RoundManager roundManager = GameObject.Find("RoundManager").GetComponent<RoundManager>();
         if(roundManager.Started == false) return;
@@ -398,9 +400,11 @@ public class PlayerScript : MonoBehaviourPunCallbacks
             Transform PlayerOneSpawn = GameObject.FindGameObjectWithTag("HomeBaseOne").transform;
             GameObject unit = PhotonNetwork.Instantiate("Witch", PlayerOneSpawn.position, Quaternion.identity);
             unit.GetComponent<WitchScript>().SetTeam(1);
+            unit.GetComponent<WitchScript>().UnitSize = WitchSize;
             unit.GetComponent<PhotonView>().RPC("SetTeam", RpcTarget.AllBuffered, 1);
             Coins -= 100;
             WitchTimer = WitchCooldown;
+            CurrentUnits += WitchSize;
         }
         else if(localPlayerRole == "PlayerTwo" && Coins >= WitchCost && CanBuyWitch)
         {
@@ -408,9 +412,11 @@ public class PlayerScript : MonoBehaviourPunCallbacks
             Transform PlayerTwoSpawn = GameObject.FindGameObjectWithTag("HomeBaseTwo").transform;
             GameObject unit = PhotonNetwork.Instantiate("Witch", PlayerTwoSpawn.position, Quaternion.identity);
             unit.GetComponent<WitchScript>().SetTeam(2);
+            unit.GetComponent<WitchScript>().UnitSize = WitchSize;
             unit.GetComponent<PhotonView>().RPC("SetTeam", RpcTarget.AllBuffered, 2);
             Coins -= 100;
             WitchTimer = WitchCooldown;
+            CurrentUnits += WitchSize;
         }
         if(localPlayerRole == "PlayerOne")
         {
@@ -429,14 +435,13 @@ public class PlayerScript : MonoBehaviourPunCallbacks
                 unit.SendMessage("ToggleAttack", AttackMode);
             }
         }
+        MaxUnitsText.text = $"{CurrentUnits}/{MaxUnits}";
     }
     #endregion Witch
 
     #region Bear
     public void SpawnBear(){
         if(BearSize + CurrentUnits > MaxUnits) return;
-        CurrentUnits += BearSize;
-        MaxUnitsText.text = $"{CurrentUnits}/{MaxUnits}";
         Debug.Log(localPlayerRole);
         RoundManager roundManager = GameObject.Find("RoundManager").GetComponent<RoundManager>();
         if(roundManager.Started == false) return;
@@ -446,9 +451,12 @@ public class PlayerScript : MonoBehaviourPunCallbacks
             Transform PlayerOneSpawn = GameObject.FindGameObjectWithTag("HomeBaseOne").transform;
             GameObject unit = PhotonNetwork.Instantiate("Bear", PlayerOneSpawn.position, Quaternion.identity);
             unit.GetComponent<Melee>().SetTeam(1);
+            unit.GetComponent<Melee>().UnitSize = BearSize;
             unit.GetComponent<PhotonView>().RPC("SetTeam", RpcTarget.AllBuffered, 1);
             Coins -= BearCost;
             BearTimer = BearCooldown;
+            CurrentUnits += BearSize;
+            MaxUnitsText.text = $"{CurrentUnits}/{MaxUnits}";
         }
         else if(localPlayerRole == "PlayerTwo" && Coins >= BearCost && CanBuyBear)
         {
@@ -456,9 +464,12 @@ public class PlayerScript : MonoBehaviourPunCallbacks
             Transform PlayerTwoSpawn = GameObject.FindGameObjectWithTag("HomeBaseTwo").transform;
             GameObject unit = PhotonNetwork.Instantiate("Bear", PlayerTwoSpawn.position, Quaternion.identity);
             unit.GetComponent<Melee>().SetTeam(2);
+            unit.GetComponent<Melee>().UnitSize = BearSize;
             unit.GetComponent<PhotonView>().RPC("SetTeam", RpcTarget.AllBuffered, 2);
             Coins -= BearCost;
             BearTimer = BearCooldown;
+            CurrentUnits += BearSize;
+            MaxUnitsText.text = $"{CurrentUnits}/{MaxUnits}";
         }
         if(localPlayerRole == "PlayerOne")
         {
@@ -487,6 +498,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks
             CoinPerTick += 5;
             Coins -= CoinPerTickUpgradeCost;
             CoinPerTickUpgradeCost += CoinPerTickUpgrade + 50;
+            CoinPerTickUpgrade += 5;
             CoinPerTickText.text = $"{CoinPerTickUpgradeCost}";
         }
     }
@@ -558,14 +570,16 @@ public class PlayerScript : MonoBehaviourPunCallbacks
     public bool CanUpgradeMagicOrb = true;
     public void UpgradeMagicOrb()
     {
+        if(localPlayerRole == "PlayerOne")magicOrb = GameObject.Find("OrbOne").GetComponent<MagicOrb>();
+        else if(localPlayerRole == "PlayerTwo")magicOrb = GameObject.Find("OrbTwo").GetComponent<MagicOrb>();
         if(magicOrb.MagicOrbLevel == 5)
-            {
-                CanUpgradeMagicOrb = false;
-                magicOrbCostText.text = "Max Level";
-                
-            }else{
-                CanUpgradeMagicOrb = true;
-            }
+        {
+            CanUpgradeMagicOrb = false;
+            magicOrbCostText.text = "Max Level";
+            
+        }else{
+            CanUpgradeMagicOrb = true;
+        }
         if(Coins >= magicOrbCost && CanUpgradeMagicOrb)
         {
             if(localPlayerRole == "PlayerOne")magicOrb = GameObject.Find("OrbOne").GetComponent<MagicOrb>();
@@ -577,8 +591,21 @@ public class PlayerScript : MonoBehaviourPunCallbacks
             magicOrbCostText.text = $"{magicOrbCost}";
             
         }
+        if(magicOrb.MagicOrbLevel == 5)
+        {
+            CanUpgradeMagicOrb = false;
+            magicOrbCostText.text = "Max Level";
+            
+        }else{
+            CanUpgradeMagicOrb = true;
+        }
     }
     #endregion MagicOrb
+    public void RemoveUnit(int size)
+    {
+        CurrentUnits -= size;
+        MaxUnitsText.text = $"{CurrentUnits}/{MaxUnits}";
+    }
     #region Swipes
     public void Swipes()
     {

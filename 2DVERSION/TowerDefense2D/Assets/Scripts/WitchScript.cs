@@ -62,6 +62,7 @@ public class WitchScript : MonoBehaviourPunCallbacks
     public float DetectionRange = 10f;
     public bool isInvincible;
     public Animator animator;
+    public int UnitSize { get; set; }
 
 
 
@@ -281,6 +282,13 @@ public class WitchScript : MonoBehaviourPunCallbacks
         Health -= damage;
         if (Health <= 0)
         {
+            if(Team == 1){
+                PlayerScript playerScript = GameObject.Find("PlayerOne").GetComponent<PlayerScript>();
+                playerScript.RemoveUnit(UnitSize);
+            }else if(Team == 2){
+                PlayerScript playerScript = GameObject.Find("PlayerTwo").GetComponent<PlayerScript>();
+                playerScript.RemoveUnit(UnitSize);
+            }
             Destroy(gameObject);
         }
     }

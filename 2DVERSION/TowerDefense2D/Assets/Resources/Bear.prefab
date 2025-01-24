@@ -465,7 +465,6 @@ MonoBehaviour:
   DetectRange: 10
   AttackRange: 2
   stopDistance: 0
-  UnitSize: 1
   DistanceToHomeBasePositionLocal: 0
   WitchSprite: {fileID: 6603601043353424359}
   obstacle: {fileID: -2439033422974835078}

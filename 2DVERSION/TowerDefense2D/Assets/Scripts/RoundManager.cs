@@ -98,6 +98,10 @@ public class RoundManager : MonoBehaviourPunCallbacks
 
         GameObject[] unitsone = GameObject.FindGameObjectsWithTag("PawnOne");
         GameObject[] unitstwo = GameObject.FindGameObjectsWithTag("PawnTwo");
+        GameObject[] Projectiles = GameObject.FindGameObjectsWithTag("Projectile");
+        foreach (GameObject projectile in Projectiles){
+            Destroy(projectile);
+        }
         foreach (GameObject unit in unitsone){
             Destroy(unit);
         }
@@ -113,8 +117,11 @@ public class RoundManager : MonoBehaviourPunCallbacks
             playerScriptComponent.CoinPerTickUpgradeCost = 100;
             playerScriptComponent.CoinPerTick = 10;
             playerScriptComponent.CoinPerTickText.text = playerScriptComponent.CoinPerTick.ToString();
-            playerScriptComponent.CoinPerTickUpgrade = 50;
+            playerScriptComponent.CoinPerTickUpgrade = 5;
             playerScriptComponent.magicOrbCost = 500;
+            playerScriptComponent.CurrentUnits = 0;
+            playerScriptComponent.MaxUnits = 100;
+            playerScriptComponent.MaxUnitsText.text = $"{playerScriptComponent.CurrentUnits}/{playerScriptComponent.MaxUnits}";
             playerScriptComponent.magicOrbCostText.text = playerScriptComponent.magicOrbCost.ToString();
             MagicOrb magicOrbOne = GameObject.Find("OrbOne").GetComponent<MagicOrb>();
             MagicOrb magicOrbTwo = GameObject.Find("OrbTwo").GetComponent<MagicOrb>();

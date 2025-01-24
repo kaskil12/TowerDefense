@@ -2955,7 +2955,7 @@ MonoBehaviour:
   Coins: 200
   CoinPerTick: 10
   CoinPerTickUpgradeCost: 100
-  CoinPerTickUpgrade: 50
+  CoinPerTickUpgrade: 5
   CoinPerTickText: {fileID: 2494332777581657410}
   CameraTransform: {fileID: 816849697858362771}
   CameraPositions:
