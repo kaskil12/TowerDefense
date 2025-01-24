@@ -148,9 +148,9 @@ public class PlayerScript : MonoBehaviourPunCallbacks
     public TMP_Text MaxUnitsText;
     public int CurrentUnits = 0;
     [Header("Unit sizes")]
-    public int MeleeSize = 1;
-    public int WitchSize = 2;
-    public int BearSize = 3;
+    public int MeleeSize = 3;
+    public int WitchSize = 5;
+    public int BearSize = 8;
     
     void Start()
     {
