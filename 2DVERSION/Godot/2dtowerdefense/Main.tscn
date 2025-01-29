@@ -1,0 +1,66 @@
+[gd_scene load_steps=5 format=3 uid="uid://dj4bewo8046t"]
+
+[ext_resource type="Script" path="res://game_manager.gd" id="1_3odqe"]
+[ext_resource type="PackedScene" uid="uid://djqt0uj06m8si" path="res://player.tscn" id="2_k8ikt"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ypvwl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6ulyo"]
+size = Vector2(20, 10.4666)
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_3odqe")
+player_scene = ExtResource("2_k8ikt")
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://player.tscn")
+spawn_path = NodePath("..")
+
+[node name="MultiplayerHUD" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 61.0
+offset_top = 41.0
+offset_right = 61.0
+offset_bottom = 41.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="MultiplayerHUD"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MultiplayerHUD/Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HostGame" type="Button" parent="MultiplayerHUD/Panel/VBoxContainer"]
+layout_mode = 2
+text = "HostGame"
+
+[node name="JoinAsPlayer2" type="Button" parent="MultiplayerHUD/Panel/VBoxContainer"]
+layout_mode = 2
+text = "JoinAsPlayer2"
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="StaticBody2D"]
+position = Vector2(330, 287)
+scale = Vector2(700, 17.146)
+mesh = SubResource("BoxMesh_ypvwl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(330, 368.73)
+scale = Vector2(700, 17.146)
+shape = SubResource("RectangleShape2D_6ulyo")
+
+[connection signal="pressed" from="MultiplayerHUD/Panel/VBoxContainer/HostGame" to="." method="_on_host_game_button_down"]
+[connection signal="pressed" from="MultiplayerHUD/Panel/VBoxContainer/JoinAsPlayer2" to="." method="_on_join_as_player_2_pressed"]
+[connection signal="pressed" from="MultiplayerHUD/Panel/VBoxContainer/JoinAsPlayer2" to="." method="_on_join_as_player_2_button_down"]

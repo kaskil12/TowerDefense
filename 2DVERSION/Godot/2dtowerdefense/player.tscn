@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://djqt0uj06m8si"]
+
+[ext_resource type="Script" path="res://player.gd" id="1_w23ir"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_x31jn"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_m0hlx"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_34mti"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_w23ir")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_x31jn")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+scale = Vector2(18.7098, 14.9925)
+mesh = SubResource("CapsuleMesh_m0hlx")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_34mti")
+
+[node name="MainCam" type="Camera2D" parent="."]
