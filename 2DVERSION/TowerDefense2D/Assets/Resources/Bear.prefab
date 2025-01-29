@@ -310,10 +310,10 @@ GameObject:
   - component: {fileID: 6485493146331356645}
   - component: {fileID: 6068678550448302874}
   - component: {fileID: 8173304383301939354}
+  - component: {fileID: 701230986777308246}
   - component: {fileID: 205377744216002062}
   - component: {fileID: 6131917330259833595}
   - component: {fileID: -2439033422974835078}
-  - component: {fileID: -4359569230058634638}
   m_Layer: 3
   m_Name: Bear
   m_TagString: Untagged
@@ -432,12 +432,36 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: -4359569230058634638}
-  - {fileID: 285118207711208285}
+  - {fileID: 701230986777308246}
+  - {fileID: 4950828088434668351}
   - {fileID: 3139026865718820782}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &701230986777308246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4779824965850215203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56e03edf41e27414ca8f6bd9c491a9c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncPosition: 1
+  syncPosX: 1
+  syncPosY: 1
+  syncPosZ: 0
+  syncRotation: 0
+  syncRotX: 0
+  syncRotY: 0
+  syncRotZ: 0
+  syncScale: 0
+  syncScaleX: 0
+  syncScaleY: 0
+  syncScaleZ: 0
 --- !u!114 &205377744216002062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -536,39 +560,6 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 0
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.1
---- !u!114 &-4359569230058634638
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4779824965850215203}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8efc6b1d64977384eb3405357896c656, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PositionModel:
-    SynchronizeEnabled: 1
-    TeleportEnabled: 1
-    TeleportIfDistanceGreaterThan: 15
-    InterpolateOption: 4
-    InterpolateMoveTowardsSpeed: 1
-    InterpolateLerpSpeed: 1
-    ExtrapolateOption: 0
-    ExtrapolateSpeed: 1
-    ExtrapolateIncludingRoundTripTime: 1
-    ExtrapolateNumberOfStoredPositions: 1
-  m_RotationModel:
-    SynchronizeEnabled: 1
-    InterpolateOption: 0
-    InterpolateRotateTowardsSpeed: 180
-    InterpolateLerpSpeed: 5
-  m_ScaleModel:
-    SynchronizeEnabled: 0
-    InterpolateOption: 0
-    InterpolateMoveTowardsSpeed: 1
-    InterpolateLerpSpeed: 0
 --- !u!1 &5871448867138602431
 GameObject:
   m_ObjectHideFlags: 0
@@ -680,7 +671,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 16760343703157045}
-  - component: {fileID: 285118207711208285}
+  - component: {fileID: 4950828088434668351}
   m_Layer: 3
   m_Name: KnightPos
   m_TagString: Untagged
@@ -704,7 +695,7 @@ Transform:
   - {fileID: 8951074228673674448}
   m_Father: {fileID: 4761918585772019621}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &285118207711208285
+--- !u!114 &4950828088434668351
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -713,13 +704,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 6603601043353424359}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Script: {fileID: 11500000, guid: 56e03edf41e27414ca8f6bd9c491a9c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SynchronizePosition: 0
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
-  m_UseLocal: 0
+  syncPosition: 0
+  syncPosX: 0
+  syncPosY: 0
+  syncPosZ: 0
+  syncRotation: 1
+  syncRotX: 0
+  syncRotY: 1
+  syncRotZ: 0
+  syncScale: 0
+  syncScaleX: 0
+  syncScaleY: 0
+  syncScaleZ: 0
 --- !u!1 &7799821589961825340
 GameObject:
   m_ObjectHideFlags: 0
