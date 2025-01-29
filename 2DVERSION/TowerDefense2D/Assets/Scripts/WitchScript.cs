@@ -4,6 +4,7 @@ using Photon.Pun;
 using System.Collections;
 using UnityEngine.UI;
 using Unity.VisualScripting;
+using System.Collections.Generic;
 public class WitchScript : MonoBehaviourPunCallbacks
 {
     [Header("Team Settings")]
@@ -64,7 +65,12 @@ public class WitchScript : MonoBehaviourPunCallbacks
     public Animator animator;
     public int UnitSize { get; set; }
 
-
+    private void Awake()
+    {
+        PhotonView photonView = GetComponent<PhotonView>();
+        photonView.ObservedComponents = new List<Component> { GetComponent<CustomPhotonTransformView>() };
+        photonView.Synchronization = ViewSynchronization.UnreliableOnChange;
+    }
 
     void Start()
     {

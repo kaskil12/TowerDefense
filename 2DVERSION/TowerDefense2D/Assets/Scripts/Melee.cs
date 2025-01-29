@@ -4,6 +4,7 @@ using Photon.Pun;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class Melee : MonoBehaviourPunCallbacks
 {
@@ -65,6 +66,12 @@ public class Melee : MonoBehaviourPunCallbacks
     public Animator animator;
     public bool IsAttacking = false;
     public int UnitSize { get; set; }
+    private void Awake()
+    {
+        PhotonView photonView = GetComponent<PhotonView>();
+        photonView.ObservedComponents = new List<Component> { GetComponent<CustomPhotonTransformView>() };
+        photonView.Synchronization = ViewSynchronization.UnreliableOnChange;
+    }
 
     void Start(){
         canAttack = true;
