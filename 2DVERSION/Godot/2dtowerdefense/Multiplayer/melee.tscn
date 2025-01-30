@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://eaav3ecflsay"]
+
+[ext_resource type="Script" path="res://Scenes/melee.gd" id="1_ucwa3"]
+[ext_resource type="Texture2D" uid="uid://cmma0ykixjuie" path="res://2DAssets/Knight/pixil-frame-0.png" id="2_lmlg4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hm4fa"]
+
+[node name="Melee" type="CharacterBody2D"]
+position = Vector2(128, 333)
+script = ExtResource("1_ucwa3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_hm4fa")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.0223856, 0.0231743)
+texture = ExtResource("2_lmlg4")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+avoidance_enabled = true
+debug_enabled = true
