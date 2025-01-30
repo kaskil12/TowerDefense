@@ -1,22 +1,26 @@
-[gd_scene load_steps=7 format=3 uid="uid://dj4bewo8046t"]
+[gd_scene load_steps=12 format=3 uid="uid://dj4bewo8046t"]
 
 [ext_resource type="Script" path="res://Scripts/game_manager.gd" id="1_kn24h"]
-[ext_resource type="PackedScene" uid="uid://djqt0uj06m8si" path="res://Multiplayer/player.tscn" id="2_tuipo"]
+[ext_resource type="PackedScene" uid="uid://djqt0uj06m8si" path="res://player.tscn" id="2_tuipo"]
+[ext_resource type="Script" path="res://Scenes/melee.gd" id="4_u5l28"]
 [ext_resource type="Texture2D" uid="uid://cmma0ykixjuie" path="res://2DAssets/Knight/pixil-frame-0.png" id="4_ynvjy"]
 [ext_resource type="Texture2D" uid="uid://c4n1k7it5fuyp" path="res://2DAssets/image.png" id="5_5bke8"]
 [ext_resource type="Texture2D" uid="uid://gj0rli7o7i53" path="res://2DAssets/Skjermbilde 2025-01-30 102958.png" id="5_xlf6d"]
+[ext_resource type="Texture2D" uid="uid://tckx31snv4qo" path="res://2DAssets/wizardpng/pixil-frame-0.png" id="6_lib5d"]
+[ext_resource type="Script" path="res://Scenes/witch.gd" id="6_tlxs5"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_evjk6"]
 vertices = PackedVector2Array(140.922, 293, 1155.72, 293, 1150.26, 496.891, 17.1797, 485.102, 20.8125, 291.148)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 0, 3)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(141, 283, 1166, 283, 1160, 507, 7, 495, 11, 281)])
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hm4fa"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_velvv"]
+
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_kn24h")
 player_scene = ExtResource("2_tuipo")
-
-[node name="SpawnPos" type="Node2D" parent="."]
-position = Vector2(590, 254)
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("res://Multiplayer/player.tscn")
@@ -55,37 +59,59 @@ text = "HostGame"
 layout_mode = 2
 text = "JoinAsPlayer2"
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
+[node name="Nav" type="StaticBody2D" parent="."]
 
-[node name="NavigationRegion2D" type="NavigationRegion2D" parent="StaticBody2D"]
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="Nav"]
 position = Vector2(-11, -44)
 navigation_polygon = SubResource("NavigationPolygon_evjk6")
 
-[node name="Skjermbilde2025-01-30102958" type="Sprite2D" parent="."]
+[node name="Background" type="Sprite2D" parent="."]
 z_index = -1165
 position = Vector2(684, 184)
 scale = Vector2(1.61088, 0.776953)
 texture = ExtResource("5_xlf6d")
 
-[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+[node name="Melee" type="CharacterBody2D" parent="."]
 position = Vector2(128, 333)
+script = ExtResource("4_u5l28")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Melee"]
+shape = SubResource("RectangleShape2D_hm4fa")
 
-[node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D"]
+[node name="Sprite2D" type="Sprite2D" parent="Melee"]
 scale = Vector2(0.0208432, 0.0261558)
 texture = ExtResource("4_ynvjy")
 
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="CharacterBody2D"]
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="Melee"]
 avoidance_enabled = true
 debug_enabled = true
 
-[node name="Image" type="Sprite2D" parent="."]
+[node name="Witch" type="CharacterBody2D" parent="."]
+position = Vector2(94, 322)
+script = ExtResource("6_tlxs5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Witch"]
+shape = SubResource("RectangleShape2D_velvv")
+
+[node name="Sprite2D" type="Sprite2D" parent="Witch"]
+scale = Vector2(0.0208432, 0.0261558)
+texture = ExtResource("6_lib5d")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="Witch"]
+avoidance_enabled = true
+debug_enabled = true
+
+[node name="TowerOne" type="Node2D" parent="."]
+
+[node name="TowerSprite" type="Sprite2D" parent="TowerOne"]
 position = Vector2(14, 300)
-scale = Vector2(-0.379999, 0.38)
+rotation = 3.14159
+scale = Vector2(0.379999, -0.38)
 texture = ExtResource("5_5bke8")
 
-[node name="Image2" type="Sprite2D" parent="."]
+[node name="TowerTwo" type="Node2D" parent="."]
+
+[node name="TowerSprite" type="Sprite2D" parent="TowerTwo"]
 position = Vector2(1132, 312)
 scale = Vector2(0.38, 0.38)
 texture = ExtResource("5_5bke8")
