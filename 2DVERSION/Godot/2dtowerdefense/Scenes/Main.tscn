@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://dj4bewo8046t"]
 
-[ext_resource type="Script" path="res://game_manager.gd" id="1_3odqe"]
-[ext_resource type="PackedScene" uid="uid://djqt0uj06m8si" path="res://player.tscn" id="2_k8ikt"]
+[ext_resource type="Script" path="res://Scripts/game_manager.gd" id="1_kn24h"]
+[ext_resource type="PackedScene" uid="uid://djqt0uj06m8si" path="res://player.tscn" id="2_tuipo"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_ypvwl"]
 
@@ -9,8 +9,8 @@
 size = Vector2(20, 10.4666)
 
 [node name="Node2D" type="Node2D"]
-script = ExtResource("1_3odqe")
-player_scene = ExtResource("2_k8ikt")
+script = ExtResource("1_kn24h")
+player_scene = ExtResource("2_tuipo")
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("res://player.tscn")
@@ -62,5 +62,5 @@ scale = Vector2(700, 17.146)
 shape = SubResource("RectangleShape2D_6ulyo")
 
 [connection signal="pressed" from="MultiplayerHUD/Panel/VBoxContainer/HostGame" to="." method="_on_host_game_button_down"]
-[connection signal="pressed" from="MultiplayerHUD/Panel/VBoxContainer/JoinAsPlayer2" to="." method="_on_join_as_player_2_pressed"]
 [connection signal="pressed" from="MultiplayerHUD/Panel/VBoxContainer/JoinAsPlayer2" to="." method="_on_join_as_player_2_button_down"]
+[connection signal="pressed" from="MultiplayerHUD/Panel/VBoxContainer/JoinAsPlayer2" to="." method="_on_join_as_player_2_pressed"]

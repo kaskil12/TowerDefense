@@ -11,13 +11,13 @@ config_version=5
 [application]
 
 config/name="2DTowerDefense"
-run/main_scene="res://Main.tscn"
+run/main_scene="res://Scenes/Main.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
-MultiplayerManager="*res://multiplayer_manager.gd"
+MultiplayerManager="*res://Scripts/multiplayer_manager.gd"
 
 [dotnet]
 
