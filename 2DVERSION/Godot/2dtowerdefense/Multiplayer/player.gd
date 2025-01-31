@@ -117,7 +117,7 @@ func UpgradeMagicOrb():
 		magicOrb = get_node("/root/Player/Player1/MagicOrb")
 	else:
 		magicOrb = get_node("/root/Player/Player2/MagicOrb")
-	if coins >= magicOrbPrice:
+	if coins >= magicOrbPrice and magicOrb.level < 3:
 		coins -= magicOrbPrice
 		coinText.text = str(coins)
 		magicOrb.level += 1
