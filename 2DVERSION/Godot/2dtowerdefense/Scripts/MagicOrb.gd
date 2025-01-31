@@ -11,7 +11,7 @@ func _ready():
 
 func _process(delta: float) -> void:
     if cooldownTimer > 0:
-        cooldownTimer -= 1 * delta
+        cooldownTimer -= delta
     elif enabled:
         Shoot()
     match level:

@@ -1,5 +1,6 @@
 extends CharacterBody2D
 
+var player: Node2D = null
 @export var speed: float = 100.0
 @export var attack_range: float = 5.0
 @export var detection_range: float = 10.0
@@ -23,10 +24,13 @@ func _ready():
 	nav_agent.target_desired_distance = 2.0
 
 func _process(delta: float):
-	player = get_node("/root/Player")
 	if player.team == team:
 		attacking_opponent_tower = player.attack
 		returning_to_base = !player.attack
+	else:
+		#find other player
+		
+	
 	# if Input.is_action_just_pressed("attack"):
 	# 	attacking_opponent_tower = !attacking_opponent_tower
 	# if Input.is_action_just_pressed("defend"):
@@ -45,13 +49,14 @@ func _process(delta: float):
 			speed = 0
 			if canAttack:
 				attackTarget()
-	elif attacking_opponent_tower:
+	elif attacking_opponent_tower and target_found == false:
 		move_to(opponent_tower_position.global_position)
-	
-	if target_found == false:
-		speed = 100
+		if global_position.distance_to(opponent_tower_position.global_position) <= attack_range:
+			speed = 0
+			if canAttack:
+				attackTower()
 	else:
-		print("target found")
+		speed = 100
 
 func _physics_process(delta: float):
 	if nav_agent.is_navigation_finished():
@@ -83,6 +88,18 @@ func attackTarget():
 		#delay
 		yield(get_tree().create_timer(1.0), "timeout")
 		canAttack = true
+
+func attackTower():
+	if team == 1:
+		opponent_tower_position.method("take_damage", 10)
+		speed = 0
+		#delay
+		yield(get_tree().create_timer(1.0), "timeout")
+	elif team == 2:
+		opponent_tower_position.method("take_damage", 10)
+		speed = 0
+		#delay
+		yield(get_tree().create_timer(1.0), "timeout")
 func take_damage(damage: int):
 	health -= damage
 	if health <= 0:
