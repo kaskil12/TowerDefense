@@ -1,19 +1,22 @@
-[gd_scene load_steps=7 format=3 uid="uid://dj4bewo8046t"]
+[gd_scene load_steps=6 format=3 uid="uid://dj4bewo8046t"]
 
 [ext_resource type="Script" path="res://Scripts/game_manager.gd" id="1_kn24h"]
 [ext_resource type="PackedScene" uid="uid://djqt0uj06m8si" path="res://player.tscn" id="2_tuipo"]
 [ext_resource type="Texture2D" uid="uid://c4n1k7it5fuyp" path="res://2DAssets/image.png" id="5_5bke8"]
 [ext_resource type="Texture2D" uid="uid://gj0rli7o7i53" path="res://2DAssets/Skjermbilde 2025-01-30 102958.png" id="5_xlf6d"]
-[ext_resource type="PackedScene" uid="uid://eaav3ecflsay" path="res://Multiplayer/melee.tscn" id="5_yhe1k"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_evjk6"]
 vertices = PackedVector2Array(1224.36, 292, 1231.63, 490.008, -36.6797, 491.977, 140.977, 293, -30.3125, 292.047)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(3, 2, 4)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(141, 283, 1234, 282, 1242, 500, -47, 502, -40, 282)])
 
-[node name="Node2D" type="Node2D"]
+[node name="Node2D" type="Node2D" node_paths=PackedStringArray("defaultspawn")]
 script = ExtResource("1_kn24h")
 player_scene = ExtResource("2_tuipo")
+defaultspawn = NodePath("DefaultSpawn")
+
+[node name="DefaultSpawn" type="Node2D" parent="."]
+position = Vector2(615, 281)
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("res://Multiplayer/player.tscn")
@@ -78,11 +81,6 @@ texture = ExtResource("5_5bke8")
 position = Vector2(1132, 312)
 scale = Vector2(0.38, 0.38)
 texture = ExtResource("5_5bke8")
-
-[node name="Melee" parent="." node_paths=PackedStringArray("opponent_tower_position", "base_position") instance=ExtResource("5_yhe1k")]
-position = Vector2(662, 328)
-opponent_tower_position = NodePath("../TowerTwo/TowerSprite")
-base_position = NodePath("../TowerOne/TowerSprite")
 
 [connection signal="pressed" from="MultiplayerHUD/Panel/VBoxContainer/HostGame" to="." method="_on_host_game_button_down"]
 [connection signal="pressed" from="MultiplayerHUD/Panel/VBoxContainer/JoinAsPlayer2" to="." method="_on_join_as_player_2_button_down"]

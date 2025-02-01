@@ -2,6 +2,7 @@ extends Node
 
 var peer = ENetMultiplayerPeer.new()
 @export var player_scene: PackedScene
+@export var defaultspawn: Node2D
 
 func _on_host_game_button_down() -> void:
 	print("Become host pressed")
@@ -19,6 +20,7 @@ func _on_join_as_player_2_button_down() -> void:
 func add_player(id: int):
 	var player = player_scene.instantiate()
 	player.name = str(id)
+	player.position = defaultspawn.position
 	call_deferred("add_child", player)
 
 func exit_game(id: int):

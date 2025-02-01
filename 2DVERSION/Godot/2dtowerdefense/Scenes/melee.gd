@@ -2,10 +2,8 @@ extends CharacterBody2D
 
 var player: Node2D = null
 @export var speed: float = 100.0
-@export var attack_range: float = 5.0
-@export var detection_range: float = 10.0
-
-# @export var areabody: Area2D
+@export var attack_range: float = 50.0  # Adjust this value as needed
+@export var detection_range: float = 100.0  # Adjust this value as needed
 
 @export var opponent_tower_position: Node2D
 @export var base_position: Node2D
@@ -20,24 +18,37 @@ var health: int = 100
 @onready var nav_agent: NavigationAgent2D = $NavigationAgent2D
 
 func _ready():
+	# Initialize the player variable
+	var players = get_tree().get_nodes_in_group("players")
+	if players.size() > 0:
+		player = players[0]
+	else:
+		print("No players found in the 'players' group.")
+
 	nav_agent.path_desired_distance = 4.0
 	nav_agent.target_desired_distance = 2.0
 
 func _process(delta: float):
-	if player.team == team:
+	var all_players: Array = get_tree().get_nodes_in_group("players")
+	if player and player.team == team:
 		attacking_opponent_tower = player.attack
 		returning_to_base = !player.attack
 	else:
-		#find other player
-		
-	
-	# if Input.is_action_just_pressed("attack"):
-	# 	attacking_opponent_tower = !attacking_opponent_tower
-	# if Input.is_action_just_pressed("defend"):
-	# 	returning_to_base = !returning_to_base
-	print("attack",attacking_opponent_tower)
-	print("return",returning_to_base)
-	if returning_to_base:
+		var other_player = find_other_player(player, all_players)
+		if other_player:
+			attacking_opponent_tower = other_player.attack
+			returning_to_base = !other_player.attack
+		else:
+			# Handle the case where no other player is found
+			print("No other player found.")
+
+	# Debug prints
+	print("Attack Tower:", attacking_opponent_tower)
+	print("Return to Base:", returning_to_base)
+	print("Target Found:", target_found)
+	print("Target:", target)
+
+	if returning_to_base and base_position != null:
 		attacking_opponent_tower = false
 		target_found = false
 		move_to(base_position.global_position)
@@ -49,19 +60,20 @@ func _process(delta: float):
 			speed = 0
 			if canAttack:
 				attackTarget()
-	elif attacking_opponent_tower and target_found == false:
+	elif attacking_opponent_tower and target_found == false and opponent_tower_position != null:
 		move_to(opponent_tower_position.global_position)
+		print("Distance to Tower:", global_position.distance_to(opponent_tower_position.global_position))
 		if global_position.distance_to(opponent_tower_position.global_position) <= attack_range:
 			speed = 0
 			if canAttack:
 				attackTower()
 	else:
-		speed = 100
+		speed = 100  # Reset speed if no conditions are met
 
 func _physics_process(delta: float):
 	if nav_agent.is_navigation_finished():
 		return
-	
+
 	var next_path_position = nav_agent.get_next_path_position()
 	var direction = (next_path_position - global_position).normalized()
 	velocity = direction * speed
@@ -74,40 +86,52 @@ func _on_detection_area_body_entered(body: Node2D):
 	if body.is_in_group("pawns") and not returning_to_base and body.team != team:
 		target = body
 		target_found = true
+		print("Target detected:", target)
 
 func _on_detection_area_body_exited(body: Node2D):
 	if body == target:
 		target = null
 		target_found = false
+		speed = 100  # Reset speed when target is lost
+		print("Target lost.")
 
 func attackTarget():
-	if target:
+	if target and target.has_method("take_damage"):
 		canAttack = false
-		target.method("take_damage", 10)
+		target.take_damage(10)
 		speed = 0
-		#delay
-		yield(get_tree().create_timer(1.0), "timeout")
+		await get_tree().create_timer(1.0).timeout
 		canAttack = true
+		speed = 100  # Reset speed after attack
+		print("Attacked target.")
 
 func attackTower():
-	if team == 1:
-		opponent_tower_position.method("take_damage", 10)
+	if (team == 1 or team == 2) and opponent_tower_position and opponent_tower_position.has_method("take_damage"):
+		canAttack = false
+		opponent_tower_position.take_damage(10)
 		speed = 0
-		#delay
-		yield(get_tree().create_timer(1.0), "timeout")
-	elif team == 2:
-		opponent_tower_position.method("take_damage", 10)
-		speed = 0
-		#delay
-		yield(get_tree().create_timer(1.0), "timeout")
+		await get_tree().create_timer(1.0).timeout
+		canAttack = true
+		speed = 100  # Reset speed after attack
+		print("Attacked tower.")
+
 func take_damage(damage: int):
 	health -= damage
 	if health <= 0:
 		queue_free()
+	print("Took damage. Health:", health)
 
 func SetAttack(attack: bool):
 	attacking_opponent_tower = attack
 	returning_to_base = !attack
 	target_found = false
 	target = null
-	move_to(opponent_tower_position.global_position)
+	if opponent_tower_position:
+		move_to(opponent_tower_position.global_position)
+	print("Set attack state:", attack)
+
+func find_other_player(current_player: Node, all_players: Array) -> Node:
+	for player in all_players:
+		if player.team != current_player.team:
+			return player
+	return null  # No other player found

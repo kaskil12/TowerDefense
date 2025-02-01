@@ -1,6 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://djqt0uj06m8si"]
+[gd_scene load_steps=5 format=3 uid="uid://djqt0uj06m8si"]
 
 [ext_resource type="Script" path="res://Multiplayer/player.gd" id="1_w23ir"]
+[ext_resource type="PackedScene" uid="uid://eaav3ecflsay" path="res://Multiplayer/melee.tscn" id="2_bvbn5"]
+[ext_resource type="PackedScene" uid="uid://dtrpowfv8eujl" path="res://Multiplayer/witch.tscn" id="3_r73qr"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_34mti"]
 properties/0/path = NodePath(".:position")
@@ -10,8 +12,70 @@ properties/1/path = NodePath(".:rotation")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
-[node name="Player" type="Camera2D"]
+[node name="Player" type="Camera2D" node_paths=PackedStringArray("coinText", "meleeText", "witchText", "magicOrbText") groups=["players"]]
 script = ExtResource("1_w23ir")
+coinText = NodePath("PlayerHud/CoinText")
+melee = ExtResource("2_bvbn5")
+meleeText = NodePath("PlayerHud/Melee")
+witch = ExtResource("3_r73qr")
+witchText = NodePath("PlayerHud/Witch")
+magicOrbText = NodePath("PlayerHud/Orb")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_34mti")
+
+[node name="PlayerHud" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CoinText" type="Label" parent="PlayerHud"]
+layout_mode = 0
+offset_left = 502.0
+offset_top = 23.0
+offset_right = 542.0
+offset_bottom = 46.0
+scale = Vector2(4.95297, 3.71824)
+
+[node name="Melee" type="Label" parent="PlayerHud"]
+layout_mode = 0
+offset_left = 954.0
+offset_top = 32.0
+offset_right = 994.0
+offset_bottom = 55.0
+
+[node name="Witch" type="Label" parent="PlayerHud"]
+layout_mode = 0
+offset_left = 348.0
+offset_top = 157.0
+offset_right = 388.0
+offset_bottom = 180.0
+
+[node name="Orb" type="Label" parent="PlayerHud"]
+layout_mode = 0
+offset_left = 536.0
+offset_top = 136.0
+offset_right = 576.0
+offset_bottom = 159.0
+
+[node name="SpawnMelee" type="Button" parent="PlayerHud"]
+layout_mode = 0
+offset_left = 49.0
+offset_top = 29.0
+offset_right = 104.0
+offset_bottom = 60.0
+text = "Melee"
+
+[node name="ToggleAttack" type="Button" parent="PlayerHud"]
+layout_mode = 0
+offset_left = 148.0
+offset_top = 25.0
+offset_right = 256.0
+offset_bottom = 56.0
+text = "ToggleAttack"
+
+[connection signal="pressed" from="PlayerHud/SpawnMelee" to="." method="BuyMelee"]
+[connection signal="pressed" from="PlayerHud/ToggleAttack" to="." method="ToggleAttack"]

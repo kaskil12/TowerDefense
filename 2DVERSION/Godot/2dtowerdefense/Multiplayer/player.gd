@@ -1,7 +1,7 @@
 extends Node2D
 
 const SPEED = 300.0  # Movement speed in pixels per second
-@onready var cam = $MainCam
+@onready var cam = $"."
 var min_x = -500  # Set your minimum x position
 var max_x = 500   # Set your maximum x position
 var swipe_sensitivity = 1.5  # Adjust sensitivity of swipe
@@ -9,7 +9,7 @@ var swipe_sensitivity = 1.5  # Adjust sensitivity of swipe
 var touch_start_pos = Vector2()
 var touch_active = false
 var attack = false
-var team: int = 0
+var team: int = 1
 #coins and upgrade variables with text
 var coins: int = 200
 var coinsUpgradePrice: int = 100
@@ -31,9 +31,14 @@ var WitchTimer: float = 0
 @export var witchText: Label
 
 #Magic Orb
-@export var magicOrb: PackedScene
+@export var magicOrb: Node2D
 var magicOrbPrice: int = 500
 @export var magicOrbText: Label
+
+@onready var playerhud: Control = $PlayerHud
+
+var opponent_tower_position: Node2D
+var base_position: Node2D
 
 func _enter_tree() -> void:
 	set_multiplayer_authority(name.to_int())
@@ -42,21 +47,29 @@ func _ready():
 	if is_multiplayer_authority():
 		cam.make_current()
 		coinText.text = str(coins)
+		if team == 1:
+			opponent_tower_position = get_node("/root/Node2D/TowerTwo")
+			base_position = get_node("/root/Node2D/TowerOne")
+		else:
+			opponent_tower_position = get_node("/root/Node2D/TowerOne")
+			base_position = get_node("/root/Node2D/TowerOne")
+		
 
 func _process(delta: float) -> void:
 	# Only allow movement if this peer has authority
 	if not is_multiplayer_authority():
 		return
+	playerhud.show()
 	if MeleeTimer > 0:
 		MeleeTimer -= delta
 		meleeText.text = str(MeleeTimer)
 	else:
-		meleeText.text = meleeUpgradePrice
+		meleeText.text = str(meleeUpgradePrice)
 	if WitchTimer > 0:
 		WitchTimer -= delta
 		witchText.text = str(WitchTimer)
 	else:
-		witchText.text = witchUpgradePrice
+		witchText.text = str(witchUpgradePrice)
 	
 		
 func _input(event):
@@ -77,18 +90,18 @@ func ToggleAttack():
 func UpgradeCoins():
 	if coins >= coinsUpgradePrice:
 		coins -= coinsUpgradePrice
-		coinsUpdatePrice += coinsUpdateAmount + 5
+		coinsUpgradePrice += coinsUpdateAmount + 5
 		coinText.text = str(coins)
 
 func BuyMelee():
 	if coins >= meleeUpgradePrice and MeleeTimer <= 0:
 		coins -= meleeUpgradePrice
 		coinText.text = str(coins)
-		var meleeclone = melee.instance()
+		var meleeclone = melee.instantiate()
 		meleeclone.team = team
 		meleeclone.player = self
-		meleeclone.opponent_tower_position = get_node("/root/Player/Player2/Tower")
-		meleeclone.base_position = get_node("/root/Player/Player2/Base")
+		meleeclone.opponent_tower_position = opponent_tower_position
+		meleeclone.base_position = base_position
 		meleeclone.attacking_opponent_tower = attack
 		#add child
 		get_parent().add_child(meleeclone)
