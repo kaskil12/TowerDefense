@@ -1,18 +1,18 @@
 [gd_scene load_steps=6 format=3 uid="uid://dj4bewo8046t"]
 
 [ext_resource type="Script" path="res://Scripts/game_manager.gd" id="1_kn24h"]
-[ext_resource type="PackedScene" uid="uid://djqt0uj06m8si" path="res://player.tscn" id="2_tuipo"]
+[ext_resource type="PackedScene" uid="uid://djqt0uj06m8si" path="res://Multiplayer/player.tscn" id="2_x2d15"]
 [ext_resource type="Texture2D" uid="uid://c4n1k7it5fuyp" path="res://2DAssets/image.png" id="5_5bke8"]
 [ext_resource type="Texture2D" uid="uid://gj0rli7o7i53" path="res://2DAssets/Skjermbilde 2025-01-30 102958.png" id="5_xlf6d"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_evjk6"]
-vertices = PackedVector2Array(1224.36, 292, 1231.63, 490.008, -36.6797, 491.977, 140.977, 293, -30.3125, 292.047)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(3, 2, 4)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(141, 283, 1234, 282, 1242, 500, -47, 502, -40, 282)])
+vertices = PackedVector2Array(1976.21, 306.938, 2029.2, 438.977, -619.297, 436.008, 140.891, 293, -582.148, 282.117)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 3, 2)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(141, 283, 1983, 297, 2044, 449, -632, 446, -590, 272)])
 
 [node name="Node2D" type="Node2D" node_paths=PackedStringArray("defaultspawn")]
 script = ExtResource("1_kn24h")
-player_scene = ExtResource("2_tuipo")
+player_scene = ExtResource("2_x2d15")
 defaultspawn = NodePath("DefaultSpawn")
 
 [node name="DefaultSpawn" type="Node2D" parent="."]
@@ -34,54 +34,65 @@ offset_bottom = 41.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Panel" type="Panel" parent="MultiplayerHUD"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="ColorRect" type="ColorRect" parent="MultiplayerHUD"]
+z_index = 100
+layout_mode = 0
+offset_left = -66.0
+offset_top = -43.0
+offset_right = -26.0
+offset_bottom = -3.0
+scale = Vector2(28.9478, 16.3652)
+color = Color(0.584314, 1, 1, 0.521569)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MultiplayerHUD/Panel"]
+[node name="Panel" type="Panel" parent="MultiplayerHUD/ColorRect"]
+layout_mode = 1
+offset_left = 34.4759
+offset_top = 32.2024
+offset_right = 34.4759
+offset_bottom = 32.2024
+scale = Vector2(0.047922, 0.115193)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MultiplayerHUD/ColorRect/Panel"]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="HostGame" type="Button" parent="MultiplayerHUD/Panel/VBoxContainer"]
+[node name="HostGame" type="Button" parent="MultiplayerHUD/ColorRect/Panel/VBoxContainer"]
 layout_mode = 2
 text = "HostGame"
 
-[node name="JoinAsPlayer2" type="Button" parent="MultiplayerHUD/Panel/VBoxContainer"]
+[node name="JoinAsPlayer2" type="Button" parent="MultiplayerHUD/ColorRect/Panel/VBoxContainer"]
 layout_mode = 2
 text = "JoinAsPlayer2"
 
 [node name="Nav" type="StaticBody2D" parent="."]
+position = Vector2(-1.30878, 129.621)
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="Nav"]
-position = Vector2(-11, -44)
+position = Vector2(-83.6912, -33.6214)
 navigation_polygon = SubResource("NavigationPolygon_evjk6")
 
 [node name="Background" type="Sprite2D" parent="."]
 z_index = -1165
-position = Vector2(684, 184)
-scale = Vector2(1.61088, 0.776953)
+position = Vector2(682.691, 298.5)
+scale = Vector2(2.9507, 0.828976)
 texture = ExtResource("5_xlf6d")
 
 [node name="TowerOne" type="Node2D" parent="."]
+position = Vector2(-699, 414)
 
 [node name="TowerSprite" type="Sprite2D" parent="TowerOne"]
-position = Vector2(14, 300)
 rotation = 3.14159
 scale = Vector2(0.379999, -0.38)
 texture = ExtResource("5_5bke8")
 
 [node name="TowerTwo" type="Node2D" parent="."]
+position = Vector2(1921, 414)
 
 [node name="TowerSprite" type="Sprite2D" parent="TowerTwo"]
-position = Vector2(1132, 312)
 scale = Vector2(0.38, 0.38)
 texture = ExtResource("5_5bke8")
 
-[connection signal="pressed" from="MultiplayerHUD/Panel/VBoxContainer/HostGame" to="." method="_on_host_game_button_down"]
-[connection signal="pressed" from="MultiplayerHUD/Panel/VBoxContainer/JoinAsPlayer2" to="." method="_on_join_as_player_2_button_down"]
-[connection signal="pressed" from="MultiplayerHUD/Panel/VBoxContainer/JoinAsPlayer2" to="." method="_on_join_as_player_2_pressed"]
+[connection signal="pressed" from="MultiplayerHUD/ColorRect/Panel/VBoxContainer/HostGame" to="." method="_on_host_game_button_down"]
+[connection signal="pressed" from="MultiplayerHUD/ColorRect/Panel/VBoxContainer/JoinAsPlayer2" to="." method="_on_join_as_player_2_pressed"]
+[connection signal="pressed" from="MultiplayerHUD/ColorRect/Panel/VBoxContainer/JoinAsPlayer2" to="." method="_on_join_as_player_2_button_down"]

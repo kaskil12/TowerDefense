@@ -2,9 +2,6 @@ extends Node2D
 
 const SPEED = 300.0  # Movement speed in pixels per second
 @onready var cam = $"."
-var min_x = -500  # Set your minimum x position
-var max_x = 500   # Set your maximum x position
-var swipe_sensitivity = 1.5  # Adjust sensitivity of swipe
 
 var touch_start_pos = Vector2()
 var touch_active = false
@@ -46,13 +43,19 @@ func _enter_tree() -> void:
 func _ready():
 	if is_multiplayer_authority():
 		cam.make_current()
-		coinText.text = str(coins)
-		if team == 1:
-			opponent_tower_position = get_node("/root/Node2D/TowerTwo")
-			base_position = get_node("/root/Node2D/TowerOne")
-		else:
-			opponent_tower_position = get_node("/root/Node2D/TowerOne")
-			base_position = get_node("/root/Node2D/TowerOne")
+		playerhud.show()
+	var DefaultPos = $"../DefaultSpawn"
+	if DefaultPos:
+		global_position = DefaultPos.global_position
+	else:
+		print("Node 'DefaultSpawn' not found")
+	coinText.text = str(coins)
+	if team == 1:
+		opponent_tower_position = get_node("/root/Node2D/TowerTwo")
+		base_position = get_node("/root/Node2D/TowerOne")
+	else:
+		opponent_tower_position = get_node("/root/Node2D/TowerOne")
+		base_position = get_node("/root/Node2D/TowerOne")
 		
 
 func _process(delta: float) -> void:
@@ -72,17 +75,7 @@ func _process(delta: float) -> void:
 		witchText.text = str(witchUpgradePrice)
 	
 		
-func _input(event):
-	if event is InputEventScreenTouch:
-		if event.pressed:
-			touch_start_pos = event.position
-			touch_active = true
-		else:
-			touch_active = false
-	
-	elif event is InputEventScreenDrag and touch_active:
-		var delta_x = event.relative.x * swipe_sensitivity
-		position.x = clamp(position.x - delta_x, min_x, max_x)
+
 
 func ToggleAttack():
 	attack = !attack

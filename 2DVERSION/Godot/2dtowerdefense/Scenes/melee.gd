@@ -16,6 +16,11 @@ var team: int = 0
 var canAttack: bool = true
 var health: int = 100
 @onready var nav_agent: NavigationAgent2D = $NavigationAgent2D
+@onready var character_sprite: AnimatedSprite2D = $CharacterSprite
+@onready var animatable_body_2d: AnimationPlayer = $CharacterSprite/AnimatableBody2D
+
+
+@export var Area2DattackRange: Area2D
 
 func _ready():
 	# Initialize the player variable
@@ -30,17 +35,9 @@ func _ready():
 
 func _process(delta: float):
 	var all_players: Array = get_tree().get_nodes_in_group("players")
-	if player and player.team == team:
+	if player:
 		attacking_opponent_tower = player.attack
 		returning_to_base = !player.attack
-	else:
-		var other_player = find_other_player(player, all_players)
-		if other_player:
-			attacking_opponent_tower = other_player.attack
-			returning_to_base = !other_player.attack
-		else:
-			# Handle the case where no other player is found
-			print("No other player found.")
 
 	# Debug prints
 	print("Attack Tower:", attacking_opponent_tower)
@@ -98,6 +95,8 @@ func _on_detection_area_body_exited(body: Node2D):
 func attackTarget():
 	if target and target.has_method("take_damage"):
 		canAttack = false
+		animatable_body_2d.play("Attack")
+		character_sprite.play("Attack")
 		target.take_damage(10)
 		speed = 0
 		await get_tree().create_timer(1.0).timeout
@@ -129,9 +128,3 @@ func SetAttack(attack: bool):
 	if opponent_tower_position:
 		move_to(opponent_tower_position.global_position)
 	print("Set attack state:", attack)
-
-func find_other_player(current_player: Node, all_players: Array) -> Node:
-	for player in all_players:
-		if player.team != current_player.team:
-			return player
-	return null  # No other player found
