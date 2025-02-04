@@ -104,15 +104,27 @@ public class WitchScript : MonoBehaviourPunCallbacks
                 // Flip sprite if moving in the opposite direction
                 if (movementDirection.x > 0)
                 {
-                    WitchSprite.transform.rotation = Quaternion.Euler(0, 0, 0); // Facing right
+                    if(WitchSprite.transform.rotation != Quaternion.Euler(0, 0, 0)){
+                        WitchSprite.transform.rotation = Quaternion.Euler(0, 0, 0); // Facing right'
+                        //sync rotation with photon
+                        SyncRotation(Quaternion.Euler(0, 0, 0), WitchSprite);
+                    }
                 }
                 else
                 {
-                    WitchSprite.transform.rotation = Quaternion.Euler(0, 180, 0); // Facing left
+                    if(WitchSprite.transform.rotation != Quaternion.Euler(0, 180, 0)){
+                        WitchSprite.transform.rotation = Quaternion.Euler(0, 180, 0); // Facing left
+                        //sync rotation
+                        SyncRotation(Quaternion.Euler(0, 180, 0), WitchSprite);
+                    }
                 }
             }
         }
         
+    }
+    [PunRPC]
+    public void SyncRotation(Quaternion rotation, GameObject WitchSpriteCurrent){
+        WitchSpriteCurrent.transform.rotation = rotation;
     }
     public Transform TargetChosen;
     void FindAndAttack()
