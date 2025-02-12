@@ -1,0 +1,23 @@
+# ninja log v5
+9	1986	7590856830344418	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	2a5db8b338c72833
+119	626	7590856816720838	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	689998df1e7b5733
+70	1535	7590856825774829	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	6fd957ea1318506b
+627	1058	7590856821120107	C:/Users/kasper/Documents/GitHub/TowerDefense/2DVERSION/TowerDefense2D/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/1o1a554v/obj/arm64-v8a/libswappywrapper.so	2fd0f03e6b7f5ab0
+98	1663	7590856827057857	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	b7ab353ff371aa90
+21	1591	7590856826351010	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	52d662120e38fb4e
+29	1724	7590856827724962	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	ceb50e090b7f6a81
+77	1590	7590856826304675	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	93d311b4d7321e8
+36	1670	7590856827153940	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	c24b2e35c04ede5a
+62	1881	7590856829282974	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	897571e691e47f5e
+1986	2170	7590856832242560	C:/Users/kasper/Documents/GitHub/TowerDefense/2DVERSION/TowerDefense2D/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/1o1a554v/obj/arm64-v8a/libgame.so	fda8573c899e41c2
+94	667	7591596077245336	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	689998df1e7b5733
+668	1028	7591596080962489	C:/Users/kasper/Documents/GitHub/TowerDefense/2DVERSION/TowerDefense2D/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/1o1a554v/obj/arm64-v8a/libswappywrapper.so	2fd0f03e6b7f5ab0
+72	1487	7591596085439331	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	6fd957ea1318506b
+54	1531	7591596085870233	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	52d662120e38fb4e
+78	1537	7591596085918500	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	93d311b4d7321e8
+29	1622	7591596086754881	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	c24b2e35c04ede5a
+86	1630	7591596086852823	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	b7ab353ff371aa90
+21	1693	7591596087488636	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	ceb50e090b7f6a81
+62	1839	7591596089007919	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	897571e691e47f5e
+9	1951	7591596090103586	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	2a5db8b338c72833
+1951	2136	7591596092031257	C:/Users/kasper/Documents/GitHub/TowerDefense/2DVERSION/TowerDefense2D/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/1o1a554v/obj/arm64-v8a/libgame.so	fda8573c899e41c2
