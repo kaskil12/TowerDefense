@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://dtrpowfv8eujl"]
+
+[ext_resource type="Script" path="res://Scenes/witch.gd" id="1_vlb56"]
+[ext_resource type="Texture2D" uid="uid://tckx31snv4qo" path="res://2DAssets/wizardpng/pixil-frame-0.png" id="2_qscwf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_velvv"]
+
+[node name="Witch" type="CharacterBody2D"]
+position = Vector2(94, 322)
+script = ExtResource("1_vlb56")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_velvv")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.0208432, 0.0261558)
+texture = ExtResource("2_qscwf")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+avoidance_enabled = true
+debug_enabled = true

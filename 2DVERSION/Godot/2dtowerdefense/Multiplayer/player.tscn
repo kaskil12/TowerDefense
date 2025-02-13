@@ -1,0 +1,147 @@
+[gd_scene load_steps=10 format=3 uid="uid://djqt0uj06m8si"]
+
+[ext_resource type="Script" path="res://Scripts/player.gd" id="1_w23ir"]
+[ext_resource type="PackedScene" uid="uid://eaav3ecflsay" path="res://Units/melee.tscn" id="2_4ovok"]
+[ext_resource type="PackedScene" uid="uid://dtrpowfv8eujl" path="res://Units/witch.tscn" id="3_y421q"]
+[ext_resource type="Texture2D" uid="uid://badpy4lbmoujq" path="res://Icons/knight.png" id="4_ir7ee"]
+[ext_resource type="Texture2D" uid="uid://dhaufllt7aavj" path="res://Icons/_a297a55e-b761-45a5-8168-7b72adfb1195-removebg-preview (5).png" id="5_a8wwc"]
+[ext_resource type="Texture2D" uid="uid://dwhsu1pjnmvtd" path="res://Icons/witch.png" id="5_vpxnm"]
+[ext_resource type="Texture2D" uid="uid://cv38wwojv2tq8" path="res://Icons/attack.png" id="7_0x06d"]
+[ext_resource type="Texture2D" uid="uid://cm252pi0eybvb" path="res://Icons/_d25b6188-0142-4880-be45-f0c5abe237a3.png" id="7_ryjol"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_34mti"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[node name="Player" type="Camera2D" node_paths=PackedStringArray("coinText", "meleeText", "witchText", "magicOrbText") groups=["players"]]
+script = ExtResource("1_w23ir")
+coinText = NodePath("PlayerHud/CoinText")
+melee = ExtResource("2_4ovok")
+meleeText = NodePath("PlayerHud/SpawnMelee/Melee")
+witch = ExtResource("3_y421q")
+witchText = NodePath("PlayerHud/Witch/Witch")
+magicOrbText = NodePath("PlayerHud/Orb/Orb")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_34mti")
+
+[node name="PlayerHud" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -572.0
+offset_top = -321.0
+offset_right = -572.0
+offset_bottom = -321.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CoinText" type="Label" parent="PlayerHud"]
+layout_mode = 0
+offset_left = 531.0
+offset_right = 614.0
+offset_bottom = 50.0
+text = "|||"
+horizontal_alignment = 1
+
+[node name="SpawnMelee" type="Button" parent="PlayerHud"]
+layout_mode = 0
+offset_right = 1083.0
+offset_bottom = 1032.0
+scale = Vector2(0.094, 0.092)
+icon = ExtResource("4_ir7ee")
+flat = true
+
+[node name="Melee" type="Label" parent="PlayerHud/SpawnMelee"]
+layout_mode = 0
+offset_left = 425.532
+offset_top = 1032.61
+offset_right = 465.532
+offset_bottom = 1055.61
+scale = Vector2(14.4472, 14.949)
+text = "HEY
+"
+vertical_alignment = 1
+
+[node name="Witch" type="Button" parent="PlayerHud"]
+layout_mode = 0
+offset_left = 91.0
+offset_top = 2.0
+offset_right = 1174.0
+offset_bottom = 1034.0
+scale = Vector2(0.084, 0.08)
+icon = ExtResource("5_vpxnm")
+flat = true
+
+[node name="Witch" type="Label" parent="PlayerHud/Witch"]
+layout_mode = 0
+offset_left = 404.762
+offset_top = 1162.5
+offset_right = 444.762
+offset_bottom = 1185.5
+scale = Vector2(16.0909, 16.6498)
+text = "HEY
+"
+vertical_alignment = 1
+
+[node name="Bear" type="Button" parent="PlayerHud"]
+layout_mode = 0
+offset_left = 179.0
+offset_top = 2.0
+offset_right = 1262.0
+offset_bottom = 1034.0
+scale = Vector2(0.088, 0.084)
+icon = ExtResource("7_ryjol")
+flat = true
+
+[node name="Bear" type="Label" parent="PlayerHud/Bear"]
+layout_mode = 0
+offset_left = 431.818
+offset_top = 1107.14
+offset_right = 471.818
+offset_bottom = 1130.14
+scale = Vector2(14.4472, 14.949)
+text = "HEY
+"
+vertical_alignment = 1
+
+[node name="Attack" type="Button" parent="PlayerHud"]
+layout_mode = 0
+offset_left = 1039.0
+offset_top = 2.0
+offset_right = 2122.0
+offset_bottom = 1034.0
+scale = Vector2(0.100729, 0.0961501)
+icon = ExtResource("7_0x06d")
+flat = true
+icon_alignment = 1
+
+[node name="Orb" type="Button" parent="PlayerHud"]
+layout_mode = 0
+offset_left = 264.0
+offset_right = 772.0
+offset_bottom = 508.0
+scale = Vector2(0.186, 0.18)
+icon = ExtResource("5_a8wwc")
+flat = true
+icon_alignment = 1
+
+[node name="Orb" type="Label" parent="PlayerHud/Orb"]
+layout_mode = 0
+offset_left = 215.054
+offset_top = 527.778
+offset_right = 255.054
+offset_bottom = 550.778
+scale = Vector2(6.96914, 7.58996)
+text = "HEY
+"
+vertical_alignment = 1
+
+[connection signal="pressed" from="PlayerHud/SpawnMelee" to="." method="BuyMelee"]
+[connection signal="pressed" from="PlayerHud/Attack" to="." method="ToggleAttack"]
