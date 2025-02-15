@@ -22,6 +22,9 @@ public class CreateAndJoin : MonoBehaviourPunCallbacks
             CustomRoomView.SetActive(false);
         }
     }
+    public void DeckOpen(){
+        SceneManager.LoadScene("Deck");
+    }
     public void CreateRoom()
     {
         if(!String.IsNullOrEmpty(input_Create.text)){
