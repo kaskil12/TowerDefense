@@ -1,0 +1,5 @@
+{
+  "watch": ["src/**/*", "!node_modules/**/*"],
+  "legacyWatch": true,
+  "exec": "ts-node ./src/index.ts"
+}

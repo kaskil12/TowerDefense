@@ -1,0 +1,16 @@
+volumes:
+  db_data:
+
+services:
+  csa-redis:
+    image: redis:alpine
+    container_name: TowerDefense-redis
+    command: ["redis-server", "--requirepass", "password"]
+    expose:
+      - "6379"
+    ports:
+      - "6379:6379"
+    networks:
+      - overlay
+networks:
+  overlay:
